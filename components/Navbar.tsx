@@ -5,43 +5,54 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Session } from "next-auth"
+import { PlaneTakeoff, LogOut, LogIn, Globe } from 'lucide-react'
 
 const Navbar = ({ session }: { session: Session | null }) => {
-
     return (
-        <nav className='bg-white shadow-md py-4 border-b border-gray-200'>
+        <nav className='bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 shadow-2xl py-4 border-b border-blue-500/30 z-30'>
             <div className='container mx-auto flex justify-between items-center px-6 lg:px-8'>
-                <Link href={"/"} className='flex items-center'>
-                    <Image src={"/logo.png"} alt='logo' width={50} height={50} />
-                    <span className='text-2xl font-bold text-gray-800'> Travel Planner</span>
+                <Link href={"/"} className='flex items-center gap-3 group'>
+                    <span className='text-2xl font-bold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent'>
+                        Triply
+                    </span>
                 </Link>
-                <div className='flex items-center space-x-4'>
+                
+                <div className='flex items-center space-x-6'>
                     {session ? (
                         <>
-                            <Link href={"/trips"} className='text-slate-900 hover:text-sky-500'>
+                            <Link 
+                                href={"/trips"} 
+                                className='text-blue-100 hover:text-white transition-colors duration-300 font-medium flex items-center gap-2 group'
+                            >
+                                <PlaneTakeoff />
                                 My Trips
                             </Link>
-                            <Link href={"/globe"} className='text-slate-900 hover:text-sky-500'>
+                            
+                            <Link 
+                                href={"/globe"} 
+                                className='text-blue-100 hover:text-white transition-colors duration-300 font-medium flex items-center gap-2 group'
+                            >
+                                <Globe />
                                 Globe
                             </Link>
 
                             <button
-                            className="flex items-center justify-center bg-red-800 hover:bg-red-900 text-white p-2 rounded-sm cursor-pointer"
-                            onClick={logout}
-                        >
-                            Se deconnecter
-                        </button>
+                                className="flex items-center justify-center gap-2 bg-red-500/20 hover:bg-red-500/30 text-red-200 hover:text-white px-4 py-2 rounded-lg cursor-pointer backdrop-blur-sm border border-red-400/30 hover:border-red-400/50 transition-all duration-300 font-medium"
+                                onClick={logout}
+                            >
+                                <LogOut className='h-4 w-4' />
+                                Logout
+                            </button>
                         </>
                     ) : (
-
-
                         <button
-                            className="flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white p-2 rounded-sm cursor-pointer"
+                            className="flex items-center justify-center gap-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 hover:text-white px-4 py-2 rounded-lg cursor-pointer backdrop-blur-sm border border-blue-400/30 hover:border-blue-400/50 transition-all duration-300 font-medium group"
                             onClick={login}
                         >
+                            <LogIn className='h-4 w-4 group-hover:translate-x-1 transition-transform' />
                             Sign In
                             <svg
-                                className="w-6 h-6 ml-2"
+                                className="w-5 h-5 group-hover:scale-110 transition-transform"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 fill="currentColor"
@@ -50,10 +61,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
                             </svg>
                         </button>
                     )}
-
-
                 </div>
-
             </div>
         </nav>
     )

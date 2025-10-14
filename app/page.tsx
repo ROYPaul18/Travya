@@ -1,103 +1,178 @@
 import Image from "next/image";
+import Link from "next/link";
+import { MapPin, Calendar, Globe, Plane, ArrowRight, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMS4xLS45LTItMi0ycy0yIC45LTIgMiAuOSAyIDIgMiAyLS45IDItMnptLTI0IDBjMC0xLjEtLjktMi0yLTJzLTIgLjktMiAyIC45IDIgMiAyIDItLjkgMi0yem0wIDI0YzAtMS4xLS45LTItMi0ycy0yIC45LTIgMiAuOSAyIDIgMiAyLS45IDItMnptMjQgMGMwLTEuMS0uOS0yLTItMnMtMiAuOS0yIDIgLjkgMiAyIDIgMi0uOSAyLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Hero Section */}
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-20 lg:py-32">
+          <div className="max-w-5xl mx-auto text-center space-y-8">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-blue-500/20 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-400/30 mb-4 animate-pulse">
+              <Globe className="h-5 w-5 text-blue-300" />
+              <span className="text-blue-100 text-sm font-medium">Plan Your Next Adventure</span>
+            </div>
+
+            {/* Main Heading */}
+            <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent leading-tight">
+              Your Journey Starts Here
+            </h1>
+
+            {/* Subheading */}
+            <p className="text-xl md:text-2xl text-blue-200/80 max-w-3xl mx-auto leading-relaxed">
+              Plan, organize, and visualize your travels all in one place. From dream destinations to detailed itineraries.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-8">
+              <Link href="/trips">
+                <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-8 py-6 text-lg rounded-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-2 group">
+                  Get Started
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link href="/globe">
+                <Button className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm px-8 py-6 text-lg rounded-lg transition-all duration-300 flex items-center gap-2">
+                  <Globe className="h-5 w-5" />
+                  Explore Globe
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Features Section */}
+        <div className="container mx-auto px-4 py-20">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">
+              Everything You Need to Plan Your Trip
+            </h2>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {/* Feature 1 */}
+              <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 hover:scale-105 transition-all duration-300 group">
+                <div className="bg-blue-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <MapPin className="h-8 w-8 text-blue-300" />
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-3">Smart Itineraries</h3>
+                <p className="text-blue-200/80">
+                  Create detailed itineraries with multiple locations. Organize your stops and visualize your route.
+                </p>
+              </div>
+
+              {/* Feature 2 */}
+              <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 hover:scale-105 transition-all duration-300 group">
+                <div className="bg-cyan-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Globe className="h-8 w-8 text-cyan-300" />
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-3">Interactive Globe</h3>
+                <p className="text-blue-200/80">
+                  See all your visited destinations on a beautiful 3D globe. Track your travel journey visually.
+                </p>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 hover:scale-105 transition-all duration-300 group">
+                <div className="bg-purple-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Calendar className="h-8 w-8 text-purple-300" />
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-3">Trip Management</h3>
+                <p className="text-blue-200/80">
+                  Manage all your trips in one dashboard. Track dates, locations, and create memories.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* How It Works Section */}
+        <div className="container mx-auto px-4 py-20">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">
+              Start Planning in 3 Simple Steps
+            </h2>
+
+            <div className="space-y-8">
+              {/* Step 1 */}
+              <div className="flex items-start gap-6 bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
+                <div className="bg-blue-500/30 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
+                  1
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white mb-2">Create Your Trip</h3>
+                  <p className="text-blue-200/80">
+                    Set your destination, dates, and trip details. Add a description to remember what makes this journey special.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex items-start gap-6 bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
+                <div className="bg-cyan-500/30 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
+                  2
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white mb-2">Add Locations</h3>
+                  <p className="text-blue-200/80">
+                    Pin all the places you want to visit. Build your perfect itinerary with multiple stops along the way.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex items-start gap-6 bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
+                <div className="bg-purple-500/30 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
+                  3
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white mb-2">Visualize & Explore</h3>
+                  <p className="text-blue-200/80">
+                    View your trip on interactive maps and track all your adventures on the 3D globe. Share your journey!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="container mx-auto px-4 py-20">
+          <div className="max-w-4xl mx-auto bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-md p-12 rounded-2xl border border-white/20 text-center">
+            <Plane className="h-16 w-16 text-blue-300 mx-auto mb-6" />
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Ready to Start Your Adventure?
+            </h2>
+            <p className="text-xl text-blue-200/80 mb-8 max-w-2xl mx-auto">
+              Join travelers worldwide who trust Travel Planner to organize their dream vacations.
+            </p>
+            <Link href="/trips/new">
+              <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-10 py-6 text-lg rounded-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-2 mx-auto group">
+                Create Your First Trip
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="container mx-auto px-4 py-8 border-t border-white/10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Image src="/logo.png" alt="Travel Planner" width={40} height={40} />
+              <span className="text-xl font-bold text-white">Travel Planner</span>
+            </div>
+            <p className="text-blue-200/60 text-sm">
+              © 2025 Travel Planner. Start your journey today.
+            </p>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }
