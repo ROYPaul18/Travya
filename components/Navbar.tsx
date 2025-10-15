@@ -13,7 +13,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
             <div className='container mx-auto flex justify-between items-center px-6 lg:px-8'>
                 <Link href={"/"} className='flex items-center gap-3 group'>
                     <span className='text-2xl font-bold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent'>
-                        Triply
+                        Tripsly
                     </span>
                 </Link>
                 

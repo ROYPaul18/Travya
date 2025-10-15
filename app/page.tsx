@@ -161,7 +161,7 @@ export default function Home() {
               <span className="text-xl font-bold text-white">Triply</span>
             </div>
             <p className="text-blue-200/60 text-sm">
-              © 2025 Triply. Start your journey today.
+              © 2025 Tripsly. Start your journey today.
             </p>
           </div>
         </footer>
