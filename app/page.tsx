@@ -158,10 +158,10 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Image src="/logo.png" alt="Travel Planner" width={40} height={40} />
-              <span className="text-xl font-bold text-white">Travel Planner</span>
+              <span className="text-xl font-bold text-white">Triply</span>
             </div>
             <p className="text-blue-200/60 text-sm">
-              © 2025 Travel Planner. Start your journey today.
+              © 2025 Triply. Start your journey today.
             </p>
           </div>
         </footer>
