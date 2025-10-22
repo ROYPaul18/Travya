@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tripsly – Carnets de voyage interactifs",
+  title: "Triply – Carnets de voyage interactifs",
   description: "Tripsly est une application web pour planifier, documenter et revivre ses voyages grâce à des carnets numériques collaboratifs et une visualisation 3D du globe.",
 };
 
