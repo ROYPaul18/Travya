@@ -94,3 +94,9 @@ model Location {
   order Int @default(0)
   createdAt DateTime @default(now())
 }
+
+enum Role {
+  ADMIN
+  CREATEUR
+  MEMBRE
+}

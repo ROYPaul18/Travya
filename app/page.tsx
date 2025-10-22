@@ -151,20 +151,7 @@ export default function Home() {
               </Button>
             </Link>
           </div>
-        </div>
-
-        {/* Footer */}
-        <footer className="container mx-auto px-4 py-8 border-t border-white/10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Image src="/logo.png" alt="Travel Planner" width={40} height={40} />
-              <span className="text-xl font-bold text-white">Triply</span>
-            </div>
-            <p className="text-blue-200/60 text-sm">
-              © 2025 Tripsly. Start your journey today.
-            </p>
-          </div>
-        </footer>
+        </div>       
       </div>
     </div>
   );

@@ -9,7 +9,6 @@ export async function createTrip(formdData: FormData) {
   if (!session || !session.user?.id) {
     throw new Error("L'utilisateur n'est pas connecté !");
   }
-
   const title = formdData.get("title")?.toString();
   const description = formdData.get("description")?.toString();
   const imageUrl = formdData.get("imageUrl")?.toString();
