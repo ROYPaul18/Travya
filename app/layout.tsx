@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Triply – Carnets de voyage interactifs",
-  description: "Tripsly est une application web pour planifier, documenter et revivre ses voyages grâce à des carnets numériques collaboratifs et une visualisation 3D du globe.",
+  title: "Travya – Carnets de voyage interactifs",
+  description: "Travya est une application web pour planifier, documenter et revivre ses voyages grâce à des carnets numériques collaboratifs et une visualisation 3D du globe.",
 };
 
 export default async function RootLayout({

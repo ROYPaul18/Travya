@@ -8,7 +8,7 @@ const Footer = () => {
                     <span className="text-xl font-bold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent">Triply</span>
                 </div>
                 <p className="text-blue-200/60 text-sm">
-                    © 2025 Triply. Start your journey today.
+                    © 2025 Travya. Start your journey today.
                 </p>
             </div>
         </footer>
