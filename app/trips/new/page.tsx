@@ -9,11 +9,11 @@ import Image from "next/image"
 import { useState, useTransition } from "react"
 import { Plane, Calendar, FileText, Image as ImageIcon, Loader2 } from "lucide-react"
 
-export default function NewTrip() {
+export default async function NewTrip() {
     const [isPending, startTransition] = useTransition()
     const [imageUrl, setImageUrl] = useState<string | null>(null)
 
-    return (
+    return (   
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-12 px-4">
             <div className="max-w-2xl mx-auto relative z-10">
                 {/* Header */}

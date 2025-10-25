@@ -90,6 +90,7 @@ model Location {
   lat Float
   lng Float
   trip Trip @relation(fields: [tripId], references: [id] )
+  description String
   tripId String
   order Int @default(0)
   createdAt DateTime @default(now())

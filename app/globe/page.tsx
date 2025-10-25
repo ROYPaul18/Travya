@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Plane, Camera } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { resolve } from "path";
 
 const Globe = dynamic(() => import("react-globe.gl"), {
   ssr: false,
@@ -218,4 +219,14 @@ export default function GlobePage() {
       </div>
     </div>
   );
+}
+
+
+const fetchData = async () => {
+  try{
+    const response = await fetch("/api/aaa")
+    const data = await response.json()
+  }catch(err){
+    console.log(err, "Erreur")
+  }
 }
