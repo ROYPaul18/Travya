@@ -9,7 +9,7 @@ import Image from "next/image"
 import { useState, useTransition } from "react"
 import { Plane, Calendar, FileText, Image as ImageIcon, Loader2 } from "lucide-react"
 
-export default async function NewTrip() {
+export default function NewTrip() {
     const [isPending, startTransition] = useTransition()
     const [imageUrl, setImageUrl] = useState<string | null>(null)
 
