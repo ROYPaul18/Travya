@@ -7,7 +7,7 @@ interface MapProps {
 
 export default function Map({ itineraries }: MapProps) {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY!,
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
     });
     if (loadError) return <div> Error loading maps</div>
     if (!isLoaded) {
