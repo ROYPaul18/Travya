@@ -220,13 +220,3 @@ export default function GlobePage() {
     </div>
   );
 }
-
-
-const fetchData = async () => {
-  try{
-    const response = await fetch("/api/aaa")
-    const data = await response.json()
-  }catch(err){
-    console.log(err, "Erreur")
-  }
-}
