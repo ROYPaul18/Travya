@@ -2,7 +2,7 @@
 
 import { useTransition } from "react"
 import { Button } from "./ui/button"
-import { addLocation } from "@/lib/actions/addLocation"
+import { addLocation } from "@/lib/actions/Itinerary"
 import { MapPin, Loader2 } from "lucide-react"
 
 export default function NewLocation({ tripId }: { tripId: string }) {

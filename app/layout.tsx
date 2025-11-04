@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { auth } from "@/auth";
 import Footer from "@/components/Footer";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -21,8 +22,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+
 }: Readonly<{
   children: React.ReactNode;
+
 }>) {
   const session = await auth();
 
@@ -34,6 +37,7 @@ export default async function RootLayout({
         <Navbar session={session} />
         {children}
         <Footer />
+
       </body>
     </html>
   );

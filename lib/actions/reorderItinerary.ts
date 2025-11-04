@@ -14,7 +14,7 @@ export async function reorderItinerary(tripId: string, newOrder: string[]) {
       prisma.location.update({
         where: { id: locationId },
         data: { order: key },
-      })
-    )
+      }),
+    ),
   );
 }

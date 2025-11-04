@@ -31,7 +31,7 @@ export async function GET() {
     const transformedLocations = await Promise.all(
       locations.map(async (loc) => {
         const geocodeResult = await getCountryFromCoordinates(loc.lat, loc.lng);
-
+        
         return {
           name: `${loc.trip.title} - ${geocodeResult.formattedAddress}`,
           lat: loc.lat,

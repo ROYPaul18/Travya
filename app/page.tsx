@@ -1,6 +1,12 @@
-import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Calendar, Globe, Plane, ArrowRight, CheckCircle } from "lucide-react";
+import {
+  MapPin,
+  Calendar,
+  Globe,
+  Plane,
+  ArrowRight,
+  CheckCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -9,10 +15,11 @@ export default function Home() {
       <div className="relative z-10">
         <div className="container mx-auto px-4 py-20 lg:py-32">
           <div className="max-w-5xl mx-auto text-center space-y-8">
-      
             <div className="inline-flex items-center gap-2 bg-blue-500/20 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-400/30 mb-4 animate-pulse">
               <Globe className="h-5 w-5 text-blue-300" />
-              <span className="text-blue-100 text-sm font-medium">Plan Your Next Adventure</span>
+              <span className="text-blue-100 text-sm font-medium">
+                Plan Your Next Adventure
+              </span>
             </div>
 
             <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent leading-tight">
@@ -20,7 +27,8 @@ export default function Home() {
             </h1>
 
             <p className="text-xl md:text-2xl text-blue-200/80 max-w-3xl mx-auto leading-relaxed">
-              Plan, organize, and visualize your travels all in one place. From dream destinations to detailed itineraries.
+              Plan, organize, and visualize your travels all in one place. From
+              dream destinations to detailed itineraries.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-8">
@@ -53,9 +61,12 @@ export default function Home() {
                 <div className="bg-blue-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <MapPin className="h-8 w-8 text-blue-300" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">Smart Itineraries</h3>
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  Smart Itineraries
+                </h3>
                 <p className="text-blue-200/80">
-                  Create detailed itineraries with multiple locations. Organize your stops and visualize your route.
+                  Create detailed itineraries with multiple locations. Organize
+                  your stops and visualize your route.
                 </p>
               </div>
 
@@ -64,9 +75,12 @@ export default function Home() {
                 <div className="bg-cyan-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Globe className="h-8 w-8 text-cyan-300" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">Interactive Globe</h3>
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  Interactive Globe
+                </h3>
                 <p className="text-blue-200/80">
-                  See all your visited destinations on a beautiful 3D globe. Track your travel journey visually.
+                  See all your visited destinations on a beautiful 3D globe.
+                  Track your travel journey visually.
                 </p>
               </div>
 
@@ -75,9 +89,12 @@ export default function Home() {
                 <div className="bg-purple-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Calendar className="h-8 w-8 text-purple-300" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">Trip Management</h3>
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  Trip Management
+                </h3>
                 <p className="text-blue-200/80">
-                  Manage all your trips in one dashboard. Track dates, locations, and create memories.
+                  Manage all your trips in one dashboard. Track dates,
+                  locations, and create memories.
                 </p>
               </div>
             </div>
@@ -98,9 +115,12 @@ export default function Home() {
                   1
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Create Your Trip</h3>
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    Create Your Trip
+                  </h3>
                   <p className="text-blue-200/80">
-                    Set your destination, dates, and trip details. Add a description to remember what makes this journey special.
+                    Set your destination, dates, and trip details. Add a
+                    description to remember what makes this journey special.
                   </p>
                 </div>
               </div>
@@ -111,9 +131,12 @@ export default function Home() {
                   2
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Add Locations</h3>
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    Add Locations
+                  </h3>
                   <p className="text-blue-200/80">
-                    Pin all the places you want to visit. Build your perfect itinerary with multiple stops along the way.
+                    Pin all the places you want to visit. Build your perfect
+                    itinerary with multiple stops along the way.
                   </p>
                 </div>
               </div>
@@ -124,9 +147,12 @@ export default function Home() {
                   3
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Visualize & Explore</h3>
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    Visualize & Explore
+                  </h3>
                   <p className="text-blue-200/80">
-                    View your trip on interactive maps and track all your adventures on the 3D globe. Share your journey!
+                    View your trip on interactive maps and track all your
+                    adventures on the 3D globe. Share your journey!
                   </p>
                 </div>
               </div>
@@ -142,7 +168,8 @@ export default function Home() {
               Ready to Start Your Adventure?
             </h2>
             <p className="text-xl text-blue-200/80 mb-8 max-w-2xl mx-auto">
-              Join travelers worldwide who trust Travel Planner to organize their dream vacations.
+              Join travelers worldwide who trust Travel Planner to organize
+              their dream vacations.
             </p>
             <Link href="/trips/new">
               <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-10 py-6 text-lg rounded-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-2 mx-auto group">
@@ -151,7 +178,7 @@ export default function Home() {
               </Button>
             </Link>
           </div>
-        </div>       
+        </div>
       </div>
     </div>
   );

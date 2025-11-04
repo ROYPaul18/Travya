@@ -3,11 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Plane, Camera } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { resolve } from "path";
+
 
 const Globe = dynamic(() => import("react-globe.gl"), {
   ssr: false,
-  loading: () => (
+  loading: () => (  
     <div className="flex flex-col items-center justify-center h-[600px] gap-4">
       <div className="relative">
         <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200/20 border-t-blue-400"></div>
@@ -78,10 +78,6 @@ export default function GlobePage() {
         <div className="max-w-7xl mx-auto">
           {/* Header avec animation */}
           <div className="text-center mb-12 space-y-4">
-            <div className="inline-flex items-center gap-2 bg-blue-500/20 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-400/30 mb-4">
-              <MapPin className="h-5 w-5 text-blue-300 animate-pulse" />
-              <span className="text-blue-100 text-sm font-medium">Explore Your Journey</span>
-            </div>
             
             <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent">
               Your Travel Odyssey
@@ -99,11 +95,7 @@ export default function GlobePage() {
                   <h2 className="text-2xl font-semibold text-white flex items-center gap-2">
                     <Plane className="h-6 w-6 text-blue-300" />
                     Your Footprint on Earth
-                  </h2>
-                  <div className="flex items-center gap-2 text-blue-200 text-sm bg-blue-500/20 px-3 py-1 rounded-full">
-                    <MapPin className="h-4 w-4" />
-                    <span>{locations.length} locations</span>
-                  </div>
+                  </h2>            
                 </div>
 
                 <div className="h-[600px] w-full relative rounded-xl overflow-hidden bg-gradient-to-b from-blue-950/50 to-slate-900/50">
@@ -186,7 +178,7 @@ export default function GlobePage() {
                             onMouseLeave={() => setHoveredCountry(null)}
                             className={`flex items-center justify-between gap-2 p-3 rounded-lg transition-all duration-300 border ${
                               hoveredCountry === country
-                                ? 'bg-blue-500/30 border-blue-400/50 scale-105 shadow-lg'
+                                ? 'bg-blue-500/30 border-blue-400/50 shadow-lg'
                                 : 'bg-white/5 border-white/10 hover:bg-white/10'
                             }`}
                           >

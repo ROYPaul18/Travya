@@ -5,11 +5,11 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 async function geocodeAddress(address: string) {
-  const apiKey = process.env.GOOGLE_MAPS_API_KEY!;
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      address
-    )}&key=${apiKey}`
+      address,
+    )}&key=${apiKey}`,
   );
 
   const data = await response.json();
@@ -24,6 +24,7 @@ export async function addLocation(formData: FormData, tripId: string) {
   }
 
   const address = formData.get("address")?.toString();
+
   if (!address) {
     throw new Error("Missing address");
   }
@@ -57,8 +58,8 @@ export async function deleteLocation(locationId: string, tripId: string) {
   const location = await prisma.location.findUnique({
     where: { id: locationId },
     include: {
-      trip: true
-    }
+      trip: true,
+    },
   });
 
   if (!location) {
@@ -71,6 +72,6 @@ export async function deleteLocation(locationId: string, tripId: string) {
 
   // Supprimer la location
   await prisma.location.delete({
-    where: { id: locationId }
+    where: { id: locationId },
   });
 }
