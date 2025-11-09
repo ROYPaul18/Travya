@@ -53,8 +53,8 @@ export async function GET(
       address: activity.adress, 
       category: activity.category,
       description: activity.description,
-      startTime: activity.starTime
-        ? new Date(activity.starTime).toLocaleTimeString("fr-FR", {
+      startTime: activity.startTime
+        ? new Date(activity.startTime).toLocaleTimeString("fr-FR", {
             hour: "2-digit",
             minute: "2-digit",
           })

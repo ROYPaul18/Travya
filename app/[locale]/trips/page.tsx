@@ -6,7 +6,11 @@ import { prisma } from "@/lib/prisma";
 import { Plus, Calendar, MapPin, Plane, ArrowRight, Globe, Clock, TrendingUp } from "lucide-react";
 import { useIntlayer } from "next-intlayer/server";
 
-export default async function TripsPage({ params }: { params: { locale: string } }) {
+interface PageProps {
+  params: Promise< {locale: string} >
+}
+
+export default async function TripsPage({ params }: PageProps) {
   const session = await auth();
   const { locale } = await params;
   const content = useIntlayer("trips-page", locale);
