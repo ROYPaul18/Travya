@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Plane, Camera } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-
+import { useIntlayer } from "next-intlayer";
 
 const Globe = dynamic(() => import("react-globe.gl"), {
   ssr: false,
@@ -27,6 +27,7 @@ export interface TransformedLocation {
 
 export default function GlobePage() {
   const globeRef = useRef<any>(undefined);
+  const content = useIntlayer("globe");
 
   const [visitedCountries, setVisitedCountries] = useState<Set<string>>(
     new Set()
@@ -70,31 +71,33 @@ export default function GlobePage() {
     return acc;
   }, {} as Record<string, number>);
 
+  // Helper function for pluralization
+  const getSpotsText = (count: number) => {
+    return count === 1 ? content.spot : content.spots;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      
-      
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-7xl mx-auto">
-          {/* Header avec animation */}
+          
           <div className="text-center mb-12 space-y-4">
-            
             <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent">
-              Your Travel Odyssey
+              {content.title}
             </h1>
             <p className="text-blue-200/80 text-lg max-w-2xl mx-auto">
-              Discover the world through your adventures, one destination at a time
+              {content.subtitle}
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            {/* Globe Section */}
+          
             <div className="lg:col-span-2 bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/20">
               <div className="p-8">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-semibold text-white flex items-center gap-2">
                     <Plane className="h-6 w-6 text-blue-300" />
-                    Your Footprint on Earth
+                    {content.globeTitle}
                   </h2>            
                 </div>
 
@@ -105,7 +108,7 @@ export default function GlobePage() {
                         <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200/20 border-t-blue-400"></div>
                         <MapPin className="h-8 w-8 text-blue-300 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />
                       </div>
-                      <p className="text-blue-200 animate-pulse">Loading your adventures...</p>
+                      <p className="text-blue-200 animate-pulse">{content.loadingAdventures}</p>
                     </div>
                   ) : (
                     <Globe
@@ -138,7 +141,7 @@ export default function GlobePage() {
                     <div className="flex flex-col items-center text-center">
                       <MapPin className="h-8 w-8 text-blue-300 mb-2" />
                       <p className="text-3xl font-bold">{visitedCountries.size}</p>
-                      <p className="text-sm text-blue-200">Countries</p>
+                      <p className="text-sm text-blue-200">{content.countries}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -148,7 +151,7 @@ export default function GlobePage() {
                     <div className="flex flex-col items-center text-center">
                       <Camera className="h-8 w-8 text-cyan-300 mb-2" />
                       <p className="text-3xl font-bold">{locations.length}</p>
-                      <p className="text-sm text-cyan-200">Locations</p>
+                      <p className="text-sm text-cyan-200">{content.locations}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -159,7 +162,7 @@ export default function GlobePage() {
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-blue-300" />
-                    Countries Visited
+                    {content.countriesVisited}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -187,7 +190,7 @@ export default function GlobePage() {
                               <span className="font-medium text-white">{country}</span>
                             </div>
                             <span className="text-xs bg-blue-500/30 text-blue-200 px-2 py-1 rounded-full">
-                              {countryLocations[country]} {countryLocations[country] === 1 ? 'spot' : 'spots'}
+                              {countryLocations[country]} {getSpotsText(countryLocations[country])}
                             </span>
                           </div>
                         ))}
@@ -203,7 +206,7 @@ export default function GlobePage() {
             <div className="inline-flex items-center gap-2 bg-blue-500/10 backdrop-blur-sm px-6 py-3 rounded-full border border-blue-400/20">
               <Plane className="h-5 w-5 text-blue-300" />
               <span className="text-blue-200">
-                Keep exploring! The world is waiting for you.
+                {content.footerMessage}
               </span>
             </div>
           </div>

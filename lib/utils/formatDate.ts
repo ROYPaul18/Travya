@@ -5,3 +5,9 @@ export const formatDate = (date: Date): string => {
     year: 'numeric'
   }).format(date);
 };
+
+export const formatTimeForInput = (date: Date | null): string => {
+    if (!date) return '';
+    const dateObj = new Date(date);
+    return dateObj.toTimeString().slice(0, 5);
+  };

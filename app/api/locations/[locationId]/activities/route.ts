@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { locationId: string } }
+  { params }: { params: Promise<{ locationId: string }> }
 ) {
   try {
     const session = await auth();
@@ -16,9 +16,9 @@ export async function GET(
       );
     }
 
+    // Await the params Promise first
     const { locationId } = await params;
 
-    // Vérifier que la location existe et appartient à l'utilisateur
     const location = await prisma.location.findUnique({
       where: { id: locationId },
       include: {

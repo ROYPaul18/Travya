@@ -75,7 +75,7 @@ model Trip {
   imageUrl    String?
   startDate   DateTime
   endDate     DateTime
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 
   locations Location[]
@@ -89,7 +89,7 @@ model Location {
   locationTitle String
   lat           Float
   lng           Float
-  trip          Trip     @relation(fields: [tripId], references: [id])
+  trip          Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
   tripId        String
   order         Int      @default(0)
   createdAt     DateTime @default(now())
@@ -107,11 +107,11 @@ model Activity {
   category    Categorie
   description String?
   images      String[]
-  starTime    DateTime?
+  startTime   DateTime?
   endTime     DateTime?
   budget      Float?
-  Location    Location? @relation(fields: [locationId], references: [id])
-  locationId  String?
+  Location    Location  @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  locationId  String
   order       Int       @default(0)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt

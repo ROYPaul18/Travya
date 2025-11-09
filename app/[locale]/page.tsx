@@ -1,15 +1,22 @@
-import Link from "next/link";
+
+import { Link } from "@/components/Link";
 import {
   MapPin,
   Calendar,
   Globe,
   Plane,
   ArrowRight,
-  CheckCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useIntlayer } from "next-intlayer/server";
 
-export default function Home() {
+interface PageProps {
+  params: Promise< {locale: string} >
+}
+
+export default async function Home({ params }: PageProps) {
+  const { locale } = await params;
+  const content = useIntlayer("home", locale);
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <div className="relative z-10">
@@ -18,30 +25,29 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 bg-blue-500/20 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-400/30 mb-4 animate-pulse">
               <Globe className="h-5 w-5 text-blue-300" />
               <span className="text-blue-100 text-sm font-medium">
-                Plan Your Next Adventure
+                {content.badgeText}
               </span>
             </div>
 
             <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent leading-tight">
-              Your Journey Starts Here
+              {content.title}
             </h1>
 
             <p className="text-xl md:text-2xl text-blue-200/80 max-w-3xl mx-auto leading-relaxed">
-              Plan, organize, and visualize your travels all in one place. From
-              dream destinations to detailed itineraries.
+              {content.subtitle}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-8">
               <Link href="/trips">
                 <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-8 py-6 text-lg rounded-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-2 group">
-                  Get Started
+                  {content.getStarted}
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="/globe">
                 <Button className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm px-8 py-6 text-lg rounded-lg transition-all duration-300 flex items-center gap-2">
                   <Globe className="h-5 w-5" />
-                  Explore Globe
+                  {content.exploreGlobe}
                 </Button>
               </Link>
             </div>
@@ -52,7 +58,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-20">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">
-              Everything You Need to Plan Your Trip
+              {content.featuresTitle}
             </h2>
 
             <div className="grid md:grid-cols-3 gap-8">
@@ -62,11 +68,10 @@ export default function Home() {
                   <MapPin className="h-8 w-8 text-blue-300" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">
-                  Smart Itineraries
+                  {content.feature1.title}
                 </h3>
                 <p className="text-blue-200/80">
-                  Create detailed itineraries with multiple locations. Organize
-                  your stops and visualize your route.
+                  {content.feature1.description}
                 </p>
               </div>
 
@@ -76,11 +81,10 @@ export default function Home() {
                   <Globe className="h-8 w-8 text-cyan-300" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">
-                  Interactive Globe
+                  {content.feature2.title}
                 </h3>
                 <p className="text-blue-200/80">
-                  See all your visited destinations on a beautiful 3D globe.
-                  Track your travel journey visually.
+                  {content.feature2.description}
                 </p>
               </div>
 
@@ -90,11 +94,10 @@ export default function Home() {
                   <Calendar className="h-8 w-8 text-purple-300" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">
-                  Trip Management
+                  {content.feature3.title}
                 </h3>
                 <p className="text-blue-200/80">
-                  Manage all your trips in one dashboard. Track dates,
-                  locations, and create memories.
+                  {content.feature3.description}
                 </p>
               </div>
             </div>
@@ -105,7 +108,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-20">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">
-              Start Planning in 3 Simple Steps
+              {content.howItWorksTitle}
             </h2>
 
             <div className="space-y-8">
@@ -116,11 +119,10 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-white mb-2">
-                    Create Your Trip
+                    {content.step1.title}
                   </h3>
                   <p className="text-blue-200/80">
-                    Set your destination, dates, and trip details. Add a
-                    description to remember what makes this journey special.
+                    {content.step1.description}
                   </p>
                 </div>
               </div>
@@ -132,11 +134,10 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-white mb-2">
-                    Add Locations
+                    {content.step2.title}
                   </h3>
                   <p className="text-blue-200/80">
-                    Pin all the places you want to visit. Build your perfect
-                    itinerary with multiple stops along the way.
+                    {content.step2.description}
                   </p>
                 </div>
               </div>
@@ -148,11 +149,10 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-white mb-2">
-                    Visualize & Explore
+                    {content.step3.title}
                   </h3>
                   <p className="text-blue-200/80">
-                    View your trip on interactive maps and track all your
-                    adventures on the 3D globe. Share your journey!
+                    {content.step3.description}
                   </p>
                 </div>
               </div>
@@ -165,15 +165,14 @@ export default function Home() {
           <div className="max-w-4xl mx-auto bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-md p-12 rounded-2xl border border-white/20 text-center">
             <Plane className="h-16 w-16 text-blue-300 mx-auto mb-6" />
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to Start Your Adventure?
+              {content.ctaTitle}
             </h2>
             <p className="text-xl text-blue-200/80 mb-8 max-w-2xl mx-auto">
-              Join travelers worldwide who trust Travel Planner to organize
-              their dream vacations.
+              {content.ctaSubtitle}
             </p>
             <Link href="/trips/new">
               <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-10 py-6 text-lg rounded-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-2 mx-auto group">
-                Create Your First Trip
+                {content.createFirstTrip}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>

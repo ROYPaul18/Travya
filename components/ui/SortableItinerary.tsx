@@ -10,7 +10,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useId, useState } from "react";
-import { Button } from "./button";
+
 import {
   Calendar,
   ChevronDown,
@@ -21,6 +21,7 @@ import {
   Plus,
 } from "lucide-react";
 import SortableActivities from "./SortableActivities";
+import { useIntlayer } from "next-intlayer";
 
 interface SortableItineraryProps {
   locations: Location[];
@@ -32,11 +33,17 @@ function SortableItem({ item, tripId }: { item: Location; tripId: string }) {
     useSortable({ id: item.id });
 
   const [open, setOpen] = useState(false);
+  const content = useIntlayer("itinerary");
+
+  const getActivitiesText = (count: number) => {
+    return count === 1 ? content.activity : content.activities;
+  };
+
   return (
     <div
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className="rounded-lg transition-all border-b-2 border-white/5"
+      className=" transition-all border-b-2 border-white/5"
     >
       <div className="flex items-center justify-between py-4">
         
@@ -49,10 +56,10 @@ function SortableItem({ item, tripId }: { item: Location; tripId: string }) {
         
           <div className="flex-1 min-w-0">
             <h4 className="text-white font-semibold text-lg truncate">
-              Day {item.order + 1} - {item.locationTitle}
+              {content.day} {item.order + 1} - {item.locationTitle}
             </h4>
             <p className="text-blue-100/80 text-sm">
-              4 Nov 2025 · 1 activity
+              4 Nov 2025 · 1 {getActivitiesText(0)}
             </p>
           </div>
         </div>

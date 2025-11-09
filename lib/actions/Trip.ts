@@ -2,6 +2,7 @@
 import { auth } from "@/auth";
 import { prisma } from "../prisma";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function createTrip(formdData: FormData) {
   const session = await auth();
@@ -71,6 +72,33 @@ export async function editTrip(formData: FormData, tripId: string) {
       endDate,
     },
   });
-
+  revalidatePath(`/trips/${tripId}`);
   redirect(`/trips/${tripId}`);
+}
+
+export async function deleteTrip(tripId: string) {
+  const session = await auth();
+  if (!session || !session.user?.id) {
+    throw new Error("L'utilisateur n'est pas connecté !");
+  }
+
+  // Vérifier que le voyage existe et appartient à l'utilisateur
+  const existingTrip = await prisma.trip.findUnique({
+    where: { id: tripId },
+  });
+
+  if (!existingTrip) {
+    throw new Error("Voyage introuvable !");
+  }
+
+  if (existingTrip.userId !== session.user.id) {
+    throw new Error("Accès non autorisé !");
+  }
+
+  // Supprimer le voyage (cascade automatique pour locations et activities)
+  await prisma.trip.delete({
+    where: { id: tripId },
+  });
+  revalidatePath("/trips");
+  redirect("/trips");
 }

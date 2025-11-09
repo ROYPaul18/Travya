@@ -9,15 +9,16 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import { useIntlayer } from "next-intlayer";
-import { ActivityFormProps } from "@/lib/utils/types/types";
+import { ActivityEditFormProps} from "@/lib/utils/types/types";
+import {formatTimeForInput} from "@/lib/utils/formatDate"
 
-
-const ActivityForm: React.FC<ActivityFormProps> = ({
+const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
+  activity,
   locationId,
   tripId,
   onCancel,
   onSuccess,
-  addActivity,
+  updateActivity,
 }) => {
   const content = useIntlayer("activity-form");
   const categories = [
@@ -32,7 +33,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   return (
     <form
       action={async (formData) => {
-        await addActivity(formData, locationId, tripId);
+        await updateActivity(activity.id, formData, tripId);
         onSuccess();
       }}
       className="bg-white/5 rounded-xl border border-white/10 p-6"
@@ -40,7 +41,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-white">
-          {content.newActivity}
+          {content.editActivity || "Modifier l'activité"}
         </h3>
         <button
           type="button"
@@ -61,6 +62,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             type="text"
             name="name"
             required
+            defaultValue={activity.name}
             placeholder={content.activityNamePlaceholder.value}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-blue-200/40 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-transparent transition-all"
           />
@@ -76,6 +78,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             type="text"
             name="address"
             required
+            defaultValue={activity.address}
             placeholder={content.addressPlaceholder.value}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-blue-200/40 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-transparent transition-all"
           />
@@ -90,6 +93,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           <select
             name="category"
             required
+            defaultValue={activity.category}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-transparent transition-all appearance-none cursor-pointer"
           >
             <option value="" className="bg-slate-800">
@@ -117,6 +121,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             <input
               type="time"
               name="startTime"
+              defaultValue={formatTimeForInput(activity.startTime)}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-transparent transition-all"
             />
           </div>
@@ -128,6 +133,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             <input
               type="time"
               name="endTime"
+              defaultValue={formatTimeForInput(activity.endTime)}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-transparent transition-all"
             />
           </div>
@@ -144,6 +150,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             name="budget"
             min="0"
             step="0.01"
+            defaultValue={activity.budget ?? ''}
             placeholder={content.budgetPlaceholder.value}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-blue-200/40 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-transparent transition-all"
           />
@@ -158,13 +165,18 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           <textarea
             name="description"
             rows={3}
+            defaultValue={activity.description ?? ''}
             placeholder={content.descriptionPlaceholder.value}
             className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 text-white placeholder-blue-200/40 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-transparent transition-all resize-none"
           />
         </div>
 
         {/* Images (hidden pour l'instant) */}
-        <input type="hidden" name="images" value="[]" />
+        <input 
+          type="hidden" 
+          name="images" 
+          value={JSON.stringify(activity.images)} 
+        />
 
         {/* Note sur les images */}
         <div className="bg-blue-500/10 border border-blue-400/20 rounded-lg p-3">
@@ -183,7 +195,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           type="submit"
           className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2.5 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400/50"
         >
-          {content.addActivity}
+          {content.saveChanges || "Enregistrer les modifications"}
         </button>
         <button
           type="button"
@@ -197,4 +209,4 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   );
 };
 
-export default ActivityForm;
+export default ActivityEditForm;

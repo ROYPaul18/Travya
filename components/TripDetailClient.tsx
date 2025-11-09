@@ -2,14 +2,29 @@
 
 import { Location, Trip } from "@/app/generated/prisma";
 import Image from "next/image";
-import { Calendar, MapPin, Plus, ArrowLeft, Edit } from "lucide-react";
-import Link from "next/link";
+import { Calendar, MapPin, Plus, ArrowLeft, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Link } from "@/components/Link";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { useState } from "react";
 import Map from "@/components/ui/Map";
 import SortableItinerary from "@/components/ui/SortableItinerary";
 import { formatDate } from "@/lib/utils/formatDate";
+import { useIntlayer } from "next-intlayer";
+import { deleteTrip } from "@/lib/actions/Trip";
+import { useRouter } from "next/navigation";
+import EditTripDialog from "@/components/EditTripDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
 export type TripWithLocation = Trip & {
   locations: Location[];
 };
@@ -20,7 +35,11 @@ interface TripDetailClientProps {
 
 export default function TripDetailClient({ trip }: TripDetailClientProps) {
   const [activeTab, setActiveTab] = useState("overview");
-
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const content = useIntlayer("trip-detail");
+  
   const startDate = new Date(trip.startDate);
   const endDate = new Date(trip.endDate);
 
@@ -30,6 +49,31 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
 
   const formattedStartDate = formatDate(startDate);
   const formattedEndDate = formatDate(endDate);
+
+  const getDaysText = (days: number) => {
+    return days === 1 ? content.day : content.days;
+  };
+
+  const getLocationsText = (count: number) => {
+    return count === 1 ? content.location : content.locations;
+  };
+
+  const handleDeleteClick = () => {
+    setShowDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteTrip(trip.id);
+      
+    } catch (error) {
+      console.error("Erreur lors de la suppression:", error);
+      alert("Erreur lors de la suppression du voyage");
+      setIsDeleting(false);
+      setShowDeleteDialog(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
@@ -58,32 +102,46 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
               <div className="flex items-center text-blue-200 gap-2 bg-blue-500/20 px-3 py-2 rounded-lg w-fit">
                 <Calendar className="h-5 w-5" />
                 <span className="text-lg">
-                  {formattedStartDate} -{" "}
-                  {formattedEndDate}
+                  {formattedStartDate} - {formattedEndDate}
                 </span>
                 <span className="text-cyan-300 font-semibold ml-2">
-                  • {tripDays} jour{tripDays > 1 ? "s" : ""}
+                  • {tripDays} {getDaysText(tripDays)}
                 </span>
               </div>
             </div>
 
             {/* Action Buttons */}
             <div className="flex gap-3 flex-shrink-0">
-              <Link href={`/trips/${trip.id}/edit`}>
-                <Button
-                  variant="outline"
-                  className="bg-orange-300 border-white/30 text-white hover:bg-orange-200 backdrop-blur-sm px-4 py-2 rounded-lg transition-all duration-300 flex items-center gap-2"
-                >
-                  <Edit className="h-4 w-4" />
-                  <span className="hidden sm:inline">Modifier</span>
-                </Button>
-              </Link>
+              <Button
+                onClick={() => setShowEditDialog(true)}
+                variant="outline"
+                className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 p-2 rounded-lg border border-yellow-500/30 transition-all duration-300"
+                disabled={isDeleting}
+                title="Modifier le voyage"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
               <Link href={`/trips/${trip.id}/itinerary/new`}>
-                <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-medium px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2">
+                <Button 
+                  className="bg-gradient-to-r from-blue-500/80 to-cyan-500/80 hover:from-blue-500 hover:to-cyan-500 text-white font-medium px-4 py-2 rounded-lg shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/20 transition-all duration-300 flex items-center gap-2"
+                  disabled={isDeleting}
+                >
                   <Plus className="h-5 w-5" />
-                  <span className="hidden sm:inline">Ajouter</span>
+                  <span className="hidden sm:inline">{content.add}</span>
                 </Button>
               </Link>
+              <Button
+                onClick={handleDeleteClick}
+                disabled={isDeleting}
+                className="bg-red-500/20 hover:bg-red-500/30 text-red-300 p-2 rounded-lg border border-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                title="Supprimer le voyage"
+              >
+                {isDeleting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Trash2 className="h-4 w-4" />
+                )}
+              </Button>
             </div>
           </div>
 
@@ -92,7 +150,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
             <div className="px-6 pb-6">
               <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                 <h3 className="text-base font-semibold text-blue-200 mb-2 tracking-wide">
-                  Description
+                  {content.description}
                 </h3>
                 <p className="text-blue-100/90 leading-relaxed text-lg">
                   {trip.description}
@@ -109,19 +167,19 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                 value="overview"
                 className="text-lg data-[state=active]:bg-blue-500/30 data-[state=active]:text-white text-blue-200"
               >
-                Overview
+                {content.overview}
               </TabsTrigger>
               <TabsTrigger
                 value="itinerary"
                 className="text-lg data-[state=active]:bg-blue-500/30 data-[state=active]:text-white text-blue-200"
               >
-                Itinerary
+                {content.itinerary}
               </TabsTrigger>
               <TabsTrigger
                 value="map"
                 className="text-lg data-[state=active]:bg-blue-500/30 data-[state=active]:text-white text-blue-200"
               >
-                Map
+                {content.map}
               </TabsTrigger>
             </TabsList>
 
@@ -132,19 +190,18 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                 <div className="bg-white/5 p-6 rounded-xl border border-white/10">
                   <h2 className="text-2xl font-semibold mb-4 text-white flex items-center gap-2">
                     <Calendar className="h-6 w-6 text-blue-300" />
-                    Trip Summary
+                    {content.tripSummary}
                   </h2>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3 bg-blue-500/10 p-4 rounded-lg">
                       <Calendar className="h-6 w-6 text-blue-300 flex-shrink-0 mt-1" />
                       <div>
-                        <p className="font-medium text-blue-100">Dates</p>
+                        <p className="font-medium text-blue-100">{content.dates}</p>
                         <p className="text-sm text-blue-200/80">
-                          {formattedStartDate} -{" "}
-                          {formattedEndDate}
+                          {formattedStartDate} - {formattedEndDate}
                           <br />
                           <span className="text-cyan-300">
-                            {tripDays} day(s)
+                            {tripDays} {getDaysText(tripDays)}
                           </span>
                         </p>
                       </div>
@@ -153,15 +210,13 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                       <MapPin className="h-6 w-6 text-cyan-300 flex-shrink-0 mt-1" />
                       <div>
                         <p className="font-medium text-blue-100">
-                          Destinations
+                          {content.destinations}
                         </p>
                         <p className="text-sm text-blue-200/80">
                           <span className="text-cyan-300 font-semibold">
                             {trip.locations.length}
                           </span>{" "}
-                          {trip.locations.length === 1
-                            ? "location"
-                            : "locations"}
+                          {getLocationsText(trip.locations.length)}
                         </p>
                       </div>
                     </div>
@@ -174,12 +229,12 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                     <div className="h-full bg-white/5 flex flex-col items-center justify-center text-center p-4">
                       <MapPin className="h-12 w-12 text-blue-300 mb-3" />
                       <p className="text-blue-200 mb-4">
-                        Add locations to see them on the map
+                        {content.addLocationsMap}
                       </p>
                       <Link href={`/trips/${trip.id}/itinerary/new`}>
                         <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white">
                           <Plus className="mr-2 h-4 w-4" />
-                          Add Location
+                          {content.addLocationButton}
                         </Button>
                       </Link>
                     </div>
@@ -192,23 +247,16 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
 
             {/* Itinerary Tab */}
             <TabsContent value="itinerary" className="space-y-6">
-              {/* <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold text-white flex items-center gap-2">
-                  <MapPin className="h-6 w-6 text-blue-300" />
-                  Full Itinerary
-                </h2>
-              </div> */}
-
               {trip.locations.length === 0 ? (
                 <div className="bg-white/5 p-12 rounded-xl border border-white/10 text-center">
                   <MapPin className="h-16 w-16 text-blue-300 mx-auto mb-4" />
                   <p className="text-blue-200 mb-6 text-lg">
-                    Add locations to build your itinerary
+                    {content.addLocationsItinerary}
                   </p>
                   <Link href={`/trips/${trip.id}/itinerary/new`}>
                     <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white">
                       <Plus className="mr-2 h-5 w-5" />
-                      Add Location
+                      {content.addLocationButton}
                     </Button>
                   </Link>
                 </div>
@@ -227,12 +275,12 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                   <div className="h-full bg-white/5 flex flex-col items-center justify-center text-center p-4">
                     <MapPin className="h-16 w-16 text-blue-300 mb-4" />
                     <p className="text-blue-200 mb-6 text-lg">
-                      Add locations to see them on the map
+                      {content.addLocationsMap}
                     </p>
                     <Link href={`/trips/${trip.id}/itinerary/new`}>
                       <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white">
                         <Plus className="mr-2 h-5 w-5" />
-                        Add Location
+                        {content.addLocationButton}
                       </Button>
                     </Link>
                   </div>
@@ -248,11 +296,51 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
           <Link href={`/trips`}>
             <Button className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2 mx-auto">
               <ArrowLeft className="h-5 w-5" />
-              Back to Trips
+              {content.backToTrips}
             </Button>
           </Link>
         </div>
       </div>
+      
+      {/* Edit Trip Dialog */}
+      <EditTripDialog
+        trip={trip}
+        open={showEditDialog}
+        onOpenChange={setShowEditDialog}
+      />
+      
+      {/* Alert Dialog pour confirmation de suppression */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent className="bg-slate-900 border-slate-800">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white">
+              Supprimer le voyage
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-slate-400">
+              Êtes-vous sûr de vouloir supprimer "{trip.title}" ? Cette action supprimera également toutes les locations et activités associées. Cette action est irréversible.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-slate-800 text-white hover:bg-slate-700 border-slate-700">
+              Annuler
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              className="bg-red-500 text-white hover:bg-red-600"
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Suppression...
+                </>
+              ) : (
+                "Supprimer"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

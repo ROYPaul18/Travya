@@ -11,8 +11,8 @@ async function geocodeAddress(address: string) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      address,
-    )}&key=${apiKey}`,
+      address
+    )}&key=${apiKey}`
   );
   const data = await response.json();
 
@@ -44,7 +44,7 @@ function mapCategory(category: string): Categorie {
 export async function addActivity(
   formData: FormData,
   locationId: string,
-  tripId: string,
+  tripId: string
 ) {
   const session = await auth();
   if (!session || !session.user?.id) {
@@ -100,19 +100,17 @@ export async function addActivity(
       category: mapCategory(category),
       description,
       images,
-      starTime: startTime ? new Date(`1970-01-01T${startTime}:00`) : null,
+      startTime: startTime ? new Date(`1970-01-01T${startTime}:00`) : null,
       endTime: endTime ? new Date(`1970-01-01T${endTime}:00`) : null,
       budget: budget ? parseFloat(budget) : null,
       locationId,
       order: count,
     },
   });
-
-  revalidatePath(`/trips/${tripId}`);
-  redirect(`/trips/${tripId}`);
+  return { success: true };
 }
 
-// Supprimer une activité
+// ✅ Supprimer une activité (corrigé)
 export async function deleteActivity(activityId: string, tripId: string) {
   const session = await auth();
   if (!session || !session.user?.id) {
@@ -124,7 +122,6 @@ export async function deleteActivity(activityId: string, tripId: string) {
     where: { id: activityId },
     include: {
       Location: {
-        // Note: Location avec majuscule dans votre schéma
         include: {
           trip: true,
         },
@@ -145,7 +142,7 @@ export async function deleteActivity(activityId: string, tripId: string) {
     where: { id: activityId },
   });
 
-  revalidatePath(`/trips/${tripId}`);
+  return { success: true };
 }
 
 // Mettre à jour une activité
@@ -159,15 +156,11 @@ export async function updateActivity(
     throw new Error("Non authentifié");
   }
 
-  // Vérifier que l'activité existe et appartient au trip de l'utilisateur
   const activity = await prisma.activity.findUnique({
     where: { id: activityId },
     include: {
       Location: {
-        // Note: Location avec majuscule
-        include: {
-          trip: true,
-        },
+        include: { trip: true },
       },
     },
   });
@@ -180,7 +173,6 @@ export async function updateActivity(
     throw new Error("Non autorisé");
   }
 
-  // Récupérer les données du formulaire
   const name = formData.get("name")?.toString();
   const address = formData.get("address")?.toString();
   const category = formData.get("category")?.toString();
@@ -194,36 +186,32 @@ export async function updateActivity(
     throw new Error("Champs obligatoires manquants");
   }
 
-  // Géocoder l'adresse si elle a changé
   let lat = activity.lat;
   let lng = activity.lng;
   if (address !== activity.adress) {
-    // Note: adress
     const coords = await geocodeAddress(address);
     lat = coords.lat;
     lng = coords.lng;
   }
 
-  // Parser les images
   const images = imagesJson ? JSON.parse(imagesJson) : [];
 
-  // Mettre à jour l'activité
   await prisma.activity.update({
     where: { id: activityId },
     data: {
       name,
-      adress: address, // Note: adress
+      adress: address,
       lat,
       lng,
       category: mapCategory(category),
       description,
       images,
-      starTime: startTime ? new Date(`1970-01-01T${startTime}:00`) : null, // Note: starTime
+      startTime: startTime ? new Date(`1970-01-01T${startTime}:00`) : null,
       endTime: endTime ? new Date(`1970-01-01T${endTime}:00`) : null,
       budget: budget ? parseFloat(budget) : null,
     },
   });
 
   revalidatePath(`/trips/${tripId}`);
-  redirect(`/trips/${tripId}`);
+  return { success: true }; 
 }
