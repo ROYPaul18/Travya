@@ -35,7 +35,7 @@ export default function EditTripDialog({
 }: EditTripDialogProps) {
   const [isPending, startTransition] = useTransition();
   const [imageUrl, setImageUrl] = useState<string | null>(trip.imageUrl);
-  const router = useRouter();
+  
 
   // Formater les dates pour l'input date (YYYY-MM-DD)
   const formatDateForInput = (date: Date) => {

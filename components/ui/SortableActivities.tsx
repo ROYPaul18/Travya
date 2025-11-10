@@ -41,19 +41,22 @@ import { getCategoryColor } from "@/lib/utils/style"
 import { Activity } from "@/lib/utils/types/types";
 
 const getCategoryIcon = (category: string) => {
-  const icons: Record<string, JSX.Element> = {
-    RESTAURANT: <Utensils className="h-4 w-4" />,
-    CAFE: <Utensils className="h-4 w-4" />,
-    VISITE: <Building className="h-4 w-4" />,
-    HOTEL: <Building className="h-4 w-4" />,
-    TRANSPORT: <MapPin className="h-4 w-4" />,
-    SHOPPING: <Building className="h-4 w-4" />,
-    NATURE: <TreePine className="h-4 w-4" />,
-    SPORT: <Camera className="h-4 w-4" />,
-    AUTRE: <MapPin className="h-4 w-4" />,
+  const icons: Record<string, React.ElementType> = {
+    RESTAURANT: Utensils,
+    CAFE: Utensils,
+    VISITE: Building,
+    HOTEL: Building,
+    TRANSPORT: MapPin,
+    SHOPPING: Building,
+    NATURE: TreePine,
+    SPORT: Camera,
+    AUTRE: MapPin,
   };
-  return icons[category] || <MapPin className="h-4 w-4" />;
+
+  const Icon = icons[category] || MapPin;
+  return <Icon className="h-4 w-4" />;
 };
+
 
 // Helper function to format time
 const formatTime = (date: Date | null): string => {
