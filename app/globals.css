@@ -120,3 +120,26 @@
         @apply bg-background text-foreground;
     }
 }
+
+.pac-container {
+  background-color: rgba(15, 23, 42, 0.95) !important; /* fond sombre */
+  border-radius: 0.75rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(8px);
+  z-index: 9999 !important;
+}
+
+.pac-item {
+  color: #e0f2fe !important; /* texte clair */
+  font-size: 0.95rem;
+  padding: 0.75rem !important;
+}
+
+.pac-item:hover {
+  background-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.pac-item-query {
+  color: #7dd3fc !important;
+}

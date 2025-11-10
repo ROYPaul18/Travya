@@ -77,6 +77,9 @@ dependencies:
   react-globe.gl:
     specifier: ^2.33.2
     version: 2.36.0(react@19.2.0)
+  react-google-autocomplete:
+    specifier: ^2.7.5
+    version: 2.7.5(react@19.2.0)
   tailwind-merge:
     specifier: ^3.3.1
     version: 3.3.1
@@ -5336,6 +5339,10 @@ packages:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
     dev: false
 
+  /lodash.debounce@4.0.8:
+    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+    dev: false
+
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
@@ -6065,6 +6072,16 @@ packages:
       prop-types: 15.8.1
       react: 19.2.0
       react-kapsule: 2.5.7(react@19.2.0)
+    dev: false
+
+  /react-google-autocomplete@2.7.5(react@19.2.0):
+    resolution: {integrity: sha512-CPHMFBCgaJER19iA/y9Isjxh5au8mRxkt6przu9miOHLqrno+ifwJGXQOzMvtwdqNPXhb5Z6jpTtiJrbFeUvHg==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      lodash.debounce: 4.0.8
+      prop-types: 15.8.1
+      react: 19.2.0
     dev: false
 
   /react-intlayer@7.0.5(@intlayer/api@7.0.5)(@intlayer/cli@7.0.5)(@intlayer/config@7.0.5)(@intlayer/core@7.0.5)(@intlayer/editor-react@7.0.5)(@intlayer/types@7.0.5)(@intlayer/unmerged-dictionaries-entry@7.0.5)(react-dom@19.2.0)(react@19.2.0):

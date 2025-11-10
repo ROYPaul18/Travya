@@ -1,14 +1,37 @@
 "use client"
 
-import { useTransition } from "react"
+import { useTransition, useState } from "react"
 import { Button } from "./ui/button"
 import { addLocation } from "@/lib/actions/Itinerary"
 import { MapPin, Loader2 } from "lucide-react"
 import { useIntlayer } from "next-intlayer"
+import Autocomplete from "react-google-autocomplete"
 
 export default function NewLocation({ tripId }: { tripId: string }) {
     const [isPending, startTransition] = useTransition()
+    const [selectedPlace, setSelectedPlace] = useState<any>(null)
+    const [address, setAddress] = useState("")
     const content = useIntlayer("new-location")
+
+    const handlePlaceSelected = (place: any) => {
+        console.log("Place sélectionné:", place)
+        setSelectedPlace(place)
+        setAddress(place.formatted_address || "")
+    }
+
+    const handleSubmit = (formData: FormData) => {
+        
+        if (selectedPlace) {
+            formData.set("placeId", selectedPlace.place_id)
+            formData.set("latitude", selectedPlace.geometry?.location?.lat()?.toString() || "")
+            formData.set("longitude", selectedPlace.geometry?.location?.lng()?.toString() || "")
+            formData.set("formattedAddress", selectedPlace.formatted_address || "")
+        }
+        
+        startTransition(() => {
+            addLocation(formData, tripId)
+        })
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center">
@@ -25,31 +48,49 @@ export default function NewLocation({ tripId }: { tripId: string }) {
                         <p className="text-blue-200/80">{content.subtitle}</p>
                     </div>
 
-                    <form 
-                        className="space-y-6" 
-                        action={(formData: FormData) => {
-                            startTransition(() => {
-                                addLocation(formData, tripId)
-                            })
-                        }}
-                    >
+                    <div className="space-y-6">
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-blue-100 mb-2 flex items-center gap-2">
                                 <MapPin className="h-4 w-4 text-blue-300" />
                                 {content.addressLabel}
                             </label>
-                            <input 
-                                name="address" 
-                                type="text" 
-                                required 
+                            
+                            <Autocomplete
+                                apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+                                onPlaceSelected={handlePlaceSelected}
+                                onChange={(e: any) => setAddress(e.target.value)}
+                                value={address}
+                                options={{
+                                    types: [], 
+                                    fields: [
+                                        "address_components",
+                                        "geometry",
+                                        "place_id",
+                                        "formatted_address",
+                                        "name"
+                                    ]
+                                }}
                                 placeholder={content.addressPlaceholder.value}
-                                className="w-full bg-white/5 border border-white/20 text-white placeholder-blue-200/50 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 backdrop-blur-sm transition-all duration-300" 
+                                className="w-full bg-white/5 border border-white/20 text-white placeholder-blue-200/50 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 backdrop-blur-sm transition-all duration-300"
+                                style={{
+                                    width: '100%',
+                                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    color: 'white',
+                                    padding: '0.75rem 1rem',
+                                    borderRadius: '0.5rem'
+                                }}
                             />
                         </div>
 
                         <Button 
-                            type="submit" 
-                            disabled={isPending}
+                            type="button"
+                            onClick={() => {
+                                const formData = new FormData()
+                                formData.set("address", address)
+                                handleSubmit(formData)
+                            }}
+                            disabled={isPending || !address.trim()}
                             className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-medium py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {isPending ? (
@@ -64,7 +105,7 @@ export default function NewLocation({ tripId }: { tripId: string }) {
                                 </>
                             )}
                         </Button>
-                    </form>
+                    </div>
 
                     <div className="mt-6 p-4 bg-blue-500/10 rounded-lg border border-blue-400/20">
                         <p className="text-sm text-blue-200/80 text-center">
