@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getSession } from "@/lib/auth-server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
@@ -16,7 +16,7 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
-      const session = await auth();
+      const session = await getSession();
       // If you throw, the user will not be able to upload
       if (!session || !session.user) throw new UploadThingError("Unauthorized");
       // Whatever is returned here is accessible in onUploadComplete as `metadata`

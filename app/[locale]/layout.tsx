@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import { auth } from "@/auth";
+import {Navbar} from "@/components/Navbar";
 import Footer from "@/components/Footer";
 export { generateStaticParams } from "next-intlayer";
 import { getHTMLTextDir } from "intlayer";
@@ -25,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
-  const session = await auth();
+
   const { locale } = await params;
 
   return (
@@ -35,7 +34,7 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            <Navbar session={session} />
+            <Navbar params={params} />
             {children}
             <Footer />
           </body>

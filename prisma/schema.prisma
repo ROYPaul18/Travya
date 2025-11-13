@@ -13,61 +13,71 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String    @unique
-  emailVerified DateTime?
+  emailVerified Boolean   @default(false)
   image         String?
-  accounts      Account[]
-  sessions      Session[]
-  trips         Trip[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  accounts Account[]
+  sessions Session[]
+  trips    Trip[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("user")
 }
 
 model Account {
-  id                Int     @id @default(autoincrement())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+  @@unique([providerId, accountId])
+  @@map("account")
 }
 
 model Session {
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
 }
 
-model VerificationToken {
+model Verification {
+  id         String   @id @default(cuid())
   identifier String
-  token      String
-  expires    DateTime
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  @@id([identifier, token])
+  @@unique([identifier, value])
+  @@map("verification")
 }
 
+// Vos modèles métier restent identiques
 model Trip {
   id          String   @id @default(cuid())
   title       String
@@ -75,26 +85,25 @@ model Trip {
   imageUrl    String?
   startDate   DateTime
   endDate     DateTime
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   locations Location[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Location {
-  id            String   @id @default(cuid())
+  id            String     @id @default(cuid())
   locationTitle String
   lat           Float
   lng           Float
-  trip          Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
   tripId        String
-  order         Int      @default(0)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
+  order         Int        @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 
+  trip       Trip       @relation(fields: [tripId], references: [id], onDelete: Cascade)
   activities Activity[]
 }
 
@@ -110,11 +119,12 @@ model Activity {
   startTime   DateTime?
   endTime     DateTime?
   budget      Float?
-  Location    Location  @relation(fields: [locationId], references: [id], onDelete: Cascade)
   locationId  String
   order       Int       @default(0)
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
+  updatedAt   DateTime  @updatedAt
+
+  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
 }
 
 enum Categorie {
@@ -127,10 +137,4 @@ enum Categorie {
   NATURE
   SPORT
   AUTRE
-}
-
-enum Role {
-  ADMIN
-  CREATEUR
-  MEMBRE
 }

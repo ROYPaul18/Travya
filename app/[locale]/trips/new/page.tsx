@@ -21,8 +21,6 @@ export default function NewTrip() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const content = useIntlayer("new-trip-page");
 
-  // Debug: vérifiez ce que contient l'objet content
-  console.log('Content object:', content);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-12 px-4">

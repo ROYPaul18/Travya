@@ -1,10 +1,11 @@
 "use server";
 
-import { auth } from "@/auth";
+
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Categorie } from "@/app/generated/prisma";
+import { getUser } from "../auth-server";
+import { NextResponse } from "next/server";
 
 // Fonction helper pour géocoder l'adresse
 async function geocodeAddress(address: string) {
@@ -46,9 +47,10 @@ export async function addActivity(
   locationId: string,
   tripId: string
 ) {
-  const session = await auth();
-  if (!session || !session.user?.id) {
-    throw new Error("Non authentifié");
+  const user = await getUser();
+
+  if (!user) {
+    return new NextResponse("Not authenticated", { status: 401 });
   }
 
   // Vérifier que la location appartient au trip de l'utilisateur
@@ -61,7 +63,7 @@ export async function addActivity(
     throw new Error("Location introuvable");
   }
 
-  if (location.trip.userId !== session.user.id) {
+  if (location.trip.userId !== user.id) {
     throw new Error("Non autorisé");
   }
 
@@ -112,16 +114,16 @@ export async function addActivity(
 
 // ✅ Supprimer une activité (corrigé)
 export async function deleteActivity(activityId: string, tripId: string) {
-  const session = await auth();
-  if (!session || !session.user?.id) {
-    throw new Error("Non authentifié");
+  const user = await getUser();
+  if (!user) {
+    return new NextResponse("Not authenticated", { status: 401 });
   }
 
   // Vérifier que l'activité existe et appartient au trip de l'utilisateur
   const activity = await prisma.activity.findUnique({
     where: { id: activityId },
     include: {
-      Location: {
+      location: {
         include: {
           trip: true,
         },
@@ -129,11 +131,11 @@ export async function deleteActivity(activityId: string, tripId: string) {
     },
   });
 
-  if (!activity || !activity.Location) {
+  if (!activity || !activity.location) {
     throw new Error("Activité introuvable");
   }
 
-  if (activity.Location.trip.userId !== session.user.id) {
+  if (activity.location.trip.userId !== user.id) {
     throw new Error("Non autorisé");
   }
 
@@ -149,27 +151,27 @@ export async function deleteActivity(activityId: string, tripId: string) {
 export async function updateActivity(
   activityId: string,
   formData: FormData,
-  tripId: string,
+  tripId: string
 ) {
-  const session = await auth();
-  if (!session || !session.user?.id) {
-    throw new Error("Non authentifié");
+  const user = await getUser();
+  if (!user) {
+    return new NextResponse("Not authenticated", { status: 401 });
   }
 
   const activity = await prisma.activity.findUnique({
     where: { id: activityId },
     include: {
-      Location: {
+      location: {
         include: { trip: true },
       },
     },
   });
 
-  if (!activity || !activity.Location) {
+  if (!activity || !activity.location) {
     throw new Error("Activité introuvable");
   }
 
-  if (activity.Location.trip.userId !== session.user.id) {
+  if (activity.location.trip.userId !== user.id) {
     throw new Error("Non autorisé");
   }
 
@@ -213,5 +215,5 @@ export async function updateActivity(
   });
 
   revalidatePath(`/trips/${tripId}`);
-  return { success: true }; 
+  return { success: true };
 }

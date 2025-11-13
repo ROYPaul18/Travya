@@ -9,14 +9,17 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIntlayer } from "next-intlayer/server";
+import { getUser } from "@/lib/auth-server";
 
-interface PageProps {
-  params: Promise< {locale: string} >
+interface PageProps {
+  params: Promise<{ locale: string }>
 }
 
 export default async function Home({ params }: PageProps) {
   const { locale } = await params;
   const content = useIntlayer("home", locale);
+  const user = await getUser()
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <div className="relative z-10">

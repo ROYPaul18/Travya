@@ -39,7 +39,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const content = useIntlayer("trip-detail");
-  
+
   const startDate = new Date(trip.startDate);
   const endDate = new Date(trip.endDate);
 
@@ -66,7 +66,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
     setIsDeleting(true);
     try {
       await deleteTrip(trip.id);
-      
+
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
       alert("Erreur lors de la suppression du voyage");
@@ -112,6 +112,15 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
 
             {/* Action Buttons */}
             <div className="flex gap-3 flex-shrink-0">
+              <Link href={`/trips/${trip.id}/itinerary/new`}>
+                <Button
+                  className="bg-gradient-to-r from-blue-500/80 to-cyan-500/80 hover:from-blue-500 hover:to-cyan-500 text-white font-medium px-4 py-2 rounded-lg shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/20 transition-all duration-300 flex items-center gap-2"
+                  disabled={isDeleting}
+                >
+                  <Plus className="h-5 w-5" />
+                  <span className="hidden sm:inline">{content.add}</span>
+                </Button>
+              </Link>
               <Button
                 onClick={() => setShowEditDialog(true)}
                 variant="outline"
@@ -121,15 +130,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
               >
                 <Pencil className="h-4 w-4" />
               </Button>
-              <Link href={`/trips/${trip.id}/itinerary/new`}>
-                <Button 
-                  className="bg-gradient-to-r from-blue-500/80 to-cyan-500/80 hover:from-blue-500 hover:to-cyan-500 text-white font-medium px-4 py-2 rounded-lg shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/20 transition-all duration-300 flex items-center gap-2"
-                  disabled={isDeleting}
-                >
-                  <Plus className="h-5 w-5" />
-                  <span className="hidden sm:inline">{content.add}</span>
-                </Button>
-              </Link>
+
               <Button
                 onClick={handleDeleteClick}
                 disabled={isDeleting}
@@ -142,6 +143,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                   <Trash2 className="h-4 w-4" />
                 )}
               </Button>
+
             </div>
           </div>
 
@@ -301,14 +303,14 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
           </Link>
         </div>
       </div>
-      
+
       {/* Edit Trip Dialog */}
       <EditTripDialog
         trip={trip}
         open={showEditDialog}
         onOpenChange={setShowEditDialog}
       />
-      
+
       {/* Alert Dialog pour confirmation de suppression */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent className="bg-slate-900 border-slate-800">

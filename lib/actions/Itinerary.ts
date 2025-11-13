@@ -1,15 +1,17 @@
 "use server";
 
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { getUser } from "../auth-server";
+import { NextResponse } from "next/server";
 
 async function geocodeAddress(address: string) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      address,
-    )}&key=${apiKey}`,
+      address
+    )}&key=${apiKey}`
   );
 
   const data = await response.json();
@@ -18,9 +20,10 @@ async function geocodeAddress(address: string) {
 }
 
 export async function addLocation(formData: FormData, tripId: string) {
-  const session = await auth();
-  if (!session) {
-    throw new Error("Not authenticated");
+  const user = await getUser();
+
+  if (!user) {
+    return new NextResponse("Not authenticated", { status: 401 });
   }
 
   const address = formData.get("address")?.toString();
@@ -49,9 +52,10 @@ export async function addLocation(formData: FormData, tripId: string) {
 }
 
 export async function deleteLocation(locationId: string, tripId: string) {
-  const session = await auth();
-  if (!session || !session.user?.id) {
-    throw new Error("Not authenticated");
+  const user = await getUser();
+
+  if (!user) {
+    return new NextResponse("Not authenticated", { status: 401 });
   }
 
   // Vérifier que la location existe et appartient au trip de l'utilisateur
@@ -66,7 +70,7 @@ export async function deleteLocation(locationId: string, tripId: string) {
     throw new Error("Location not found");
   }
 
-  if (location.trip.userId !== session.user.id) {
+  if (location.trip.userId !== user.id) {
     throw new Error("Not authorized");
   }
 

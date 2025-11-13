@@ -20,7 +20,7 @@ import {
   Image as ImageIcon,
   Loader2,
 } from "lucide-react";
-import { useRouter } from "next/router";
+import { useIntlayer } from "next-intlayer";
 
 interface EditTripDialogProps {
   trip: Trip;
@@ -35,9 +35,8 @@ export default function EditTripDialog({
 }: EditTripDialogProps) {
   const [isPending, startTransition] = useTransition();
   const [imageUrl, setImageUrl] = useState<string | null>(trip.imageUrl);
-  
+  const content = useIntlayer('edit-trip-dialog');
 
-  // Formater les dates pour l'input date (YYYY-MM-DD)
   const formatDateForInput = (date: Date) => {
     return new Date(date).toISOString().split("T")[0];
   };
@@ -56,7 +55,6 @@ export default function EditTripDialog({
       try {
         await editTrip(formData, trip.id);
         onOpenChange(false);
-        // Le revalidatePath est fait côté serveur, le refresh se fera automatiquement
       } catch (error) {
         console.error("Erreur lors de la mise à jour:", error);
         alert("Erreur lors de la mise à jour du voyage");
@@ -67,22 +65,12 @@ export default function EditTripDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-slate-900 border-slate-800 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl flex items-center gap-2 text-white">
-            <Plane className="h-6 w-6 text-blue-300" />
-            Modifier le voyage
-          </DialogTitle>
-        </DialogHeader>
-
-        <form
-          className="space-y-6 mt-4"
-          onSubmit={handleSubmit}
-        >
+        <form className="space-y-6 mt-4" onSubmit={handleSubmit}>
           {/* Title Field */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-blue-100 flex items-center gap-2">
               <Plane className="h-4 w-4 text-blue-300" />
-              Titre du voyage
+              {content.labels.title}
             </label>
             <input
               type="text"
@@ -94,7 +82,7 @@ export default function EditTripDialog({
                 "focus:outline-none focus:ring-2 focus:ring-blue-400/50",
                 "focus:border-blue-400/50 backdrop-blur-sm transition-all duration-300",
               )}
-              placeholder="Ex: Voyage à Tokyo"
+              placeholder={content.placeholders.title}
               required
             />
           </div>
@@ -103,7 +91,7 @@ export default function EditTripDialog({
           <div className="space-y-2">
             <label className="text-sm font-medium text-blue-100 flex items-center gap-2">
               <FileText className="h-4 w-4 text-blue-300" />
-              Description
+              {content.labels.description}
             </label>
             <textarea
               name="description"
@@ -116,7 +104,7 @@ export default function EditTripDialog({
                 "focus:border-blue-400/50 backdrop-blur-sm transition-all duration-300",
                 "resize-none",
               )}
-              placeholder="Décrivez votre voyage..."
+              placeholder={content.placeholders.description}
               required
             />
           </div>
@@ -126,7 +114,7 @@ export default function EditTripDialog({
             <div className="space-y-2">
               <label className="text-sm font-medium text-blue-100 flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-blue-300" />
-                Date de début
+                {content.labels.startDate}
               </label>
               <input
                 type="date"
@@ -145,7 +133,7 @@ export default function EditTripDialog({
             <div className="space-y-2">
               <label className="text-sm font-medium text-blue-100 flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-blue-300" />
-                Date de fin
+                {content.labels.endDate}
               </label>
               <input
                 type="date"
@@ -167,7 +155,7 @@ export default function EditTripDialog({
           <div className="space-y-3">
             <label className="text-sm font-medium text-blue-100 flex items-center gap-2">
               <ImageIcon className="h-4 w-4 text-blue-300" />
-              Image du voyage
+              {content.labels.image}
             </label>
 
             {imageUrl && (
@@ -201,7 +189,7 @@ export default function EditTripDialog({
                 }}
               />
               <p className="text-sm text-blue-200/60 mt-3">
-                Choisissez une nouvelle image pour remplacer l'actuelle
+                {content.messages.imageUpload}
               </p>
             </div>
           </div>
@@ -215,7 +203,7 @@ export default function EditTripDialog({
               className="flex-1 bg-white/5 border-white/20 text-white hover:bg-white/10"
               disabled={isPending}
             >
-              Annuler
+              {content.buttons.cancel}
             </Button>
             <Button
               type="submit"
@@ -225,12 +213,12 @@ export default function EditTripDialog({
               {isPending ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Enregistrement...
+                  {content.buttons.saving}
                 </>
               ) : (
                 <>
                   <Plane className="h-5 w-5" />
-                  Enregistrer
+                  {content.buttons.save}
                 </>
               )}
             </Button>

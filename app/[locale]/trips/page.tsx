@@ -1,40 +1,33 @@
-import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/Link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
 import { Plus, Calendar, MapPin, Plane, ArrowRight, Globe, Clock, TrendingUp } from "lucide-react";
 import { useIntlayer } from "next-intlayer/server";
+import { getUser } from "@/lib/auth-server";
+import { unauthorized } from "next/navigation";
 
-interface PageProps {
-  params: Promise< {locale: string} >
+interface PageProps {
+  params: Promise<{ locale: string }>
 }
 
 export default async function TripsPage({ params }: PageProps) {
-  const session = await auth();
+  const user = await getUser();
   const { locale } = await params;
+
+  if (!user) {
+    return unauthorized()
+  }
+
   const content = useIntlayer("trips-page", locale);
 
   const trips = await prisma.trip.findMany({
-    where: { userId: session?.user?.id },
+    where: { userId: user.id },
   });
 
   const sortedTrips = [...trips].sort(
     (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
   );
-
-  if (!session) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex justify-center items-center">
-        <div className="text-center space-y-4">
-          <MapPin className="h-16 w-16 text-blue-300 mx-auto animate-pulse" />
-          <p className="text-blue-100 text-xl">
-            {content.metadata.title[locale as "en" | "fr" | "es"]}
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -50,11 +43,10 @@ export default async function TripsPage({ params }: PageProps) {
       {/* Floating orbs background effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" style={{animationDelay: '1s', animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'}}></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" style={{ animationDelay: '1s', animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}></div>
       </div>
 
       <div className="container mx-auto px-4 py-12 relative z-10 space-y-8">
-
         {/* Header with Stats */}
         <div className="space-y-6">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
@@ -247,7 +239,6 @@ export default async function TripsPage({ params }: PageProps) {
                                 </span>
                               </div>
                             </CardContent>
-                          
                           </Card>
                         </Link>
                       </div>

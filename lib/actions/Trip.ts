@@ -1,13 +1,16 @@
 "use server";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
 import { prisma } from "../prisma";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { getUser } from "../auth-server";
+import { NextResponse } from "next/server";
 
 export async function createTrip(formdData: FormData) {
-  const session = await auth();
-  if (!session || !session.user?.id) {
-    throw new Error("L'utilisateur n'est pas connecté !");
+  const user = await getUser();
+
+  if (!user) {
+    return new NextResponse("Not authenticated", { status: 401 });
   }
   const title = formdData.get("title")?.toString();
   const description = formdData.get("description")?.toString();
@@ -29,16 +32,16 @@ export async function createTrip(formdData: FormData) {
       imageUrl,
       startDate,
       endDate,
-      userId: session.user.id,
+      userId: user.id,
     },
   });
   redirect("/trips");
 }
 
 export async function editTrip(formData: FormData, tripId: string) {
-  const session = await auth();
-  if (!session || !session.user?.id) {
-    throw new Error("L'utilisateur n'est pas connecté !");
+  const user = await getUser();
+  if (!user) {
+    return new NextResponse("Not authenticated", { status: 401 });
   }
 
   const title = formData.get("title")?.toString();
@@ -58,7 +61,7 @@ export async function editTrip(formData: FormData, tripId: string) {
     where: { id: tripId },
   });
 
-  if (!existingTrip || existingTrip.userId !== session.user.id) {
+  if (!existingTrip || existingTrip.userId !== user.id) {
     throw new Error("Accès non autorisé !");
   }
 
@@ -77,9 +80,9 @@ export async function editTrip(formData: FormData, tripId: string) {
 }
 
 export async function deleteTrip(tripId: string) {
-  const session = await auth();
-  if (!session || !session.user?.id) {
-    throw new Error("L'utilisateur n'est pas connecté !");
+  const user = await getUser();
+  if (!user) {
+    return new NextResponse("Not authenticated", { status: 401 });
   }
 
   // Vérifier que le voyage existe et appartient à l'utilisateur
@@ -91,7 +94,7 @@ export async function deleteTrip(tripId: string) {
     throw new Error("Voyage introuvable !");
   }
 
-  if (existingTrip.userId !== session.user.id) {
+  if (existingTrip.userId !== user.id) {
     throw new Error("Accès non autorisé !");
   }
 

@@ -1,19 +1,19 @@
-import { auth } from "@/auth";
-import { getCountryFromCoordinates } from "@/lib/actions/getCountryFromCoordinates";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { getCountryFromCoordinates } from "@/lib/actions/getCountryFromCoordinates";
+import { getUser } from "@/lib/auth-server";
 
 export async function GET() {
   try {
-    const session = await auth();
-    if (!session) {
+    const user = await getUser();
+
+    if (!user) {
       return new NextResponse("Not authenticated", { status: 401 });
     }
-
     const locations = await prisma.location.findMany({
       where: {
         trip: {
-          userId: session.user?.id,
+          userId: user.id,
         },
       },
       select: {
@@ -43,7 +43,7 @@ export async function GET() {
     
     return NextResponse.json(transformedLocations);
   } catch (err) {
-    console.log(err);
+    console.error("Error in /api/locations:", err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

@@ -5,29 +5,27 @@ import { Button } from "./ui/button"
 import { addLocation } from "@/lib/actions/Itinerary"
 import { MapPin, Loader2 } from "lucide-react"
 import { useIntlayer } from "next-intlayer"
-import Autocomplete from "react-google-autocomplete"
+import GooglePlacesAutocomplete from "@/components/ui/GooglePlacesAutocompleted"
 
 export default function NewLocation({ tripId }: { tripId: string }) {
     const [isPending, startTransition] = useTransition()
-    const [selectedPlace, setSelectedPlace] = useState<any>(null)
+    const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null)
     const [address, setAddress] = useState("")
     const content = useIntlayer("new-location")
 
-    const handlePlaceSelected = (place: any) => {
+    const handlePlaceSelected = (place: google.maps.places.PlaceResult) => {
         console.log("Place sélectionné:", place)
         setSelectedPlace(place)
         setAddress(place.formatted_address || "")
     }
 
     const handleSubmit = (formData: FormData) => {
-        
         if (selectedPlace) {
-            formData.set("placeId", selectedPlace.place_id)
+            formData.set("placeId", selectedPlace.place_id || "")
             formData.set("latitude", selectedPlace.geometry?.location?.lat()?.toString() || "")
             formData.set("longitude", selectedPlace.geometry?.location?.lng()?.toString() || "")
             formData.set("formattedAddress", selectedPlace.formatted_address || "")
         }
-        
         startTransition(() => {
             addLocation(formData, tripId)
         })
@@ -37,7 +35,7 @@ export default function NewLocation({ tripId }: { tripId: string }) {
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center">
             <div className="w-full max-w-md mx-auto px-4 relative z-10">
                 <div className="bg-white/10 backdrop-blur-md p-8 shadow-2xl rounded-2xl border border-white/20">
-                
+
                     <div className="text-center mb-8 space-y-4">
                         <div className="inline-flex items-center justify-center bg-blue-500/20 p-4 rounded-full mb-2">
                             <MapPin className="h-10 w-10 text-blue-300" />
@@ -54,36 +52,16 @@ export default function NewLocation({ tripId }: { tripId: string }) {
                                 <MapPin className="h-4 w-4 text-blue-300" />
                                 {content.addressLabel}
                             </label>
-                            
-                            <Autocomplete
-                                apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-                                onPlaceSelected={handlePlaceSelected}
-                                onChange={(e: any) => setAddress(e.target.value)}
+
+                            <GooglePlacesAutocomplete
                                 value={address}
-                                options={{
-                                    types: [], 
-                                    fields: [
-                                        "address_components",
-                                        "geometry",
-                                        "place_id",
-                                        "formatted_address",
-                                        "name"
-                                    ]
-                                }}
+                                onChange={setAddress}
+                                onPlaceSelected={handlePlaceSelected}
                                 placeholder={content.addressPlaceholder.value}
-                                className="w-full bg-white/5 border border-white/20 text-white placeholder-blue-200/50 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 backdrop-blur-sm transition-all duration-300"
-                                style={{
-                                    width: '100%',
-                                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                                    color: 'white',
-                                    padding: '0.75rem 1rem',
-                                    borderRadius: '0.5rem'
-                                }}
                             />
                         </div>
 
-                        <Button 
+                        <Button
                             type="button"
                             onClick={() => {
                                 const formData = new FormData()

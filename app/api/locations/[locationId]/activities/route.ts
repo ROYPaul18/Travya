@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getUser } from "@/lib/auth-server";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -7,13 +7,10 @@ export async function GET(
   { params }: { params: Promise<{ locationId: string }> }
 ) {
   try {
-    const session = await auth();
+    const user = await getUser();
 
-    if (!session || !session.user?.id) {
-      return NextResponse.json(
-        { error: "Non authentifié" },
-        { status: 401 }
-      );
+    if (!user) {
+      return new NextResponse("Not authenticated", { status: 401 });
     }
 
     // Await the params Promise first
@@ -33,11 +30,8 @@ export async function GET(
       );
     }
 
-    if (location.trip.userId !== session.user.id) {
-      return NextResponse.json(
-        { error: "Non autorisé" },
-        { status: 403 }
-      );
+    if (location.trip.userId !== user.id) {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
     }
 
     // Récupérer les activités de cette location
@@ -50,7 +44,7 @@ export async function GET(
     const formattedActivities = activities.map((activity) => ({
       id: activity.id,
       name: activity.name,
-      address: activity.adress, 
+      address: activity.adress,
       category: activity.category,
       description: activity.description,
       startTime: activity.startTime
@@ -73,9 +67,6 @@ export async function GET(
     return NextResponse.json(formattedActivities);
   } catch (error) {
     console.error("Erreur lors de la récupération des activités:", error);
-    return NextResponse.json(
-      { error: "Erreur serveur" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
