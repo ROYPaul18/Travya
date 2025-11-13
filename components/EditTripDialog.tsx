@@ -64,6 +64,7 @@ export default function EditTripDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTitle></DialogTitle>
       <DialogContent className="bg-slate-900 border-slate-800 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
         <form className="space-y-6 mt-4" onSubmit={handleSubmit}>
           {/* Title Field */}

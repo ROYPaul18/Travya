@@ -3,7 +3,11 @@ import { SignInForm } from "./signin-form"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useIntlayer } from "next-intlayer/server"
 
-export default async function SignInPage({ params }: { params: { locale: string } }) {
+interface PageProps {
+  params: Promise<{ locale: string }>
+}
+
+export default async function SignInPage({ params }: PageProps) {
 
     const { locale } = await params
     const content = useIntlayer('signup-page', locale)
