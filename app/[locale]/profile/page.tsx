@@ -6,16 +6,16 @@ import { redirect } from "next/navigation";
 import { Check, Edit } from "lucide-react";
 
 import { useIntlayer } from "next-intlayer/server";
+interface PageProps {
+  params: Promise<{ locale: string }>
+}
 
-export default async function ProfilePage({
-  params,
-}: {
-  params: { locale: string };
-}) {
+export default async function ProfilePage({params,}: PageProps) {
+  const {locale} = await params;
   const user = await getUser();
   const content = useIntlayer("profile-page");
 
-  if (!user) redirect(`/${params.locale}/auth/signin`);
+  if (!user) redirect(`/${locale}/auth/signin`);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-10 px-4">
@@ -24,7 +24,7 @@ export default async function ProfilePage({
           <CardTitle>{content.pageTitle}</CardTitle>
           <div className="flex-1" />
           <Link className="flex items-center gap-2" href="profile/edit">
-            <Edit className="size-3" /> 
+            <Edit className="size-3" />
             {content.editProfile}
           </Link>
         </CardHeader>
