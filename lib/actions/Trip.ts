@@ -75,8 +75,8 @@ export async function editTrip(formData: FormData, tripId: string) {
       endDate,
     },
   });
-  revalidatePath(`/trips/${tripId}`);
-  redirect(`/trips/${tripId}`);
+  revalidatePath(`/trips/${tripId}`)
+  return {success: true}
 }
 
 export async function deleteTrip(tripId: string) {
@@ -97,8 +97,7 @@ export async function deleteTrip(tripId: string) {
   if (existingTrip.userId !== user.id) {
     throw new Error("Accès non autorisé !");
   }
-
-  // Supprimer le voyage (cascade automatique pour locations et activities)
+  
   await prisma.trip.delete({
     where: { id: tripId },
   });

@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { Categorie } from "@/app/generated/prisma";
 import { getUser } from "../auth-server";
-import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 
 // Fonction helper pour géocoder l'adresse
 async function geocodeAddress(address: string) {
@@ -50,7 +50,7 @@ export async function addActivity(
   const user = await getUser();
 
   if (!user) {
-    return new NextResponse("Not authenticated", { status: 401 });
+    throw new Error("Not authenticated");
   }
 
   // Vérifier que la location appartient au trip de l'utilisateur
@@ -116,7 +116,7 @@ export async function addActivity(
 export async function deleteActivity(activityId: string, tripId: string) {
   const user = await getUser();
   if (!user) {
-    return new NextResponse("Not authenticated", { status: 401 });
+    throw new Error("Not authenticated");
   }
 
   // Vérifier que l'activité existe et appartient au trip de l'utilisateur
@@ -147,15 +147,15 @@ export async function deleteActivity(activityId: string, tripId: string) {
   return { success: true };
 }
 
-// Mettre à jour une activité
 export async function updateActivity(
   activityId: string,
   formData: FormData,
   tripId: string
 ) {
   const user = await getUser();
+
   if (!user) {
-    return new NextResponse("Not authenticated", { status: 401 });
+    throw new Error("Not authenticated");
   }
 
   const activity = await prisma.activity.findUnique({
