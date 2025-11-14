@@ -52,16 +52,16 @@ export default async function TripsPage({ params }: PageProps) {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="space-y-2">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent">
-                {content.dashboard[locale as "en" | "fr" | "es"]}
+                {content.dashboard}
               </h1>
               <p className="text-blue-200/80">
-                {content.dashboardSubtitle[locale as "en" | "fr" | "es"]}
+                {content.dashboardSubtitle}
               </p>
             </div>
             <Link href={"/trips/new"}>
               <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-medium px-6 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 hover:scale-105">
                 <Plus className="h-5 w-5" />
-                {content.newTrip[locale as "en" | "fr" | "es"]}
+                {content.newTrip}
               </Button>
             </Link>
           </div>
@@ -76,7 +76,7 @@ export default async function TripsPage({ params }: PageProps) {
                 </div>
                 <div className="text-3xl font-bold text-white mb-1">{trips.length}</div>
                 <div className="text-sm text-blue-200/80">
-                  {content.totalTrips[locale as "en" | "fr" | "es"](trips.length)}
+                  {trips.length === 1 ? content.totalTrip : content.totalTrips}
                 </div>
               </CardContent>
             </Card>
@@ -88,9 +88,7 @@ export default async function TripsPage({ params }: PageProps) {
                   <div className="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></div>
                 </div>
                 <div className="text-3xl font-bold text-white mb-1">{upcomingTrips.length}</div>
-                <div className="text-sm text-blue-200/80">
-                  {content.upcoming[locale as "en" | "fr" | "es"]}
-                </div>
+                <div className="text-sm text-blue-200/80">{content.upcoming}</div>
               </CardContent>
             </Card>
 
@@ -101,9 +99,7 @@ export default async function TripsPage({ params }: PageProps) {
                   <MapPin className="w-5 h-5 text-blue-200" />
                 </div>
                 <div className="text-3xl font-bold text-white mb-1">{pastTrips.length}</div>
-                <div className="text-sm text-blue-200/80">
-                  {content.memories[locale as "en" | "fr" | "es"]}
-                </div>
+                <div className="text-sm text-blue-200/80">{content.memories}</div>
               </CardContent>
             </Card>
           </div>
@@ -118,15 +114,15 @@ export default async function TripsPage({ params }: PageProps) {
                   <MapPin className="h-16 w-16 text-blue-300" />
                 </div>
                 <h2 className="text-2xl font-medium mb-3 text-white">
-                  {content.noTripsYet[locale as "en" | "fr" | "es"]}
+                  {content.noTripsYet}
                 </h2>
                 <p className="text-center mb-6 max-w-md text-blue-200/80">
-                  {content.emptyStateMessage[locale as "en" | "fr" | "es"]}
+                  {content.emptyStateMessage}
                 </p>
                 <Link href={"/trips/new"}>
                   <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-medium px-8 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2">
                     <Plus className="h-5 w-5" />
-                    {content.createFirstTrip[locale as "en" | "fr" | "es"]}
+                    {content.createFirstTrip}
                   </Button>
                 </Link>
               </CardContent>
@@ -140,7 +136,7 @@ export default async function TripsPage({ params }: PageProps) {
                     <div className="w-1 h-6 bg-gradient-to-b from-blue-400 to-cyan-400 rounded-full"></div>
                     <h2 className="text-xl font-semibold text-white flex items-center gap-2">
                       <Plane className="h-5 w-5 text-blue-300" />
-                      {content.upcoming[locale as "en" | "fr" | "es"]}
+                      {content.upcoming}
                     </h2>
                     <div className="flex-1 h-px bg-gradient-to-r from-blue-500/30 to-transparent"></div>
                   </div>
@@ -183,8 +179,8 @@ export default async function TripsPage({ params }: PageProps) {
                                 <div className="inline-flex items-center gap-2 bg-cyan-500/30 text-cyan-200 text-xs px-3 py-1.5 rounded-full">
                                   <div className="w-2 h-2 bg-cyan-300 rounded-full animate-pulse"></div>
                                   {daysUntil === 0
-                                    ? content.daysUntilToday[locale as "en" | "fr" | "es"]
-                                    : content.daysUntil[locale as "en" | "fr" | "es"](daysUntil)}
+                                    ? content.daysUntilToday
+                                    : `${daysUntil} ${daysUntil > 1 ? content.daysAway : content.dayAway}`}
                                 </div>
                               </CardContent>
                               <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -206,7 +202,7 @@ export default async function TripsPage({ params }: PageProps) {
                     <div className="w-1 h-6 bg-gradient-to-b from-blue-400/50 to-cyan-400/50 rounded-full"></div>
                     <h3 className="text-xl font-semibold text-white flex items-center gap-2">
                       <MapPin className="h-5 w-5 text-blue-300" />
-                      {content.pastAdventures[locale as "en" | "fr" | "es"]}
+                      {content.previus}
                     </h3>
                     <div className="flex-1 h-px bg-gradient-to-r from-blue-500/30 to-transparent"></div>
                   </div>
@@ -287,7 +283,7 @@ export default async function TripsPage({ params }: PageProps) {
                             {new Date(trip.startDate) >= today && (
                               <div className="inline-flex items-center gap-1 bg-cyan-500/30 text-cyan-200 text-xs px-2 py-1 rounded-full">
                                 <div className="w-2 h-2 bg-cyan-300 rounded-full animate-pulse"></div>
-                                {content.upcoming[locale as "en" | "fr" | "es"]}
+                                {content.upcoming}
                               </div>
                             )}
                           </CardContent>
