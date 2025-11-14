@@ -41,13 +41,13 @@ export default async function Home({ params }: PageProps) {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-8">
-              <Link href="/trips">
+              <Link href={user ? "/trips" : "/auth/signin"}>
                 <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-8 py-6 text-lg rounded-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-2 group">
                   {content.getStarted}
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link href="/globe">
+              <Link href={user ? "/globe" : "/auth/signin"}>
                 <Button className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm px-8 py-6 text-lg rounded-lg transition-all duration-300 flex items-center gap-2">
                   <Globe className="h-5 w-5" />
                   {content.exploreGlobe}
@@ -173,7 +173,7 @@ export default async function Home({ params }: PageProps) {
             <p className="text-xl text-blue-200/80 mb-8 max-w-2xl mx-auto">
               {content.ctaSubtitle}
             </p>
-            <Link href="/trips/new">
+            <Link href={user ? "/trips/new" : "/auth/signin"}>
               <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-10 py-6 text-lg rounded-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-2 mx-auto group">
                 {content.createFirstTrip}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
