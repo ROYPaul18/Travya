@@ -44,6 +44,19 @@ const tripsPageContent = {
       es: "Tus viajes recientes",
     },
 
+    // Stats cards
+    totalTrips: {
+      en: (count: number) => `Total ${count === 1 ? "Trip" : "Trips"}`,
+      fr: (count: number) => `Total ${count === 1 ? "voyage" : "voyages"}`,
+      es: (count: number) => `Total ${count === 1 ? "viaje" : "viajes"}`,
+    },
+
+    memories: {
+      en: "Memories",
+      fr: "Souvenirs",
+      es: "Recuerdos",
+    },
+
     // Empty state
     noTripsYet: {
       en: "No trips yet",
@@ -68,11 +81,32 @@ const tripsPageContent = {
       fr: "À venir",
       es: "Próximo",
     },
+
+    pastAdventures: {
+      en: "Past Adventures",
+      fr: "Aventures passées",
+      es: "Aventuras pasadas",
+    },
+
+    // Days count
+    daysUntilToday: {
+      en: "Today!",
+      fr: "Aujourd'hui !",
+      es: "¡Hoy!",
+    },
+
+    daysUntil: {
+      en: (days: number) => `${days} day${days > 1 ? "s" : ""} away`,
+      fr: (days: number) => `Dans ${days} jour${days > 1 ? "s" : ""}`,
+      es: (days: number) => `En ${days} día${days > 1 ? "s" : ""}`,
+    },
+
     deleteTrip: {
       en: "Delete Trip",
       fr: "Supprimer le voyage",
       es: "Eliminar viaje",
     },
+    
     confirmDeleteTitle: {
       en: "Delete Trip",
       fr: "Supprimer le voyage",

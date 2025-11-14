@@ -76,7 +76,7 @@ export default async function TripsPage({ params }: PageProps) {
                 </div>
                 <div className="text-3xl font-bold text-white mb-1">{trips.length}</div>
                 <div className="text-sm text-blue-200/80">
-                  Total {trips.length === 1 ? "Trip" : "Trips"}
+                  {content.totalTrips[locale as "en" | "fr" | "es"](trips.length)}
                 </div>
               </CardContent>
             </Card>
@@ -88,7 +88,9 @@ export default async function TripsPage({ params }: PageProps) {
                   <div className="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></div>
                 </div>
                 <div className="text-3xl font-bold text-white mb-1">{upcomingTrips.length}</div>
-                <div className="text-sm text-blue-200/80">Upcoming</div>
+                <div className="text-sm text-blue-200/80">
+                  {content.upcoming[locale as "en" | "fr" | "es"]}
+                </div>
               </CardContent>
             </Card>
 
@@ -99,7 +101,9 @@ export default async function TripsPage({ params }: PageProps) {
                   <MapPin className="w-5 h-5 text-blue-200" />
                 </div>
                 <div className="text-3xl font-bold text-white mb-1">{pastTrips.length}</div>
-                <div className="text-sm text-blue-200/80">Memories</div>
+                <div className="text-sm text-blue-200/80">
+                  {content.memories[locale as "en" | "fr" | "es"]}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -179,8 +183,8 @@ export default async function TripsPage({ params }: PageProps) {
                                 <div className="inline-flex items-center gap-2 bg-cyan-500/30 text-cyan-200 text-xs px-3 py-1.5 rounded-full">
                                   <div className="w-2 h-2 bg-cyan-300 rounded-full animate-pulse"></div>
                                   {daysUntil === 0
-                                    ? "Today!"
-                                    : `${daysUntil} day${daysUntil > 1 ? "s" : ""} away`}
+                                    ? content.daysUntilToday[locale as "en" | "fr" | "es"]
+                                    : content.daysUntil[locale as "en" | "fr" | "es"](daysUntil)}
                                 </div>
                               </CardContent>
                               <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -202,7 +206,7 @@ export default async function TripsPage({ params }: PageProps) {
                     <div className="w-1 h-6 bg-gradient-to-b from-blue-400/50 to-cyan-400/50 rounded-full"></div>
                     <h3 className="text-xl font-semibold text-white flex items-center gap-2">
                       <MapPin className="h-5 w-5 text-blue-300" />
-                      Past Adventures
+                      {content.pastAdventures[locale as "en" | "fr" | "es"]}
                     </h3>
                     <div className="flex-1 h-px bg-gradient-to-r from-blue-500/30 to-transparent"></div>
                   </div>
