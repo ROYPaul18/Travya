@@ -10,40 +10,53 @@ export async function GET() {
     if (!user) {
       return new NextResponse("Not authenticated", { status: 401 });
     }
-    const locations = await prisma.location.findMany({
+
+    // Récupérer toutes les activités avec leurs coordonnées
+    const activities = await prisma.activity.findMany({
       where: {
-        trip: {
-          userId: user.id,
+        location: {
+          trip: {
+            userId: user.id,
+          },
         },
       },
       select: {
-        locationTitle: true,
+        name: true,
         lat: true,
         lng: true,
-        trip: {
+        adress: true,
+        location: {
           select: {
-            title: true,
+            locationTitle: true,
+            trip: {
+              select: {
+                title: true,
+              },
+            },
           },
         },
       },
     });
 
     const transformedLocations = await Promise.all(
-      locations.map(async (loc) => {
-        const geocodeResult = await getCountryFromCoordinates(loc.lat, loc.lng);
-        
+      activities.map(async (activity) => {
+        const geocodeResult = await getCountryFromCoordinates(
+          activity.lat,
+          activity.lng
+        );
+
         return {
-          name: `${loc.trip.title} - ${geocodeResult.formattedAddress}`,
-          lat: loc.lat,
-          lng: loc.lng,
+          name: `${activity.location.trip.title} - ${activity.name}`,
+          lat: activity.lat,
+          lng: activity.lng,
           country: geocodeResult.country,
         };
       })
     );
-    
+
     return NextResponse.json(transformedLocations);
   } catch (err) {
-    console.error("Error in /api/locations:", err);
+    console.error("Error in /api/trips:", err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

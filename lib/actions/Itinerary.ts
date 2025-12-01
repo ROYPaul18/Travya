@@ -58,7 +58,6 @@ export async function deleteLocation(locationId: string, tripId: string) {
     return new NextResponse("Not authenticated", { status: 401 });
   }
 
-  // Vérifier que la location existe et appartient au trip de l'utilisateur
   const location = await prisma.location.findUnique({
     where: { id: locationId },
     include: {
@@ -74,7 +73,6 @@ export async function deleteLocation(locationId: string, tripId: string) {
     throw new Error("Not authorized");
   }
 
-  // Supprimer la location
   await prisma.location.delete({
     where: { id: locationId },
   });

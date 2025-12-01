@@ -3,7 +3,6 @@ import { t, type Dictionary } from 'intlayer';
 const globeContent = {
   key: 'globe',
   content: {
-    // Header
     title: t({
       en: 'Your Travel Odyssey',
       fr: 'Votre Odyssée Voyageuse',
@@ -14,8 +13,6 @@ const globeContent = {
       fr: 'Découvrez le monde à travers vos aventures, une destination à la fois',
       es: 'Descubre el mundo a través de tus aventuras, un destino a la vez'
     }),
-
-    // Globe Section
     globeTitle: t({
       en: 'Your Footprint on Earth',
       fr: 'Votre Empreinte sur la Terre',
@@ -31,8 +28,6 @@ const globeContent = {
       fr: 'Chargement du globe...',
       es: 'Cargando globo...'
     }),
-
-    // Stats Cards
     countries: t({
       en: 'Countries',
       fr: 'Pays',
@@ -43,8 +38,6 @@ const globeContent = {
       fr: 'Lieux',
       es: 'Ubicaciones'
     }),
-
-    // Countries List
     countriesVisited: t({
       en: 'Countries Visited',
       fr: 'Pays Visités',
@@ -60,13 +53,42 @@ const globeContent = {
       fr: 'lieux',
       es: 'lugares'
     }),
-
-    // Footer
     footerMessage: t({
       en: 'Keep exploring! The world is waiting for you.',
       fr: 'Continuez à explorer ! Le monde vous attend.',
       es: '¡Sigue explorando! El mundo te espera.'
-    })
+    }),
+    // NOUVELLES CLÉS DE TRADUCTION
+    myTravelSummary: t({
+        en: 'My Travel Summary',
+        fr: 'Mon Bilan Voyage',
+        es: 'Mi Resumen de Viajes'
+    }),
+    countriesVisitedTitle: t({
+        en: 'Countries Visited',
+        fr: 'Pays Visités',
+        es: 'Países Visitados'
+    }),
+    locationsCaptured: t({
+        en: 'Locations Captured',
+        fr: 'Lieux Capturés',
+        es: 'Lugares Capturados'
+    }),
+    exploredCountries: t({
+        en: 'Explored Countries',
+        fr: 'Pays Explorés',
+        es: 'Países Explorados'
+    }),
+    loading: t({
+        en: 'Loading...',
+        fr: 'Chargement...',
+        es: 'Cargando...'
+    }),
+    noCountriesMessage: t({
+        en: 'No countries recorded. Start your first trip!',
+        fr: 'Aucun pays enregistré. Commencez votre premier voyage !',
+        es: 'Ningún país registrado. ¡Comienza tu primer viaje!'
+    }),
   },
 } satisfies Dictionary;
 

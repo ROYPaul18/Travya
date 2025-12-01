@@ -12,14 +12,14 @@ export default async function SignUpPage({ params }: PageProps) {
     const content = useIntlayer('signup-page', locale)
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center px-4 py-12">
-            <div className="w-full max-w-md space-y-6">
-                <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl">
-                    <CardHeader className="text-center space-y-2 pb-4">
-                        <CardTitle className="text-2xl font-bold text-white">
+        <div className="min-h-screen bg-white flex items-center justify-center px-4">
+            <div className="w-full max-w-md">
+                <Card className="bg-white border border-gray-200 shadow-xl mt-8 rounded-xl">
+                    <CardHeader className="text-center space-y-2 pb-4 pt-6">
+                        <CardTitle className="text-3xl font-bold text-gray-900">
                             {content.title}
                         </CardTitle>
-                        <CardDescription className="text-blue-200/70">
+                        <CardDescription className="text-gray-500 text-base">
                             {content.description}
                         </CardDescription>
                     </CardHeader>
@@ -28,12 +28,12 @@ export default async function SignUpPage({ params }: PageProps) {
                         <SignUpForm />
                     </CardContent>
 
-                    <CardFooter className="flex justify-center pt-4">
-                        <p className="text-blue-200/70 text-sm">
+                    <CardFooter className="flex justify-center pt-4 pb-6">
+                        <p className="text-gray-500 text-sm">
                             {content.footerText}{" "}
                             <Link
                                 href="/auth/signin"
-                                className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors"
+                                className="text-gray-700 hover:text-gray-900 font-semibold transition-colors"
                             >
                                 {content.loginLink}
                             </Link>

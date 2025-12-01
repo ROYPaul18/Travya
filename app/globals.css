@@ -6,6 +6,10 @@
 @source "../node_modules/@uploadthing/react/dist";
 
 @theme inline {
+
+    --font-button: "Inter", sans-serif;
+    --font-title:"Lora", sans-serif;
+
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
@@ -120,6 +124,11 @@
         @apply bg-background text-foreground;
     }
 }
+
+body {
+  /* font-family: "Inter", sans-serif; */
+}
+
 .pac-container {
     background-color: rgba(15, 23, 42, 0.95) !important;
     border-radius: 0.75rem !important;

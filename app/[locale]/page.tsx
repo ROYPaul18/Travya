@@ -1,4 +1,3 @@
-
 import { Link } from "@/components/Link";
 import {
   MapPin,
@@ -18,38 +17,43 @@ interface PageProps {
 export default async function Home({ params }: PageProps) {
   const { locale } = await params;
   const content = useIntlayer("home", locale);
-  const user = await getUser()
+  const user = await getUser();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white">
       <div className="relative z-10">
-        <div className="container mx-auto px-4 py-20 lg:py-32">
+        <div className="container mx-auto px-4 py-20 lg:py-24">
           <div className="max-w-5xl mx-auto text-center space-y-8">
-            <div className="inline-flex items-center gap-2 bg-blue-500/20 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-400/30 mb-4 animate-pulse">
-              <Globe className="h-5 w-5 text-blue-300" />
-              <span className="text-blue-100 text-sm font-medium">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full border border-gray-200 mb-4 shadow-sm">
+              <Globe className="h-5 w-5 text-gray-600" />
+              <span className="text-gray-800 text-sm font-semibold">
                 {content.badgeText}
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-blue-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent leading-tight">
+            {/* Hero Title (font-extrabold conservé pour l'impact) */}
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-neutral-900 leading-tight tracking-tight">
               {content.title}
             </h1>
 
-            <p className="text-xl md:text-2xl text-blue-200/80 max-w-3xl mx-auto leading-relaxed">
+            {/* Subtitle */}
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               {content.subtitle}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-8">
+            {/* CTAs (font-bold remplacé par font-semibold) */}
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-10">
               <Link href={user ? "/trips" : "/auth/signin"}>
-                <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-8 py-6 text-lg rounded-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-2 group">
+                <Button className="bg-neutral-900 hover:bg-gray-800 text-white font-medium px-10 py-6 text-xl rounded-xl transition-all duration-300 flex items-center gap-2 group shadow-xl hover:shadow-2xl">
                   {content.getStarted}
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
+
               <Link href={user ? "/globe" : "/auth/signin"}>
-                <Button className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm px-8 py-6 text-lg rounded-lg transition-all duration-300 flex items-center gap-2">
-                  <Globe className="h-5 w-5" />
+                <Button className="bg-white hover:bg-gray-50 text-neutral-900 border border-gray-300 px-10 py-6 text-xl rounded-xl transition-all duration-300 flex items-center gap-2 font-medium shadow-md">
+                  <Globe className="h-6 w-6" />
                   {content.exploreGlobe}
                 </Button>
               </Link>
@@ -57,49 +61,58 @@ export default async function Home({ params }: PageProps) {
           </div>
         </div>
 
+        {/* --- */}
+
         {/* Features Section */}
-        <div className="container mx-auto px-4 py-20">
+        <div className="container mx-auto px-4 py-20 lg:py-28">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">
+            {/* Titre de section (font-bold conservé) */}
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16 lg:mb-20 text-gray-900">
               {content.featuresTitle}
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-8 lg:gap-10">
               {/* Feature 1 */}
-              <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 hover:scale-105 transition-all duration-300 group">
-                <div className="bg-blue-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <MapPin className="h-8 w-8 text-blue-300" />
+              <div className="bg-white p-8 lg:p-10 rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 transition-transform group-hover:scale-[1.05]">
+                  <MapPin className="h-8 w-8 text-gray-700" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">
+                {/* Sous-titre (font-semibold remplacé par font-medium) */}
+                <h3 className="text-2xl font-medium text-gray-900 mb-3">
                   {content.feature1.title}
                 </h3>
-                <p className="text-blue-200/80">
+                {/* Description */}
+                <p className="text-lg text-gray-700">
                   {content.feature1.description}
                 </p>
               </div>
 
               {/* Feature 2 */}
-              <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 hover:scale-105 transition-all duration-300 group">
-                <div className="bg-cyan-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Globe className="h-8 w-8 text-cyan-300" />
+              <div className="bg-white p-8 lg:p-10 rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 transition-transform group-hover:scale-[1.05]">
+                  <Globe className="h-8 w-8 text-gray-700" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">
+                {/* Sous-titre (font-semibold remplacé par font-medium) */}
+                <h3 className="text-2xl font-medium text-gray-900 mb-3">
                   {content.feature2.title}
                 </h3>
-                <p className="text-blue-200/80">
+                {/* Description */}
+                <p className="text-lg text-gray-700">
                   {content.feature2.description}
                 </p>
               </div>
 
               {/* Feature 3 */}
-              <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/15 hover:scale-105 transition-all duration-300 group">
-                <div className="bg-purple-500/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Calendar className="h-8 w-8 text-purple-300" />
+              <div className="bg-white p-8 lg:p-10 rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <div className="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 transition-transform group-hover:scale-[1.05]">
+                  <Calendar className="h-8 w-8 text-gray-700" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">
+                {/* Sous-titre (font-semibold remplacé par font-medium) */}
+                <h3 className="text-2xl font-medium text-gray-900 mb-3">
                   {content.feature3.title}
                 </h3>
-                <p className="text-blue-200/80">
+                {/* Description */}
+                <p className="text-lg text-gray-700">
                   {content.feature3.description}
                 </p>
               </div>
@@ -107,54 +120,66 @@ export default async function Home({ params }: PageProps) {
           </div>
         </div>
 
+        {/* --- */}
+
         {/* How It Works Section */}
-        <div className="container mx-auto px-4 py-20">
+        <div className="container mx-auto px-4 py-20 lg:py-28 bg-gray-50/70">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">
+            {/* Titre de section (font-bold conservé) */}
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16 lg:mb-20 text-gray-900">
               {content.howItWorksTitle}
             </h2>
 
-            <div className="space-y-8">
+            <div className="space-y-10">
               {/* Step 1 */}
-              <div className="flex items-start gap-6 bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-                <div className="bg-blue-500/30 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
+              <div className="flex items-start gap-8 bg-white p-6 lg:p-8 rounded-xl border border-gray-200 shadow-md">
+                {/* Numéro (font-bold remplacé par font-semibold) */}
+                <div className="bg-gray-900 text-white w-12 h-12 rounded-full flex items-center justify-center font-semibold text-xl flex-shrink-0 mt-1">
                   1
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
+                  {/* Titre d'étape (font-semibold remplacé par font-medium) */}
+                  <h3 className="text-2xl font-medium text-gray-900 mb-2">
                     {content.step1.title}
                   </h3>
-                  <p className="text-blue-200/80">
+                  {/* Description */}
+                  <p className="text-lg text-gray-700">
                     {content.step1.description}
                   </p>
                 </div>
               </div>
 
               {/* Step 2 */}
-              <div className="flex items-start gap-6 bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-                <div className="bg-cyan-500/30 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
+              <div className="flex items-start gap-8 bg-white p-6 lg:p-8 rounded-xl border border-gray-200 shadow-md">
+                {/* Numéro (font-bold remplacé par font-semibold) */}
+                <div className="bg-gray-900 text-white w-12 h-12 rounded-full flex items-center justify-center font-semibold text-xl flex-shrink-0 mt-1">
                   2
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
+                  {/* Titre d'étape (font-semibold remplacé par font-medium) */}
+                  <h3 className="text-2xl font-medium text-gray-900 mb-2">
                     {content.step2.title}
                   </h3>
-                  <p className="text-blue-200/80">
+                  {/* Description */}
+                  <p className="text-lg text-gray-700">
                     {content.step2.description}
                   </p>
                 </div>
               </div>
 
               {/* Step 3 */}
-              <div className="flex items-start gap-6 bg-white/5 p-6 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-                <div className="bg-purple-500/30 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
+              <div className="flex items-start gap-8 bg-white p-6 lg:p-8 rounded-xl border border-gray-200 shadow-md">
+                {/* Numéro (font-bold remplacé par font-semibold) */}
+                <div className="bg-gray-900 text-white w-12 h-12 rounded-full flex items-center justify-center font-semibold text-xl flex-shrink-0 mt-1">
                   3
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
+                  {/* Titre d'étape (font-semibold remplacé par font-medium) */}
+                  <h3 className="text-2xl font-medium text-gray-900 mb-2">
                     {content.step3.title}
                   </h3>
-                  <p className="text-blue-200/80">
+                  {/* Description */}
+                  <p className="text-lg text-gray-700">
                     {content.step3.description}
                   </p>
                 </div>
@@ -163,20 +188,24 @@ export default async function Home({ params }: PageProps) {
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="container mx-auto px-4 py-20">
-          <div className="max-w-4xl mx-auto bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-md p-12 rounded-2xl border border-white/20 text-center">
-            <Plane className="h-16 w-16 text-blue-300 mx-auto mb-6" />
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              {content.ctaTitle}
-            </h2>
-            <p className="text-xl text-blue-200/80 mb-8 max-w-2xl mx-auto">
-              {content.ctaSubtitle}
+        {/* --- */}
+
+        {/* Final CTA Section */}
+        <div className="container mx-auto px-4 py-20 lg:py-28">
+          <div className="max-w-4xl mx-auto bg-neutral-950 p-12 lg:p-16 rounded-2xl text-center shadow-2xl">
+            <Plane className="h-16 w-16 text-white mx-auto mb-6" />
+            {/* Titre de CTA (font-bold conservé) */}
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+              {content.ctaTitle || "Your journey awaits"}
+            </h2> 
+            {/* Sous-titre de CTA */}
+            <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+              {content.ctaSubtitle || "Start your first adventure today and collect stories that will last a lifetime."}
             </p>
             <Link href={user ? "/trips/new" : "/auth/signin"}>
-              <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold px-10 py-6 text-lg rounded-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 flex items-center gap-2 mx-auto group">
+              <Button className="bg-white hover:bg-gray-100 text-neutral-900 font-medium px-10 py-6 text-xl rounded-xl transition-all duration-300 flex items-center gap-2 mx-auto group shadow-2xl">
                 {content.createFirstTrip}
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </div>

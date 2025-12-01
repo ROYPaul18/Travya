@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { useIntlayer, useLocale } from "next-intlayer"
 import { Github, Loader2 } from "lucide-react"
+import { Link } from "@/components/Link"
 
 const SignUpFormSchema = z.object({
     name: z.string().min(2, "Nom trop court"),
@@ -81,17 +82,17 @@ export const SignUpForm = () => {
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-blue-100 text-sm font-medium">
+                                <FormLabel className="text-gray-700 text-sm font-medium">
                                     {content.labels.name}
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder={content.placeholders.name.value}
-                                        className="bg-white/10 border-white/20 text-white placeholder:text-blue-200/50 rounded-xl h-11 px-4 focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition"
+                                        className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 rounded-lg h-10 px-3 focus:ring-2 focus:ring-gray-700/50 focus:border-gray-700 transition"
                                         {...field}
                                     />
                                 </FormControl>
-                                <FormMessage className="text-red-300 text-xs" />
+                                <FormMessage className="text-red-500 text-xs" />
                             </FormItem>
                         )}
                     />
@@ -101,18 +102,18 @@ export const SignUpForm = () => {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-blue-100 text-sm font-medium">
+                                <FormLabel className="text-gray-700 text-sm font-medium">
                                     {content.labels.email}
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         type="email"
                                         placeholder={content.placeholders.email.value}
-                                        className="bg-white/10 border-white/20 text-white placeholder:text-blue-200/50 rounded-xl h-11 px-4 focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition"
+                                        className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 rounded-lg h-10 px-3 focus:ring-2 focus:ring-gray-700/50 focus:border-gray-700 transition"
                                         {...field}
                                     />
                                 </FormControl>
-                                <FormMessage className="text-red-300 text-xs" />
+                                <FormMessage className="text-red-500 text-xs" />
                             </FormItem>
                         )}
                     />
@@ -122,26 +123,25 @@ export const SignUpForm = () => {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="text-blue-100 text-sm font-medium">
+                                <FormLabel className="text-gray-700 text-sm font-medium">
                                     {content.labels.password}
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         type="password"
                                         placeholder={content.placeholders.password.value}
-                                        className="bg-white/10 border-white/20 text-white placeholder:text-blue-200/50 rounded-xl h-11 px-4 focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition"
+                                        className="bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 rounded-lg h-10 px-3 focus:ring-2 focus:ring-gray-700/50 focus:border-gray-700 transition"
                                         {...field}
                                     />
                                 </FormControl>
-                                <FormMessage className="text-red-300 text-xs" />
+                                <FormMessage className="text-red-500 text-xs" />
                             </FormItem>
                         )}
                     />
-
                     <Button
                         type="submit"
                         disabled={form.formState.isSubmitting}
-                        className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold rounded-xl h-11 flex items-center justify-center gap-2 transition-all duration-300 mt-6"
+                        className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg h-10 flex items-center justify-center gap-2 transition-all duration-300 mt-6 shadow-md hover:shadow-lg"
                     >
                         {form.formState.isSubmitting ? (
                             <>
@@ -154,13 +154,12 @@ export const SignUpForm = () => {
                     </Button>
                 </form>
             </Form>
-
             <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-white/20"></div>
+                    <div className="w-full border-t border-gray-300"></div>
                 </div>
                 <div className="relative flex justify-center text-xs">
-                    <span className="px-4 text-blue-200/70 uppercase tracking-wider relative z-10">
+                    <span className="px-4 text-gray-500 uppercase tracking-wider bg-white relative z-10">
                         {content.divider}
                     </span>
                 </div>
@@ -170,7 +169,7 @@ export const SignUpForm = () => {
                 <Button
                     type="button"
                     onClick={() => signInWithProvider("github")}
-                    className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/20 font-medium rounded-xl h-11 gap-2 transition-all"
+                    className="w-full bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 font-medium rounded-lg h-10 gap-2 transition-all shadow-sm"
                     variant="outline"
                 >
                     <Github className="h-5 w-5" />
@@ -180,7 +179,7 @@ export const SignUpForm = () => {
                 <Button
                     type="button"
                     onClick={() => signInWithProvider("google")}
-                    className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/20 font-medium rounded-xl h-11 gap-2 transition-all"
+                    className="w-full bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 font-medium rounded-lg h-10 gap-2 transition-all shadow-sm"
                     variant="outline"
                 >
                     <svg className="h-5 w-5" viewBox="0 0 24 24">

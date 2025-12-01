@@ -13,7 +13,6 @@ export async function GET(
       return new NextResponse("Not authenticated", { status: 401 });
     }
 
-    // Await the params Promise first
     const { locationId } = await params;
 
     const location = await prisma.location.findUnique({
@@ -34,13 +33,11 @@ export async function GET(
       return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
     }
 
-    // Récupérer les activités de cette location
     const activities = await prisma.activity.findMany({
       where: { locationId },
       orderBy: { order: "asc" },
     });
 
-    // Formater les données pour correspondre à votre interface
     const formattedActivities = activities.map((activity) => ({
       id: activity.id,
       name: activity.name,

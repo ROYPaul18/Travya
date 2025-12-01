@@ -1,22 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import {Navbar} from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Lora } from "next/font/google";
+import { Navbar } from "@/components/navbar/Navbar";
+import Footer from "@/components/footer/Footer";
 export { generateStaticParams } from "next-intlayer";
 import { getHTMLTextDir } from "intlayer";
 import { NextLayoutIntlayer } from "next-intlayer";
 import { IntlayerClientProvider } from "next-intlayer";
 import { IntlayerServerProvider } from "next-intlayer/server";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geist = Lora({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-lora'
+})
 
 export const metadata: Metadata = {
   title: "Travya – Carnets de voyage interactifs",
@@ -31,8 +27,16 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
     <IntlayerServerProvider locale={locale}>
       <IntlayerClientProvider locale={locale}>
         <html lang={locale} dir={getHTMLTextDir(locale)}>
+          <head>
+            <script
+              defer
+              data-website-id="dfid_TIzTjs4vrqlS6RP70Hmqq"
+              data-domain="travya.vercel.app"
+              src="https://datafa.st/js/script.js">
+            </script>
+          </head>
           <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            className={`${geist.variable} antialiased`}
           >
             <Navbar params={params} />
             {children}
