@@ -72,27 +72,19 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white rounded-lg w-full max-w-full md:max-w-2xl mx-auto "
+      className="bg-white rounded-sm w-full max-w-full md:max-w-2xl mx-auto"
     >
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
+        <h3 className="text-lg sm:text-xl font-light text-gray-900">
           {content.newActivity}
         </h3>
-        <button
-          type="button"
-          onClick={onCancel}
-          disabled={isSubmitting}
-          className="self-end md:self-auto text-gray-500 hover:text-gray-900 transition-colors p-1 hover:bg-gray-100 rounded-lg disabled:opacity-50"
-        >
-          <X className="h-5 w-5" />
-        </button>
       </div>
 
       <div className="space-y-4">
         {/* Nom */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+          <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
             {content.activityName}
           </label>
           <input
@@ -101,13 +93,13 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             required
             disabled={isSubmitting}
             placeholder={content.activityNamePlaceholder.value}
-            className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50"
+            className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
           />
         </div>
 
         {/* Adresse */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
+          <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
             {content.address}
           </label>
           <GooglePlacesAutocomplete
@@ -116,22 +108,21 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             onPlaceSelected={handlePlaceSelected}
             placeholder={content.addressPlaceholder.value}
             disabled={isSubmitting}
-            className="border-gray-300 text-gray-900 placeholder:text-gray-400 focus:ring-gray-200 focus:border-gray-500"
+            className="border-gray-300 text-gray-900 placeholder:text-gray-400 focus:ring-gray-200 focus:border-gray-500 rounded-sm h-11 font-light"
           />
           <input type="hidden" name="address" value={address} />
         </div>
 
         {/* Catégorie */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-
+          <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
             {content.category}
           </label>
           <select
             name="category"
             required
             disabled={isSubmitting}
-            className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 appearance-none cursor-pointer"
+            className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 appearance-none cursor-pointer font-light"
           >
             <option value="" className="bg-white">
               {content.selectCategory}
@@ -147,36 +138,33 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
         {/* Horaires → mobile column / desktop row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-              
+            <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
               {content.startTime}
             </label>
             <Input
               type="time"
               name="startTime"
               disabled={isSubmitting}
-              className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50"
+              className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-              
+            <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
               {content.endTime}
             </label>
             <Input
               type="time"
               name="endTime"
               disabled={isSubmitting}
-              className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50"
+              className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
             />
           </div>
         </div>
 
         {/* Budget */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-            
+          <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
             {content.budget}
           </label>
           <input
@@ -186,14 +174,13 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             step="0.01"
             disabled={isSubmitting}
             placeholder={content.budgetPlaceholder.value}
-            className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50"
+            className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
           />
         </div>
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2">
-            
+          <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
             {content.description}
           </label>
           <textarea
@@ -201,36 +188,34 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             rows={3}
             disabled={isSubmitting}
             placeholder={content.descriptionPlaceholder.value}
-            className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 resize-none disabled:opacity-50 disabled:bg-gray-50"
+            className="w-full bg-white border border-gray-300 rounded-sm px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 resize-none disabled:opacity-50 disabled:bg-gray-50 font-light"
           />
         </div>
 
         {selectedPlace && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-xs">
+          <div className="bg-green-50 border border-green-300 rounded-sm p-3 text-xs font-light">
             <p className="text-green-700 flex items-start gap-2">
-              
               📍 Lieu sélectionné : {selectedPlace.name || selectedPlace.formatted_address}
             </p>
           </div>
         )}
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs">
+        <div className="bg-blue-50 border border-blue-300 rounded-sm p-3 text-xs font-light">
           <p className="text-blue-700 flex items-start gap-2">
-            
             {content.imageNote}
           </p>
         </div>
       </div>
 
       {/* Actions → stack on mobile, row on desktop */}
-      <div className="flex flex-col md:flex-row gap-3 mt-6 pt-6 border-t border-gray-200">
+      <div className="flex flex-col md:flex-row gap-3 mt-6 pt-6 border-t border-gray-300">
         <button
           type="submit"
           disabled={isSubmitting || !address.trim()}
-          className="w-full md:flex-1 bg-gray-900 hover:bg-gray-800 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full md:flex-1 bg-neutral-900 hover:bg-neutral-800 text-white font-medium h-11 rounded-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
-            <>
+            <>@@
               <Loader2 className="h-4 w-4 animate-spin" />
               {content.adding || "Ajout..."}
             </>
@@ -243,7 +228,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           type="button"
           onClick={onCancel}
           disabled={isSubmitting}
-          className="w-full md:w-auto md:px-6 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2.5 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full md:w-auto md:px-6 bg-white border border-gray-300 hover:bg-gray-50 text-gray-600 font-light h-11 rounded-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {content.cancel}
         </button>

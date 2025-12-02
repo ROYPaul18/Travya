@@ -64,21 +64,20 @@ const TripCardItem = ({ trip, locale, today, content }: { trip: Trip; locale: st
         </div>
 
         
-        <div className="px-3 sm:px-4 py-3 sm:py-2 flex flex-col flex-1">
+        <div className="py-3 sm:py-2 flex flex-col flex-1">
           <div>
-            <h3 className="font-bold text-base sm:text-lg text-gray-900 group-hover:text-gray-700 transition-colors duration-300 line-clamp-2 mb-1">
+            <h3 className="font-medium text-base sm:text-lg text-gray-900 group-hover:text-gray-700 transition-colors duration-300 line-clamp-2">
               {trip.title}
             </h3>
             {trip.destination && (
               <div className="flex items-center text-sm text-gray-600 mb-2">
-                <MapPin className="h-4 w-4 text-gray-500 flex-shrink-0 mr-1" />
                 <span className="font-medium">{trip.destination}</span>
               </div>
             )}
           </div>
 
           {trip.description && (
-            <p className="text-xs text-gray-600 line-clamp-2 mb-3 leading-relaxed">
+            <p className="text-sm text-gray-400 line-clamp-2 mb-3 leading-relaxed">
               {trip.description}
             </p>
           )}
@@ -179,7 +178,7 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
       `}>
         {/* Trip Status Filter */}
         <div className="bg-white lg:bg-transparent p-4 lg:p-0 rounded-lg lg:rounded-none border lg:border-0 border-gray-200">
-          <h3 className="text-base lg:text-lg font-medium text-gray-900 mb-4">Statut du voyage</h3>
+          <h3 className="text-base font-light text-gray-900 mb-4">Statut du voyage</h3>
           <div className="space-y-3">
             {[
               { id: "all", label: content.allTrips.value },

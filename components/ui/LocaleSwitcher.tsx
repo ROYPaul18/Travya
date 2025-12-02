@@ -30,7 +30,7 @@ export const LocaleSwitcher: FC = () => {
 
   return (
     <Select value={locale} onValueChange={handleChange}>
-      <SelectTrigger className="bg-white border-gray-300 text-gray-900 hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md font-medium cursor-pointer">
+      <SelectTrigger className="bg-white border-gray-300 text-gray-900 hover:bg-gray-50 transition-all duration-200 hover:shadow-md font-light cursor-pointer rounded-sm">
         <SelectValue placeholder={getLocaleName(locale)} />
       </SelectTrigger>
       <SelectContent className="bg-white border border-gray-200 text-gray-900 shadow-xl rounded-sm">
@@ -38,7 +38,7 @@ export const LocaleSwitcher: FC = () => {
           <SelectItem 
             key={localeItem} 
             value={localeItem}
-            className="hover:!bg-gray-100 outline-none cursor-pointer transition-colors duration-200 font-medium"
+            className="hover:!bg-gray-100 outline-none cursor-pointer transition-colors duration-200 font-light"
           >
             {getLocaleName(localeItem, locale)}
           </SelectItem>

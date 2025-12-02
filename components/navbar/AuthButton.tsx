@@ -22,60 +22,39 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
 
   if (!user) {
     return (
-      <div className="flex items-center gap-3 font-button">
-        {/*
-          BOUTON 1: INSCRIPTION (Action Primaire)
-          - Style: Bleu uni (plus moderne et propre que le dégradé)
-          - Taille: Légèrement plus compact (py-2, pas 2.5)
-        */}
+      <div className="flex items-center gap-3 font-light">
         <Link
           href="/auth/signup"
-          className="flex items-center justify-center bg-gray-950 hover:bg-grey-900 text-white font-semibold px-4 py-2 text-sm rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+          className="flex items-center justify-center bg-gray-950 hover:bg-grey-900 text-white  px-4 py-2 text-sm rounded-sm transition-all duration-200 shadow-md hover:shadow-lg"
         >
           {content.signUp}
         </Link>
-
-        {/*
-          BOUTON 2: CONNEXION (Action Secondaire)
-          - Style: Bouton "Ghost" (Fantôme) ou Lien.
-          - On passe à un bouton transparent hover/border pour plus d'élégance.
-        */}
         <Link
           href="/auth/signin"
-          className="flex items-center justify-center bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 px-4 py-2 text-sm rounded-lg font-semibold transition-all duration-200 shadow-sm hover:shadow-md"
+          className="flex items-center justify-center bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 px-4 py-2 text-sm rounded-sm transition-all duration-200 shadow-sm hover:shadow-md"
         >
           {content.signIn}
         </Link>
-
-        {/* Alternative pour la connexion (plus discret / lien) :
-        <Link
-          href="/auth/signin"
-          className="text-gray-700 hover:text-gray-900 font-medium px-2 py-1 transition-colors duration-200"
-        >
-          {content.signIn}
-        </Link>
-        */}
       </div>
     );
   }
-  // Reste du code (état connecté) inchangé
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="flex items-center gap-2.5 bg-white hover:!bg-gray-50 border border-gray-300 text-gray-900 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md px-2 py-2 cursor-pointer"
+          className="flex items-center gap-2.5 bg-white hover:!bg-gray-50 border border-gray-300 text-gray-900 rounded-sm transition-all duration-200 hover:shadow-md px-2 py-2 cursor-pointer"
         >
           <Avatar className="h-8 w-8">
             {user.image ? (
               <AvatarImage src={user.image} alt={user.name ?? "User"} />
             ) : (
-              <AvatarFallback className="text-gray-900 font-semibold">
+              <AvatarFallback className="text-gray-900 font-light">
                 {user.email[0]?.toUpperCase()}
               </AvatarFallback>
             )}
           </Avatar>
-          <span className="font-normal text-sm">{user.name}</span>
+          <span className="font-light text-sm">{user.name}</span>
         </Button>
       </DropdownMenuTrigger>
 

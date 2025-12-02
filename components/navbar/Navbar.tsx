@@ -17,32 +17,32 @@ export const Navbar = async ({ params }: PageProps) => {
 
   return (
     <nav className="relative bg-white py-4 border-b border-gray-200/50 z-50 font-button">
-      <div className="container mx-auto flex justify-between items-center px-6 lg:px-8">
+      <div className="flex justify-between items-center px-6 lg:px-8">
 
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-2xl font-bold text-neutral-950 bg-clip-text">
+          <span className="text-2xl font-normal text-neutral-950 bg-clip-text">
             Travya
           </span>
         </Link>
 
         {user && (
-          <div className="hidden md:flex items-center space-x-10 text-neutral-950">
+          <div className="hidden md:flex items-center space-x-10 text-neutral-950 font-light">
             <Link
               href="/explore"
-              className="hover:text-neutral-500 transition-colors duration-300 font-medium flex items-center gap-2"
+              className="hover:text-neutral-500 transition-colors duration-300  flex items-center gap-2"
             >
               Explore
             </Link>
             <Link
               href="/trips"
-              className=" hover:text-neutral-500 transition-colors duration-300 font-medium flex items-center gap-2"
+              className=" hover:text-neutral-500 transition-colors duration-300  flex items-center gap-2"
             >
 
               {nav.myTrips}
             </Link>
             <Link
               href="/globe"
-              className="hover:text-neutral-500 transition-colors duration-300 font-medium flex items-center gap-2"
+              className="hover:text-neutral-500 transition-colors duration-300  flex items-center gap-2"
             >
 
               {nav.globe}

@@ -1,6 +1,5 @@
 import { Link } from "@/components/Link"
 import { SignUpForm } from "./signup-form"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useIntlayer } from "next-intlayer/server"
 
 interface PageProps {
@@ -14,32 +13,34 @@ export default async function SignUpPage({ params }: PageProps) {
     return (
         <div className="min-h-screen bg-white flex items-center justify-center px-4">
             <div className="w-full max-w-md">
-                <Card className="bg-white border border-gray-200 shadow-xl mt-8 rounded-xl">
-                    <CardHeader className="text-center space-y-2 pb-4 pt-6">
-                        <CardTitle className="text-3xl font-bold text-gray-900">
+                {/* Suppression de la Card - Contenu direct */}
+                <div className="bg-white border border-gray-300 rounded-sm p-8 mt-8">
+                    {/* Header */}
+                    <div className="text-center space-y-2 mb-8">
+                        <h1 className="text-3xl font-light text-gray-900">
                             {content.title}
-                        </CardTitle>
-                        <CardDescription className="text-gray-500 text-base">
+                        </h1>
+                        <p className="text-gray-600 text-sm font-light">
                             {content.description}
-                        </CardDescription>
-                    </CardHeader>
+                        </p>
+                    </div>
 
-                    <CardContent className="pt-0">
-                        <SignUpForm />
-                    </CardContent>
+                    {/* Form */}
+                    <SignUpForm />
 
-                    <CardFooter className="flex justify-center pt-4 pb-6">
-                        <p className="text-gray-500 text-sm">
+                    {/* Footer */}
+                    <div className="flex justify-center pt-6 mt-6 border-t border-gray-200">
+                        <p className="text-gray-600 text-sm font-light">
                             {content.footerText}{" "}
                             <Link
                                 href="/auth/signin"
-                                className="text-gray-700 hover:text-gray-900 font-semibold transition-colors"
+                                className="text-neutral-900 hover:text-neutral-800 font-medium transition-colors"
                             >
                                 {content.loginLink}
                             </Link>
                         </p>
-                    </CardFooter>
-                </Card>
+                    </div>
+                </div>
             </div>
         </div>
     )

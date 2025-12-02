@@ -69,7 +69,7 @@ function ActivityItem({
 
   return (
     <div
-      className={`bg-white border border-gray-200 rounded-xl p-5 transition-all hover:shadow-md mb-4 ${
+      className={`bg-white border border-gray-300 rounded-sm p-5 transition-all hover:shadow-sm mb-4 ${
         isDeleting || isEditing ? "opacity-50 pointer-events-none" : ""
       }`}
     >
@@ -81,7 +81,7 @@ function ActivityItem({
               key={idx}
               src={img}
               alt={`${activity.name} ${idx + 1}`}
-              className="w-[140px] min-w-[140px] h-[100px] rounded-lg object-cover border border-gray-200"
+              className="w-[140px] min-w-[140px] h-[100px] rounded-sm object-cover border border-gray-300"
             />
           ))}
         </div>
@@ -90,7 +90,7 @@ function ActivityItem({
       {/* Header */}
       <div className="flex justify-between items-start gap-4 mb-3">
         <div className="flex items-center gap-2 flex-1 min-w-0">
-          <h3 className="font-semibold text-lg text-gray-900 truncate">
+          <h3 className="font-light text-lg text-gray-900 truncate">
             {activity.name}
           </h3>
         </div>
@@ -100,19 +100,19 @@ function ActivityItem({
           <DropdownMenuTrigger asChild>
             <button
               disabled={isDeleting || isEditing}
-              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50 flex-shrink-0"
+              className="p-1.5 hover:bg-gray-100 rounded-sm transition-colors disabled:opacity-50 flex-shrink-0"
             >
               <MoreHorizontal className="h-5 w-5 text-gray-600" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => onEditClick(activity)}>
+          <DropdownMenuContent align="end" className="border-gray-300 rounded-sm">
+            <DropdownMenuItem onClick={() => onEditClick(activity)} className="font-light">
               <Pencil className="h-4 w-4 mr-2" />
               Modifier
             </DropdownMenuItem>
             <DropdownMenuItem 
               onClick={() => onDeleteClick(activity)}
-              className="text-red-600 focus:text-red-600"
+              className="text-red-600 focus:text-red-600 font-light"
             >
               {isDeleting ? (
                 <>
@@ -132,30 +132,29 @@ function ActivityItem({
 
       {/* Category Badge */}
       <div className="mb-3">
-        <span className="inline-block text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 font-medium">
+        <span className="inline-block text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 font-light">
           {getTranslatedCategory(activity.category)}
         </span>
       </div>
 
       {/* Description */}
       {activity.description && (
-        <p className="text-sm text-gray-700 leading-relaxed mb-3">
+        <p className="text-sm text-gray-600 leading-relaxed mb-3 font-light">
           {activity.description}
         </p>
       )}
 
       {/* Address */}
       {activity.address && (
-        <div className="flex items-start gap-2 text-sm text-gray-600 mb-3">
+        <div className="flex items-start gap-2 text-sm text-gray-600 mb-3 font-light">
           <span>{activity.address}</span>
         </div>
       )}
 
       {/* Time & Budget */}
-      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 font-light">
         {activity.startTime && activity.endTime && (
           <div className="flex items-center gap-1.5">
-           
             <span>
               {formatTime(activity.startTime)} - {formatTime(activity.endTime)}
             </span>
@@ -266,10 +265,10 @@ const SortableActivities = ({
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl p-8 border border-gray-200">
+      <div className="bg-white rounded-sm p-8 border border-gray-300">
         <div className="flex items-center justify-center gap-2">
           <Loader2 className="h-5 w-5 text-gray-600 animate-spin" />
-          <span className="text-gray-600">{content.loadingActivities?.value || content.loadingActivities}</span>
+          <span className="text-gray-600 font-light">{content.loadingActivities?.value || content.loadingActivities}</span>
         </div>
       </div>
     );
@@ -277,11 +276,11 @@ const SortableActivities = ({
 
   if (error) {
     return (
-      <div className="bg-red-50 rounded-xl p-6 border border-red-200">
-        <p className="text-red-800 text-center mb-4">{error}</p>
+      <div className="bg-red-50 rounded-sm p-6 border border-red-300">
+        <p className="text-red-800 text-center mb-4 font-light">{error}</p>
         <button
           onClick={() => fetchActivities()}
-          className="mx-auto block px-4 py-2 bg-white hover:bg-gray-50 rounded-lg text-red-800 border border-red-200 text-sm font-medium transition-colors"
+          className="mx-auto block px-4 py-2 bg-white hover:bg-gray-50 rounded-sm text-red-800 border border-red-300 text-sm font-medium transition-colors"
         >
           Réessayer
         </button>
@@ -308,7 +307,7 @@ const SortableActivities = ({
         )}
 
         {activities.length === 0 && (
-          <div className="text-center py-8 text-gray-600 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+          <div className="text-center py-8 text-gray-600 bg-gray-50 rounded-sm border border-dashed border-gray-300 font-light">
             {content.noActivities?.value || content.noActivities}
           </div>
         )}
@@ -316,7 +315,7 @@ const SortableActivities = ({
         <div className="mt-4">
           <button
             onClick={() => setShowAddDialog(true)}
-            className="w-full bg-white hover:bg-gray-50 border-2 border-dashed border-gray-300 hover:border-gray-900 rounded-xl p-4 transition-all group"
+            className="w-full bg-white hover:bg-gray-50 border-2 border-dashed border-gray-300 hover:border-neutral-900 rounded-sm p-4 transition-all group"
           >
             <div className="flex items-center justify-center gap-2 text-gray-600 group-hover:text-gray-900">
               <Plus className="h-5 w-5" />
@@ -328,10 +327,9 @@ const SortableActivities = ({
 
       {/* Edit Activity Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="bg-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-white max-w-2xl max-h-[90vh] overflow-y-auto border-gray-300 rounded-sm">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold text-gray-900">
-              Modifier l'activité
+            <DialogTitle>
             </DialogTitle>
           </DialogHeader>
           {activityToEdit && (
@@ -349,7 +347,7 @@ const SortableActivities = ({
 
       {/* Add Activity Dialog */}
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-h-[90vh] overflow-y-auto border-gray-300 rounded-sm">
           <DialogTitle></DialogTitle>
           <ActivityForm
             locationId={locationId}
@@ -363,23 +361,23 @@ const SortableActivities = ({
       
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={!!activityToDelete} onOpenChange={(open) => !open && setActivityToDelete(null)}>
-        <AlertDialogContent className="bg-white">
+        <AlertDialogContent className="bg-white border-gray-300 rounded-sm">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-gray-900">
+            <AlertDialogTitle className="text-gray-900 font-light">
               {content.confirmDeleteTitle?.value || content.confirmDeleteTitle || "Supprimer l'activité"}
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-gray-600">
+            <AlertDialogDescription className="text-gray-600 font-light">
               {content.confirmDeleteDescription?.value || content.confirmDeleteDescription ||
                 `Êtes-vous sûr de vouloir supprimer "${activityToDelete?.name}" ? Cette action est irréversible.`}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50">
+            <AlertDialogCancel className="bg-white border-gray-300 text-gray-600 hover:bg-gray-50 font-light rounded-sm">
               {content.cancel?.value || content.cancel || "Annuler"}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDelete}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-red-600 hover:bg-red-700 text-white font-medium rounded-sm"
             >
               {content.confirmDelete?.value || content.confirmDelete || "Supprimer"}
             </AlertDialogAction>
