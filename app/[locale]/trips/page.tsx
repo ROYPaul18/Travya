@@ -41,7 +41,7 @@ export default async function TripsPage({ params }: PageProps) {
               <p className="text-sm font-light text-gray-600">{content.dashboardSubtitle}</p>
             </div>
             <Link href={"/trips/new"}>
-              <Button className="bg-neutral-950 hover:bg-gray-900 text-white hover:shadow-lg transition-all duration-200 flex items-center gap-2 font-light cursor-pointer">
+              <Button className="bg-green-950 hover:bg-green-900 text-white hover:shadow-lg transition-all duration-200 flex items-center gap-2 font-light cursor-pointer">
                 <Plus className="h-5 w-5" />
                 {content.newTrip}
               </Button>

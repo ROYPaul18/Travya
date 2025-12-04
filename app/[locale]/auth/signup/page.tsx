@@ -26,7 +26,7 @@ export default async function SignUpPage({ params }: PageProps) {
                     </div>
 
                     {/* Form */}
-                    <SignUpForm />
+                        <SignUpForm />
 
                     {/* Footer */}
                     <div className="flex justify-center pt-6 mt-6 border-t border-gray-200">

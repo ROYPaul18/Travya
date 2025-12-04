@@ -51,11 +51,10 @@ function ItineraryItem({
   return (
     <div className="transition-all bg-white hover:bg-gray-50 rounded-sm border border-gray-300 p-6">
       <div className="flex items-start justify-between gap-4">
-        
         {/* Left side - Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 mb-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-neutral-900 text-white font-medium flex-shrink-0">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-950 text-white font-medium flex-shrink-0">
               {item.order + 1}
             </div>
             <div className="flex-1 min-w-0">
@@ -70,7 +69,7 @@ function ItineraryItem({
 
           {/* Activities count badge */}
           {activitiesCount > 0 && (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 rounded-full text-sm text-gray-600 font-light">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-200 rounded-full text-sm text-gray-600 font-light">
               <span>{activitiesCount} {getActivitiesText(activitiesCount)}</span>
             </div>
           )}

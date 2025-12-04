@@ -7,11 +7,9 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState, useTransition } from "react";
 import {
-  Plane,
   Loader2,
   ArrowLeft,
   Calendar as CalendarIcon,
-  MapPin,
 } from "lucide-react";
 import { useIntlayer } from "next-intlayer";
 import { Link } from "@/components/Link";
@@ -43,6 +41,7 @@ export default function NewTrip() {
     startTransition(() => {
       createTrip(formData);
     });
+    
   };
 
   return (

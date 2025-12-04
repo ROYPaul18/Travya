@@ -72,7 +72,6 @@ const activityFormContent = {
       es: "Detalles de la actividad...",
     }),
 
-    // Categories
     categories: {
       restaurant: t({
         en: "Restaurant",

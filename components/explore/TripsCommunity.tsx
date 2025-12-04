@@ -3,36 +3,34 @@
 import { useState, useMemo } from "react";
 import { useIntlayer } from "next-intlayer";
 import { Search } from "lucide-react";
-import { TripCardItem, Trip } from "@/components/trips/TripCardItem";
-import { TripsStatusFilters } from "@/components/trips/TripsFilters";
+import { TripsCommunityItem } from "@/components/explore/TripCommunityItem";
+import { TripsFilters } from "@/components/explore/TripCommunityFilters";
+
+export interface Trip {
+  id: string;
+  title: string;
+  description?: string;
+  startDate: string;
+  endDate: string;
+  imageUrl: string;
+}
 
 export interface TripsClientProps {
   trips: Trip[];
   locale: string;
 }
 
-export default function TripsClient({ trips, locale }: TripsClientProps) {
+const DAYS = 1000 * 60 * 60 * 24;
+const daysBetween = (d1: Date, d2: Date) => Math.ceil((d1.getTime() - d2.getTime()) / DAYS);
+
+export default function TripsCommunity({ trips, locale }: TripsClientProps) {
   const content = useIntlayer('trips-client');
   
-  const [tab, setTab] = useState<"all" | "upcoming" | "past">("all");
   const [query, setQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const upcoming = useMemo(
-    () => trips.filter((t) => new Date(t.startDate) >= today),
-    [trips, today]
-  );
-
-  const past = useMemo(
-    () => trips.filter((t) => new Date(t.startDate) < today),
-    [trips, today]
-  );
-
   const filtered = useMemo(() => {
-    let list = tab === "upcoming" ? upcoming : tab === "past" ? past : trips;
+    let list = trips;
 
     if (query.trim().length > 0) {
       const q = query.toLowerCase();
@@ -43,11 +41,14 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
       );
     }
     return list;
-  }, [tab, query, trips, upcoming, past]);
+  }, [query, trips]);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 lg:gap-0">
-      {/* Mobile Filter Toggle */}
+      {/* Bouton pour afficher les filtres sur mobile */}
       <div className="lg:hidden mb-4">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -65,17 +66,14 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
         </button>
       </div>
 
-      {/* Composant Filtres de Statut */}
-      <TripsStatusFilters
-        tab={tab}
-        onTabChange={setTab}
-        content={content}
+      {/* Composant Filtres */}
+      <TripsFilters
         sidebarOpen={sidebarOpen}
       />
 
-      {/* Main Content */}
+      {/* Contenu principal */}
       <div className="flex-1 lg:pl-6">
-        {/* Search Bar */}
+        {/* Barre de recherche */}
         <div className="mb-6 lg:mb-8">
           <div className="relative max-w-full lg:max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -90,7 +88,7 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
           </div>
         </div>
 
-        {/* Trips Grid */}
+        {/* Résultats */}
         {filtered.length === 0 ? (
           <div className="text-center py-16 lg:py-32">
             <div className="p-6 bg-gray-100 rounded-full inline-flex mb-6 border border-gray-200">
@@ -106,7 +104,7 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {filtered.map((trip) => (
-              <TripCardItem 
+              <TripsCommunityItem 
                 key={trip.id} 
                 trip={trip} 
                 locale={locale} 

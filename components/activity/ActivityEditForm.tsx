@@ -142,7 +142,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
             <Input
               type="time"
               name="startTime"
-              defaultValue={formatTimeForInput(activity.startTime)}
+              defaultValue={activity.startTime ?? ""}
               disabled={isSubmitting}
               className="bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900"
             />
@@ -155,14 +155,13 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
             <Input
               type="time"
               name="endTime"
-              defaultValue={formatTimeForInput(activity.endTime)}
+              defaultValue={activity.endTime ?? ""}
               disabled={isSubmitting}
               className="bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900"
             />
           </div>
         </div>
 
-        {/* Budget */}
         <div>
           <label className="block text-sm font-light text-gray-900 mb-1.5">
             {content.budget}

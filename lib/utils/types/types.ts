@@ -4,8 +4,8 @@ export interface Activity {
   address: string;
   category: string;
   description: string | null;
-  startTime: Date | null;
-  endTime: Date | null;
+  startTime: string | null;
+  endTime: string | null;
   budget: number | null;
   images: string[];
 };

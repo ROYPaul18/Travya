@@ -77,7 +77,6 @@ model Verification {
   @@map("verification")
 }
 
-// Vos modèles métier restent identiques
 model Trip {
   id          String   @id @default(cuid())
   title       String
@@ -91,6 +90,8 @@ model Trip {
 
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   locations Location[]
+
+  visibility Visibility @default(PRIVATE)
 }
 
 model Location {
@@ -116,8 +117,8 @@ model Activity {
   category    Categorie
   description String?
   images      String[]
-  startTime   DateTime?
-  endTime     DateTime?
+  startTime   String?
+  endTime     String?
   budget      Float?
   locationId  String
   order       Int       @default(0)
@@ -137,4 +138,10 @@ enum Categorie {
   NATURE
   SPORT
   AUTRE
+}
+
+enum Visibility {
+  PRIVATE
+  COMMUNITY
+  FRIENDS
 }

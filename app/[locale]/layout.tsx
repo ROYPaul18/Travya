@@ -8,6 +8,7 @@ import { NextLayoutIntlayer } from "next-intlayer";
 import { IntlayerClientProvider } from "next-intlayer";
 import { IntlayerServerProvider } from "next-intlayer/server";
 
+
 const geist = Lora({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -38,7 +39,9 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
           <body
             className={`${geist.variable} antialiased`}
           >
-            <Navbar params={params} />
+            
+              <Navbar params={params} />
+            
             {children}
             <Footer />
           </body>

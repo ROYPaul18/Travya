@@ -89,9 +89,9 @@ export default function Map({ activities }: MapProps) {
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
     });
 
-    if (loadError) return <div>Error loading maps</div>
+    if (loadError) return <div className="flex items-center justify-between">Error loading maps</div>
     if (!isLoaded) {
-        return <div>Loading maps...</div>
+        return <div className="flex items-center justify-between">Loading maps...</div>
     }
 
     const center = activities.length > 0 ? {
@@ -113,6 +113,18 @@ export default function Map({ activities }: MapProps) {
         fullscreenControl: false,
     };
 
+    const modernMarkerIcon = {
+        path: "M12 0C7.58 0 4 3.58 4 8c0 5.5 8 13 8 13s8-7.5 8-13c0-4.42-3.58-8-8-8zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z",
+        fillColor: "#032e15",
+        fillOpacity: 1,
+        scale: 2,
+        strokeWeight: 1,
+        strokeColor: "#ffffff",
+        anchor: new google.maps.Point(12, 21),
+    };
+
+    const selectedIcon = modernMarkerIcon; 
+
     return (
         <GoogleMap
             mapContainerStyle={{ width: "100%", height: "100%" }}
@@ -124,14 +136,9 @@ export default function Map({ activities }: MapProps) {
                 <Marker
                     key={key}
                     position={{ lat: activity.lat, lng: activity.lng }}
-                    icon={{
-                        path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
-                        fillColor: "#000",
-                        fillOpacity: 1,
-                        scale: 2,
-                        strokeWeight: 1,
-                        strokeColor: "#fff",
-                    }}
+                    icon={selectedIcon}
+                    animation={google.maps.Animation.DROP}
+                    
                 />
             ))}
         </GoogleMap>

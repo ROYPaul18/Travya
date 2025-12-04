@@ -72,7 +72,7 @@ export async function createTrip(formData: FormData) {
     },
   });
 
-  redirect("/trips");
+  redirect(`/trips/${trip.id}`);
 }
 
 export async function editTrip(formData: FormData, tripId: string) {
@@ -184,4 +184,13 @@ export async function deleteTrip(tripId: string) {
 
   revalidatePath("/trips");
   redirect("/trips");
+}
+
+export async function updateTripVisibility(id: string, visibility: "COMMUNITY" | "FRIENDS" | "PRIVATE") {
+  await prisma.trip.update({
+    where: { id },
+    data: { visibility },
+  });
+
+  revalidatePath(`/trips/${id}`);
 }

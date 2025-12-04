@@ -10,7 +10,7 @@ import Map from "@/components/ui/Map";
 import SortableItinerary from "@/components/itineraty/SortableItinerary";
 import { formatDate } from "@/lib/utils/formatDate";
 import { useIntlayer } from "next-intlayer";
-import { deleteTrip } from "@/lib/actions/Trip";
+import { deleteTrip, updateTripVisibility } from "@/lib/actions/Trip";
 import EditTripDialog from "@/components/trips/EditTripDialog";
 import {
   AlertDialog,
@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { VisibilitySelector } from "@/components/ui/VisibilitySelector";
 
 export type LocationWithActivities = Location & {
   activities: Activity[];
@@ -63,12 +64,17 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
     return days <= 1 ? content.day : content.days;
   };
 
-  const getLocationsText = (count: number) => {
-    return count <= 1 ? content.location : content.locations;
-  };
-
   const handleDeleteClick = () => {
     setShowDeleteDialog(true);
+  };
+
+  const handleShare = async (visibility: "PRIVATE" | "COMMUNITY" | "FRIENDS") => {
+    try {
+      await updateTripVisibility(trip.id, visibility);
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la mise à jour de la visibilité");
+    }
   };
 
   const handleConfirmDelete = async () => {
@@ -85,61 +91,47 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
 
   return (
     <div className="min-h-screen bg-white">
-
-      {/* Top Navigation Bar */}
-      <div className="bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 border-b border-gray-300">
-          <div className="flex items-center justify-between">
-            <Link href={`/trips`}>
-              <Button variant="ghost" className="text-gray-900 hover:bg-gray-50 gap-2 pl-0 font-light">
-                <ArrowLeft className="h-4 w-4" />
-                {content.backToTrips}
-              </Button>
-            </Link>
+      <div className="px-4 sm:px-6 lg:px-42 pb-12">
+        {/* Hero Images Grid */}
+        <div className="relative w-full">
+          <div className="flex items-center justify-between py-6">
+            <h1 className="text-2xl font-medium text-neutral-900">
+              {trip.title}
+            </h1>
 
             <div className="flex items-center gap-2">
+
+              <VisibilitySelector
+                currentVisibility={trip.visibility}
+                onVisibilityChange={handleShare}
+                showLabel={true}
+              />
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-gray-900 hover:bg-gray-50">
+                  <Button variant="outline" size="icon" className="rounded-sm">
                     <MoreHorizontal className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 border-gray-300 rounded-sm">
-                  <DropdownMenuItem onClick={() => setShowEditDialog(true)} className="font-light">
-                    <Pencil className="h-4 w-4 mr-2" />
-                    Modifier
+
+                <DropdownMenuContent align="end" className="w-40 rounded-sm">
+                  <DropdownMenuItem onClick={() => setShowEditDialog(true)}>
+                    <Pencil className="h-4 w-4 mr-2" /> Modifier
                   </DropdownMenuItem>
+
                   <DropdownMenuItem
-                    onClick={handleDeleteClick}
-                    className="text-red-600 focus:text-red-600 font-light"
-                    disabled={isDeleting}
+                    className="text-red-600"
+                    onClick={() => setShowDeleteDialog(true)}
                   >
-                    {isDeleting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Suppression...
-                      </>
-                    ) : (
-                      <>
-                        <Trash2 className="h-4 w-4 mr-2 text-red-600" />
-                        Supprimer
-                      </>
-                    )}
+                    <Trash2 className="h-4 w-4 mr-2" /> Supprimer
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-
-        {/* Hero Images Grid */}
-        <div className="relative w-full -mx-4 sm:mx-0 mt-6">
-          <div className="grid grid-cols-4 gap-2 h-[300px] sm:h-[400px] md:h-[500px]">
-            {/* Main large image - left side */}
-            <div className="col-span-4 sm:col-span-2 relative sm:rounded-l-sm overflow-hidden">
+          <div className="grid grid-cols-4 gap-2 h-[250px] sm:h-[350px] md:h-[450px]">
+            <div className="col-span-4 sm:col-span-2 relative rounded-l-lg overflow-hidden">
               {trip.imageUrl ? (
                 <Image
                   src={trip.imageUrl}
@@ -154,75 +146,55 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                 </div>
               )}
             </div>
-
-            {/* Right grid - 4 smaller images */}
             <div className="hidden sm:grid sm:col-span-2 grid-cols-2 gap-2">
-              {/* Top right image */}
               <div className="relative overflow-hidden">
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <ImageIcon className="h-20 w-20 text-gray-300" />
+                  <ImageIcon className="h-20 w-20 text-gray-300" />
                 </div>
               </div>
-
-              {/* Top far right image */}
               <div className="relative rounded-tr-sm overflow-hidden">
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <ImageIcon className="h-20 w-20 text-gray-300" />
+                  <ImageIcon className="h-20 w-20 text-gray-300" />
                 </div>
               </div>
-
-              {/* Bottom right image */}
               <div className="relative overflow-hidden">
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <ImageIcon className="h-20 w-20 text-gray-300" />
+                  <ImageIcon className="h-20 w-20 text-gray-300" />
                 </div>
               </div>
-
-              {/* Bottom far right image with button */}
               <div className="relative rounded-br-sm overflow-hidden">
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <ImageIcon className="h-20 w-20 text-gray-300" />
+                  <ImageIcon className="h-20 w-20 text-gray-300" />
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Main Content */}
         <div className="mt-8 mx-auto">
-
-          {/* Title & Meta */}
-          <div className="space-y-4 pb-6 border-b border-gray-300">
-            <h1 className="text-3xl sm:text-4xl font-light text-gray-900">
-              {trip.title}
-            </h1>
-
+          <div className="space-y-2 pb-6 border-b border-gray-200/50">
             {trip.description && (
-              <p className="text-gray-600 text-base leading-relaxed font-light">
+              <p className="text-neutral-800 text-xl leading-relaxed font-medium">
                 {trip.description}
               </p>
             )}
-
-            <div className="flex flex-wrap gap-3 items-center text-sm text-gray-600 font-light">
+            <div className="flex flex-wrap gap-3 items-center text-sm text-neutral-600 font-light">
               <div className="flex items-center gap-1.5">
                 <Calendar className="h-4 w-4" />
                 <span>{formattedStartDate} - {formattedEndDate}</span>
               </div>
-              <span className="text-gray-300">·</span>
+              <span className="text-neutral-300">·</span>
               <div className="flex items-center gap-1.5">
                 <Clock className="h-4 w-4" />
                 <span>{tripDays} {getDaysText(tripDays)}</span>
               </div>
-              <span className="text-gray-300">·</span>
+              <span className="text-neutral-300">·</span>
             </div>
           </div>
-          {/* Content Sections */}
           <div className="mt-8 space-y-12">
-            {/* Itinerary Section */}
             <div>
-              <h2 className="text-2xl font-light text-gray-900 mb-6">{content.itinerary}</h2>
+              <h2 className="text-2xl font-medium text-gray-900 mb-6">{content.itinerary}</h2>
               {trip.locations.length === 0 ? (
-                <div className="border border-dashed border-gray-300 rounded-sm p-12 text-center bg-gray-50">
+                <div className="border border-dashed border-gray-200/50 rounded-sm p-12 text-center bg-gray-50">
                   <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-xl font-light text-gray-900 mb-2">Aucune étape</h3>
                   <p className="text-gray-600 mb-6 font-light">
@@ -241,7 +213,7 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
             </div>
 
             <div>
-              <h2 className="text-2xl font-light text-gray-900 mb-6">{content.map}</h2>
+              <h2 className="text-2xl font-medium text-gray-900 mb-6">{content.map}</h2>
               <div className="h-[400px] md:h-[600px] rounded-sm overflow-hidden border border-gray-300">
                 {allActivities.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center p-6 bg-gray-50">

@@ -1,16 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  X,
-  MapPin,
-  Clock,
-  Euro,
-  FileText,
-  Tag,
-  Image as ImageIcon,
-  Loader2,
-} from "lucide-react";
+import {  Image as ImageIcon,Loader2,} from "lucide-react";
 import { useIntlayer } from "next-intlayer";
 import { ActivityFormProps } from "@/lib/utils/types/types";
 import GooglePlacesAutocomplete from "@/components/ui/GooglePlacesAutocompleted";
@@ -178,7 +169,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           />
         </div>
 
-        {/* Description */}
         <div>
           <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
             {content.description}

@@ -102,8 +102,8 @@ export async function addActivity(
       category: mapCategory(category),
       description,
       images,
-      startTime: startTime ? new Date(`1970-01-01T${startTime}:00`) : null,
-      endTime: endTime ? new Date(`1970-01-01T${endTime}:00`) : null,
+      startTime: startTime || null,
+      endTime: endTime || null,
       budget: budget ? parseFloat(budget) : null,
       locationId,
       order: count,
@@ -112,14 +112,12 @@ export async function addActivity(
   return { success: true };
 }
 
-// ✅ Supprimer une activité (corrigé)
 export async function deleteActivity(activityId: string, tripId: string) {
   const user = await getUser();
   if (!user) {
     throw new Error("Not authenticated");
   }
 
-  // Vérifier que l'activité existe et appartient au trip de l'utilisateur
   const activity = await prisma.activity.findUnique({
     where: { id: activityId },
     include: {
@@ -139,7 +137,6 @@ export async function deleteActivity(activityId: string, tripId: string) {
     throw new Error("Non autorisé");
   }
 
-  // Supprimer l'activité
   await prisma.activity.delete({
     where: { id: activityId },
   });
@@ -208,8 +205,8 @@ export async function updateActivity(
       category: mapCategory(category),
       description,
       images,
-      startTime: startTime ? new Date(`1970-01-01T${startTime}:00`) : null,
-      endTime: endTime ? new Date(`1970-01-01T${endTime}:00`) : null,
+      startTime: startTime || null,
+      endTime: endTime || null,
       budget: budget ? parseFloat(budget) : null,
     },
   });

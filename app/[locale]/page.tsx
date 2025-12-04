@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useIntlayer } from "next-intlayer/server";
 import { getUser } from "@/lib/auth-server";
+import Map from "@/components/ui/Map";
 
 interface PageProps {
   params: Promise<{ locale: string }>

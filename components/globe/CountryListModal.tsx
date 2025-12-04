@@ -51,7 +51,7 @@ export function CountryListModal({
                 key={key}
                 onMouseEnter={() => onCountryHover(country)}
                 onMouseLeave={() => onCountryHover(null)}
-                className={`flex items-center justify-between gap-2 p-4 rounded-xl transition-all duration-300 border cursor-pointer ${
+                className={`flex items-center justify-between gap-2 p-4 rounded-sm transition-all duration-300 border cursor-pointer ${
                   // Style de survol maintenu pour l'interaction avec le globe
                   hoveredCountry === country
                     ? 'bg-blue-50 border-blue-200 shadow-md'

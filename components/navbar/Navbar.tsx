@@ -6,6 +6,8 @@ import { Skeleton } from "../ui/skeleton";
 import { useIntlayer } from "next-intlayer/server";
 import { getUser } from "@/lib/auth-server";
 
+import { NavLink } from "./NavLink";
+
 interface PageProps {
   params: Promise<{ locale: string }>
 }
@@ -16,7 +18,7 @@ export const Navbar = async ({ params }: PageProps) => {
   const user = await getUser();
 
   return (
-    <nav className="relative bg-white py-4 border-b border-gray-200/50 z-50 font-button">
+    <nav className="relative bg-white py-6 border-b border-gray-200/50 z-50 font-button">
       <div className="flex justify-between items-center px-6 lg:px-8">
 
         <Link href="/" className="flex items-center gap-2 group">
@@ -27,28 +29,12 @@ export const Navbar = async ({ params }: PageProps) => {
 
         {user && (
           <div className="hidden md:flex items-center space-x-10 text-neutral-950 font-light">
-            <Link
-              href="/explore"
-              className="hover:text-neutral-500 transition-colors duration-300  flex items-center gap-2"
-            >
-              Explore
-            </Link>
-            <Link
-              href="/trips"
-              className=" hover:text-neutral-500 transition-colors duration-300  flex items-center gap-2"
-            >
-
-              {nav.myTrips}
-            </Link>
-            <Link
-              href="/globe"
-              className="hover:text-neutral-500 transition-colors duration-300  flex items-center gap-2"
-            >
-
-              {nav.globe}
-            </Link>
+            <NavLink href="/explore">Explore</NavLink>
+            <NavLink href="/trips">{nav.myTrips}</NavLink>
+            <NavLink href="/globe">{nav.globe}</NavLink>
           </div>
         )}
+
 
         <div className="flex items-center space-x-4">
           <LocaleSwitcher />
