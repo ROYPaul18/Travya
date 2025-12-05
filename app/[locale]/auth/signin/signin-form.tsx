@@ -120,7 +120,7 @@ export const SignInForm = () => {
                     <Button
                         type="submit"
                         disabled={form.formState.isSubmitting}
-                        className="w-full bg-neutral-900 hover:bg-neutral-800 text-white font-medium rounded-sm h-11 flex items-center justify-center gap-2 transition-all duration-200 mt-6"
+                        className="w-full bg-green-950 hover:bg-green-900 text-white font-medium rounded-sm h-11 flex items-center justify-center gap-2 transition-all duration-200 mt-6"
                     >
                         {form.formState.isSubmitting ? (
                             <>

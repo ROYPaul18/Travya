@@ -86,8 +86,8 @@ export default function GlobePage() {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-full gap-4 bg-white">
             <div className="relative">
-              <div className="animate-spin rounded-lg h-16 w-16 border-4 border-gray-200 border-t-gray-900"></div>
-              <MapPin className="h-8 w-8 text-gray-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />
+              <div className="animate-spin rounded-lg h-16 w-16 border-4 border-gray-200 border-t-green-900"></div>
+              <MapPin className="h-8 w-8 text-green-950 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />
             </div>
             <p className="text-gray-600 animate-pulse">Chargement de vos aventures...</p>
           </div>

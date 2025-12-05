@@ -115,11 +115,12 @@ export function TripsFilters({
             >
               <input
                 type="checkbox"
+                disabled
                 checked={selected.includes(option.id)}
                 onChange={() => onToggle(option.id)}
                 className="w-4 h-4 lg:w-4.5 lg:h-4.5 rounded accent-green-950 border-gray-300 text-green-950 focus:ring-green-900 cursor-pointer peer-checked/draft:block"
               />
-              <span className="text-gray-700 font-light text-sm group-hover/item:text-green-900 transition-colors flex items-center gap-1.5">
+              <span className="text-gray-400 font-light text-sm group-hover/item:text-green-900 transition-colors flex items-center gap-1.5">
                 {showFlags && option.flag && (
                   <span className="text-base">{option.flag}</span>
                 )}

@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { LogOut, User2 } from "lucide-react";
+import { Heart, LogOut, User, User2 } from "lucide-react";
 import { useIntlayer } from "next-intlayer/server";
 
 export const AuthButton = async ({ locale }: { locale: string }) => {
@@ -25,7 +25,7 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
       <div className="flex items-center gap-3 font-light">
         <Link
           href="/auth/signup"
-          className="flex items-center justify-center bg-gray-950 hover:bg-grey-900 text-white  px-4 py-2 text-sm rounded-sm transition-all duration-200 shadow-md hover:shadow-lg"
+          className="flex items-center justify-center bg-green-950  text-white  px-4 py-2 text-sm rounded-sm transition-all duration-200 shadow-md hover:shadow-md"
         >
           {content.signUp}
         </Link>
@@ -67,7 +67,18 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
           className="cursor-pointer transition-all duration-200 hover:!bg-gray-100 focus:!bg-gray-100 rounded-sm mb-1"
         >
           <Link href="/profile" className="flex items-center gap-3 w-full px-2 py-2">
+            <User />
             <span className="text-gray-900 font-medium">{content.profile}</span>
+          </Link>
+        </DropdownMenuItem>
+
+         <DropdownMenuItem
+          asChild
+          className="cursor-pointer transition-all duration-200 hover:!bg-gray-100 focus:!bg-gray-100 rounded-sm mb-1"
+        >
+          <Link href="/favorite" className="flex items-center gap-3 w-full px-2 py-2">
+            <Heart />
+            <span className="text-gray-900 font-medium">Favoris</span>
           </Link>
         </DropdownMenuItem>
 
@@ -75,6 +86,7 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
 
         <DropdownMenuItem asChild className="cursor-pointer transition-all duration-200 rounded-sm   mt-1">
           <form className="px-2 py-2">
+            <LogOut />
             <button
               className="flex items-center w-full text-left  text-gray-900  transition-all duration-200 font-medium"
               formAction={async () => {

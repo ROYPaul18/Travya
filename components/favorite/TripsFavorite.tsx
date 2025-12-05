@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import { useIntlayer } from "next-intlayer";
 import { Search } from "lucide-react";
 import { TripsCommunityItem } from "@/components/explore/TripCommunityItem";
-import { TripsFilters } from "@/components/explore/TripCommunityFilters";
 
 export interface Trip {
   id: string;
@@ -13,16 +12,12 @@ export interface Trip {
   startDate: string;
   endDate: string;
   imageUrl: string;
-  isAlreadyLiked:boolean
 }
 
 export interface TripsClientProps {
   trips: Trip[];
   locale: string;
 }
-
-const DAYS = 1000 * 60 * 60 * 24;
-const daysBetween = (d1: Date, d2: Date) => Math.ceil((d1.getTime() - d2.getTime()) / DAYS);
 
 export default function TripsCommunity({ trips, locale }: TripsClientProps) {
   const content = useIntlayer('trips-client');
@@ -66,11 +61,11 @@ export default function TripsCommunity({ trips, locale }: TripsClientProps) {
         </button>
       </div>
 
-      <TripsFilters
-        sidebarOpen={sidebarOpen}
-      />
-
       <div className="flex-1 lg:pl-6">
+        <div className="py-4">
+        <h1 className="text-4xl"> Mes favoris</h1>
+        </div>
+            
         <div className="mb-6 lg:mb-8">
           <div className="relative max-w-full lg:max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -106,7 +101,7 @@ export default function TripsCommunity({ trips, locale }: TripsClientProps) {
                 locale={locale} 
                 today={today} 
                 content={content} 
-                isAlreadyLiked={trip.isAlreadyLiked} 
+                isAlreadyLiked
               />
             ))}
           </div>

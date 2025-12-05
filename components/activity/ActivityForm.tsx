@@ -205,7 +205,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           className="w-full md:flex-1 bg-neutral-900 hover:bg-neutral-800 text-white font-medium h-11 rounded-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
-            <>@@
+            <>
               <Loader2 className="h-4 w-4 animate-spin" />
               {content.adding || "Ajout..."}
             </>

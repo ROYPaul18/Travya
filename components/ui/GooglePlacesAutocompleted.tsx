@@ -32,10 +32,10 @@ export default function GooglePlacesAutocomplete({
         "name"
     ]
 }: GooglePlacesAutocompleteProps) {
-    // 2. État pour suivre le chargement du script
+    
     const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
-    // Vérification initiale au cas où le script est déjà là (navigation entre pages)
+    
     useEffect(() => {
         if (window.google && window.google.maps && window.google.maps.places) {
             setIsScriptLoaded(true);
@@ -62,7 +62,6 @@ export default function GooglePlacesAutocomplete({
             {/* 4. On n'affiche l'Autocomplete que si le script est prêt */}
             {isScriptLoaded ? (
                 <Autocomplete
-                    // Note: On retire la prop apiKey ici car on gère le chargement manuellement avec Script au-dessus
                     value={value}
                     onChange={handleChange}
                     onPlaceSelected={handlePlaceSelected}

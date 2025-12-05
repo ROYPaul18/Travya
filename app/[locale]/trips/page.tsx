@@ -31,7 +31,7 @@ export default async function TripsPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-12 relative z-10 space-y-8">
+      <div className="px-4 lg:px-24 py-4 lg:py-12 relative z-10 space-y-8">
         <div className="space-y-6">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="space-y-2">

@@ -141,7 +141,7 @@ export const SignUpForm = () => {
                     <Button
                         type="submit"
                         disabled={form.formState.isSubmitting}
-                        className="w-full bg-neutral-900 hover:bg-neutral-800 text-white font-medium rounded-sm h-11 flex items-center justify-center gap-2 transition-all duration-200 mt-6"
+                        className="w-full bg-green-950 hover:bg-green-900 text-white font-medium rounded-sm h-11 flex items-center justify-center gap-2 transition-all duration-200 mt-6"
                     >
                         {form.formState.isSubmitting ? (
                             <>
@@ -155,7 +155,6 @@ export const SignUpForm = () => {
                 </form>
             </Form>
 
-            {/* Divider */}
             <div className="relative my-6">
                 <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -165,7 +164,6 @@ export const SignUpForm = () => {
                 </div>
             </div>
 
-            {/* Social Login */}
             <div className="flex flex-col gap-3">
                 <Button
                     type="button"
