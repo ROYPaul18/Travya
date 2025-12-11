@@ -3,16 +3,9 @@
 import { Location, Trip, Activity } from "@/app/generated/prisma";
 import Image from "next/image";
 import {
-  Calendar,
   MapPin,
   Plus,
-  ArrowLeft,
-  Pencil,
-  Trash2,
   Loader2,
-  Clock,
-  MoreHorizontal,
-  Share2,
   ImageIcon,
 } from "lucide-react";
 import { Link } from "@/components/Link";
@@ -34,13 +27,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { VisibilitySelector } from "@/components/ui/VisibilitySelector";
+import LikeButton from "../ui/LikeButton";
 
 export type LocationWithActivities = Location & {
   activities: Activity[];
@@ -52,9 +39,10 @@ export type TripWithLocation = Trip & {
 
 interface TripDetailClientProps {
   trip: TripWithLocation;
+  isAlreadyLiked: boolean;
 }
 
-export default function TripDetailClient({ trip }: TripDetailClientProps) {
+export default function TripCommunityClient({ trip, isAlreadyLiked }: TripDetailClientProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -107,45 +95,22 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="px-4 sm:px-6 lg:px-42 pb-12">
-        <div className="relative w-full">
-          <div className="flex items-center justify-between pt-6">
-            <h1 className="text-2xl font-medium text-neutral-900">
+      <div className="px-4 sm:px-6 lg:px-12 xl:px-24 2xl:px-42 pb-8 sm:pb-12">
+        <div className="relative w-full max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pt-4 sm:pt-6 gap-3 sm:gap-4">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-medium text-neutral-900">
               {trip.title}
             </h1>
 
             <div className="flex items-center gap-2">
-              <VisibilitySelector
-                currentVisibility={trip.visibility}
-                onVisibilityChange={handleShare}
-                showLabel={true}
-              />
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="rounded-sm">
-                    <MoreHorizontal className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent align="end" className="w-40 rounded-sm">
-                  <DropdownMenuItem onClick={() => setShowEditDialog(true)}>
-                    <Pencil className="h-4 w-4 mr-2" /> Modifier
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem
-                    className="text-red-600"
-                    onClick={() => setShowDeleteDialog(true)}
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" /> Supprimer
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <LikeButton tripId={trip.id} initialFavorited={isAlreadyLiked} />
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-2 h-[250px] sm:h-[350px] md:h-[450px] pt-6">
-            <div className="col-span-4 sm:col-span-2 relative rounded-l-lg overflow-hidden">
+          {/* Images Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 h-[200px] sm:h-[300px] md:h-[350px] lg:h-[450px] pt-4 sm:pt-6">
+            <div className="col-span-1 sm:col-span-2 relative rounded-lg sm:rounded-l-lg overflow-hidden">
               {trip.imageUrl ? (
                 <Image
                   src={trip.imageUrl}
@@ -156,42 +121,45 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
                 />
               ) : (
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <ImageIcon className="h-20 w-20 text-gray-300" />
+                  <ImageIcon className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-gray-300" />
                 </div>
               )}
             </div>
             <div className="hidden sm:grid sm:col-span-2 grid-cols-2 gap-2">
               <div className="relative overflow-hidden">
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <ImageIcon className="h-20 w-20 text-gray-300" />
+                  <ImageIcon className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-gray-300" />
                 </div>
               </div>
-              <div className="relative rounded-tr-sm overflow-hidden">
+              <div className="relative rounded-tr-lg overflow-hidden">
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <ImageIcon className="h-20 w-20 text-gray-300" />
+                  <ImageIcon className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-gray-300" />
                 </div>
               </div>
               <div className="relative overflow-hidden">
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <ImageIcon className="h-20 w-20 text-gray-300" />
+                  <ImageIcon className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-gray-300" />
                 </div>
               </div>
-              <div className="relative rounded-br-sm overflow-hidden">
+              <div className="relative rounded-br-lg overflow-hidden">
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <ImageIcon className="h-20 w-20 text-gray-300" />
+                  <ImageIcon className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-gray-300" />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="pt-8 mx-auto">
-          <div className="space-y-2 pb-6 border-b border-gray-200/50">
+
+        {/* Content */}
+        <div className="pt-6 sm:pt-8 max-w-7xl mx-auto">
+          {/* Description and Info */}
+          <div className="space-y-2 pb-4 sm:pb-6 border-b border-gray-200/50">
             {trip.description && (
-              <p className="text-neutral-800 text-2xl leading-relaxed font-medium">
+              <p className="text-neutral-800 text-lg sm:text-xl lg:text-2xl leading-relaxed font-medium">
                 {trip.description}
               </p>
             )}
-            <div className="flex flex-wrap gap-1 items-center text-[1rem] text-[#222222] font-light">
+            <div className="flex flex-wrap gap-1 items-center text-sm sm:text-base text-[#222222] font-light">
               <div className="flex items-center gap-1.5">
                 <span>
                   {formattedStartDate} - {formattedEndDate}
@@ -206,23 +174,26 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
               <span className="text-neutral-300">·</span>
             </div>
           </div>
-          <div className="mt-8 space-y-12">
+
+          {/* Itinerary and Map Sections */}
+          <div className="mt-6 sm:mt-8 space-y-8 sm:space-y-12">
+            {/* Itinerary Section */}
             <div>
-              <h2 className="text-2xl font-medium text-gray-900 mb-6">
+              <h2 className="text-xl sm:text-2xl font-medium text-gray-900 mb-4 sm:mb-6">
                 {content.itinerary}
               </h2>
               {trip.locations.length === 0 ? (
-                <div className="border border-dashed border-gray-200/50 rounded-sm p-12 text-center bg-gray-50">
-                  <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-light text-gray-900 mb-2">
+                <div className="border border-dashed border-gray-200/50 rounded-lg p-8 sm:p-12 text-center bg-gray-50">
+                  <MapPin className="h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
+                  <h3 className="text-lg sm:text-xl font-light text-gray-900 mb-2">
                     Aucune étape
                   </h3>
-                  <p className="text-gray-600 mb-6 font-light">
+                  <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 font-light">
                     Commencez à planifier votre voyage en ajoutant votre
                     première étape.
                   </p>
                   <Link href={`/trips/${trip.id}/itinerary/new`}>
-                    <Button className="bg-neutral-900 hover:bg-neutral-800 text-white font-medium rounded-sm h-11">
+                    <Button className="bg-neutral-900 hover:bg-neutral-800 text-white font-medium rounded-lg h-10 sm:h-11 text-sm sm:text-base">
                       <Plus className="mr-2 h-4 w-4" />
                       {content.addLocationButton}
                     </Button>
@@ -236,18 +207,19 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
               )}
             </div>
 
+            {/* Map Section */}
             <div>
-              <h2 className="text-2xl font-medium text-gray-900 mb-6">
+              <h2 className="text-xl sm:text-2xl font-medium text-gray-900 mb-4 sm:mb-6">
                 {content.map}
               </h2>
-              <div className="h-[400px] md:h-[600px] rounded-sm overflow-hidden border border-gray-300">
+              <div className="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-lg overflow-hidden border border-gray-300">
                 {allActivities.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center text-center p-6 bg-gray-50">
-                    <p className="text-gray-600 mb-4 font-light">
+                  <div className="h-full flex flex-col items-center justify-center text-center p-4 sm:p-6 bg-gray-50">
+                    <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 font-light">
                       {content.addLocationsMap}
                     </p>
                     <Link href={`/trips/${trip.id}/itinerary/new`}>
-                      <Button className="bg-neutral-900 hover:bg-neutral-800 text-white font-medium rounded-sm h-11">
+                      <Button className="bg-neutral-900 hover:bg-neutral-800 text-white font-medium rounded-lg h-10 sm:h-11 text-sm sm:text-base">
                         {content.addLocationButton}
                       </Button>
                     </Link>
@@ -266,15 +238,13 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
         open={showEditDialog}
         onOpenChange={setShowEditDialog}
       />
-
-      {/* Delete Dialog */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent className="border-gray-300 rounded-sm">
+        <AlertDialogContent className="border-gray-300 rounded-lg w-[90vw] max-w-md">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-light">
+            <AlertDialogTitle className="font-light text-lg sm:text-xl">
               Supprimer le voyage
             </AlertDialogTitle>
-            <AlertDialogDescription className="font-light">
+            <AlertDialogDescription className="font-light text-sm sm:text-base">
               Êtes-vous sûr de vouloir supprimer{" "}
               <span className="font-medium text-gray-900">"{trip.title}"</span>{" "}
               ?
@@ -282,17 +252,17 @@ export default function TripDetailClient({ trip }: TripDetailClientProps) {
               Cette action est irréversible.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="font-light rounded-sm">
+          <AlertDialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
+            <AlertDialogCancel className="font-light rounded-lg w-full sm:w-auto">
               Annuler
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDelete}
-              className="bg-red-600 hover:bg-red-700 font-medium rounded-sm"
+              className="bg-red-600 hover:bg-red-700 font-medium rounded-lg w-full sm:w-auto"
               disabled={isDeleting}
             >
               {isDeleting ? (
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 justify-center">
                   <Loader2 className="h-4 w-4 animate-spin" /> Suppression...
                 </span>
               ) : (

@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import {  Image as ImageIcon,Loader2,} from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Loader2, MapPin } from "lucide-react";
 import { useIntlayer } from "next-intlayer";
 import { ActivityFormProps } from "@/lib/utils/types/types";
 import GooglePlacesAutocomplete from "@/components/ui/GooglePlacesAutocompleted";
 import { Input } from "../ui/input";
+import { cn } from "@/lib/utils";
+
 
 const ActivityForm: React.FC<ActivityFormProps> = ({
   locationId,
@@ -18,6 +20,17 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   const [address, setAddress] = useState("");
   const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [addressError, setAddressError] = useState<string | undefined>(undefined);
+  
+  
+  const formRef = useRef<HTMLFormElement>(null);
+
+
+  useEffect(() => {
+    if (address.trim() && addressError) {
+      setAddressError(undefined);
+    }
+  }, [address]);
 
   const categories = [
     { value: "restaurant", label: content.categories.restaurant, emoji: "🍽️" },
@@ -31,24 +44,40 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   const handlePlaceSelected = (place: google.maps.places.PlaceResult) => {
     console.log("Place sélectionné dans ActivityForm:", place);
     setSelectedPlace(place);
-    setAddress(place.formatted_address || "");
+    if (place.formatted_address) {
+        setAddress(place.formatted_address);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (isSubmitting) return;
-
+    if (!address.trim()) {
+        setAddressError(content.validation.addressRequired || "Veuillez sélectionner une adresse ou la saisir manuellement.");
+        return;
+    }
+    setAddressError(undefined);
     try {
       setIsSubmitting(true);
       const formData = new FormData(e.currentTarget);
-      formData.set("address", address);
+      formData.set("address", address); 
 
       if (selectedPlace) {
         formData.set("placeId", selectedPlace.place_id || "");
-        formData.set("latitude", selectedPlace.geometry?.location?.lat()?.toString() || "");
-        formData.set("longitude", selectedPlace.geometry?.location?.lng()?.toString() || "");
+        const lat = selectedPlace.geometry?.location?.lat();
+        const lng = selectedPlace.geometry?.location?.lng();
+        
+        if (lat !== undefined && lng !== undefined) {
+            formData.set("latitude", lat.toString());
+            formData.set("longitude", lng.toString());
+        }
         formData.set("formattedAddress", selectedPlace.formatted_address || address);
+      } else {
+        formData.set("placeId", "");
+        formData.set("latitude", "");
+        formData.set("longitude", "");
+        formData.set("formattedAddress", address);
       }
 
       await addActivity(formData, locationId, tripId);
@@ -62,10 +91,10 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
 
   return (
     <form
+      ref={formRef}
       onSubmit={handleSubmit}
       className="bg-white rounded-sm w-full max-w-full md:max-w-2xl mx-auto"
     >
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
         <h3 className="text-lg sm:text-xl font-light text-gray-900">
           {content.newActivity}
@@ -73,7 +102,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
       </div>
 
       <div className="space-y-4">
-        {/* Nom */}
         <div>
           <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
             {content.activityName}
@@ -84,11 +112,11 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             required
             disabled={isSubmitting}
             placeholder={content.activityNamePlaceholder.value}
-            className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
+            className={cn(
+                "w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 disabled:opacity-50 disabled:bg-gray-50 font-light",
+            )}
           />
         </div>
-
-        {/* Adresse */}
         <div>
           <label className="block text-sm font-light text-gray-900 mb-1.5 sm:mb-2">
             {content.address}
@@ -99,9 +127,19 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             onPlaceSelected={handlePlaceSelected}
             placeholder={content.addressPlaceholder.value}
             disabled={isSubmitting}
-            className="border-gray-300 text-gray-900 placeholder:text-gray-400 focus:ring-gray-200 focus:border-gray-500 rounded-sm h-11 font-light"
+            // Ajout de la prop 'error' pour le style
+            error={addressError} 
+            className="border-gray-300 text-gray-900 placeholder:text-gray-400 focus:ring-blue-200 focus:border-blue-500 rounded-sm h-11 font-light"
           />
-          <input type="hidden" name="address" value={address} />
+          {/* L'input caché est retiré car 'address' est injecté dans FormData */}
+          
+          {addressError && (
+            <p className="text-xs text-red-500 mt-1 ml-1 flex items-center gap-1">
+                <MapPin className="h-3 w-3" />
+                {addressError}
+            </p>
+          )}
+
         </div>
 
         {/* Catégorie */}
@@ -113,9 +151,11 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             name="category"
             required
             disabled={isSubmitting}
-            className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 appearance-none cursor-pointer font-light"
+            className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 disabled:opacity-50 disabled:bg-gray-50 appearance-none cursor-pointer font-light"
+            // Important: la première option sélectionnable est celle par défaut
+            defaultValue="" 
           >
-            <option value="" className="bg-white">
+            <option value="" disabled className="bg-white">
               {content.selectCategory}
             </option>
             {categories.map((cat) => (
@@ -136,7 +176,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
               type="time"
               name="startTime"
               disabled={isSubmitting}
-              className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
+              className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
             />
           </div>
 
@@ -148,7 +188,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
               type="time"
               name="endTime"
               disabled={isSubmitting}
-              className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
+              className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
             />
           </div>
         </div>
@@ -165,7 +205,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             step="0.01"
             disabled={isSubmitting}
             placeholder={content.budgetPlaceholder.value}
-            className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
+            className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 disabled:opacity-50 disabled:bg-gray-50 font-light"
           />
         </div>
 
@@ -178,20 +218,23 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             rows={3}
             disabled={isSubmitting}
             placeholder={content.descriptionPlaceholder.value}
-            className="w-full bg-white border border-gray-300 rounded-sm px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-500 resize-none disabled:opacity-50 disabled:bg-gray-50 font-light"
+            className="w-full bg-white border border-gray-300 rounded-sm px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 resize-none disabled:opacity-50 disabled:bg-gray-50 font-light"
           />
         </div>
 
+        {/* Affichage des données sélectionnées */}
         {selectedPlace && (
           <div className="bg-green-50 border border-green-300 rounded-sm p-3 text-xs font-light">
             <p className="text-green-700 flex items-start gap-2">
-              📍 Lieu sélectionné : {selectedPlace.name || selectedPlace.formatted_address}
+              <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" /> 
+              Lieu sélectionné : **{selectedPlace.name || selectedPlace.formatted_address}**
             </p>
           </div>
         )}
 
         <div className="bg-blue-50 border border-blue-300 rounded-sm p-3 text-xs font-light">
           <p className="text-blue-700 flex items-start gap-2">
+             
             {content.imageNote}
           </p>
         </div>
@@ -202,7 +245,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
         <button
           type="submit"
           disabled={isSubmitting || !address.trim()}
-          className="w-full md:flex-1 bg-neutral-900 hover:bg-neutral-800 text-white font-medium h-11 rounded-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full md:flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium h-11 rounded-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
             <>

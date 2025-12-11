@@ -7,6 +7,7 @@ import { getHTMLTextDir } from "intlayer";
 import { NextLayoutIntlayer } from "next-intlayer";
 import { IntlayerClientProvider } from "next-intlayer";
 import { IntlayerServerProvider } from "next-intlayer/server";
+import Script from "next/script";
 
 
 const geist = Lora({
@@ -39,9 +40,12 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
           <body
             className={`${geist.variable} antialiased`}
           >
-            
-              <Navbar params={params} />
-            
+            <Script
+              src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+              strategy="beforeInteractive"
+            />
+            <Navbar params={params} />
+
             {children}
             <Footer />
           </body>

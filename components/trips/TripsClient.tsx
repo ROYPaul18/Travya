@@ -2,9 +2,11 @@
 
 import { useState, useMemo } from "react";
 import { useIntlayer } from "next-intlayer";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { TripCardItem, Trip } from "@/components/trips/TripCardItem";
 import { TripsStatusFilters } from "@/components/trips/TripsFilters";
+import { Link } from "../Link";
+import { Button } from "../ui/button";
 
 export interface TripsClientProps {
   trips: Trip[];
@@ -13,7 +15,7 @@ export interface TripsClientProps {
 
 export default function TripsClient({ trips, locale }: TripsClientProps) {
   const content = useIntlayer('trips-client');
-  
+
   const [tab, setTab] = useState<"all" | "upcoming" | "past">("all");
   const [query, setQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -47,7 +49,7 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 lg:gap-0">
-      {/* Mobile Filter Toggle */}
+
       <div className="lg:hidden mb-4">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -65,7 +67,6 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
         </button>
       </div>
 
-      {/* Composant Filtres de Statut */}
       <TripsStatusFilters
         tab={tab}
         onTabChange={setTab}
@@ -73,11 +74,9 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
         sidebarOpen={sidebarOpen}
       />
 
-      {/* Main Content */}
       <div className="flex-1 lg:pl-6">
-        {/* Search Bar */}
-        <div className="mb-6 lg:mb-8">
-          <div className="relative max-w-full lg:max-w-md">
+        <div className="flex items-center  mb-6 lg:mb-8">
+          <div className="relative max-w-full lg:max-w-md pr-8">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
@@ -88,9 +87,14 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
               className="w-full pl-10 pr-4 py-3 text-sm rounded-sm bg-white border border-gray-300 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all"
             />
           </div>
+          <Link href={"/trips/new"}>
+            <Button className="py-5 bg-green-950 hover:bg-green-900 text-white hover:shadow-lg transition-all duration-200 flex items-center gap-2 font-light cursor-pointer">
+              <Plus className="h-5 w-5" />
+               Nouveau Voyage
+            </Button>
+          </Link>
         </div>
 
-        {/* Trips Grid */}
         {filtered.length === 0 ? (
           <div className="text-center py-16 lg:py-32">
             <div className="p-6 bg-gray-100 rounded-full inline-flex mb-6 border border-gray-200">
@@ -106,12 +110,12 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {filtered.map((trip) => (
-              <TripCardItem 
-                key={trip.id} 
-                trip={trip} 
-                locale={locale} 
-                today={today} 
-                content={content} 
+              <TripCardItem
+                key={trip.id}
+                trip={trip}
+                locale={locale}
+                today={today}
+                content={content}
               />
             ))}
           </div>

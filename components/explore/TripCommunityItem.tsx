@@ -1,10 +1,10 @@
 "use client";
 
 import { Link } from "@/components/Link";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, MapPin, Lock, Calendar, RefreshCw, User } from "lucide-react";
 import Image from "next/image";
 
-import HeartButton from "@/components/ui/HeartButton"; 
+import HeartButton from "@/components/ui/HeartButton";
 
 export interface Trip {
   id: string;
@@ -13,16 +13,35 @@ export interface Trip {
   startDate: string;
   endDate: string;
   imageUrl: string;
+  pricePerPerson?: number;
+  currency?: string;
+  isPrivate?: boolean;
+  hasFreeReschedule?: boolean;
+  hasTourGuide?: boolean;
 }
 
-export const TripsCommunityItem = ({ trip, locale, today, content, isAlreadyLiked }: { trip: Trip; locale: string; today: Date; content: any, isAlreadyLiked:boolean }) => {
+export const TripsCommunityItem = ({
+  trip,
+  locale,
+  today,
+  content,
+  isAlreadyLiked
+}: {
+  trip: Trip;
+  locale: string;
+  today: Date;
+  content: any;
+  isAlreadyLiked: boolean;
+}) => {
   const start = new Date(trip.startDate);
   const end = new Date(trip.endDate);
 
+  const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+
   return (
-    <article 
+    <article
       className="group relative rounded-lg overflow-hidden border border-gray-200/50 bg-white transition-all duration-500 h-full flex flex-col p-2 hover:shadow-sm">
-      <Link href={`/trips/${trip.id}`} className="block">
+      <Link href={`/explore/${trip.id}`} className="block">
         <div className="relative h-48 sm:h-56 bg-gray-100 rounded-sm overflow-hidden">
           {trip.imageUrl ? (
             <Image
@@ -43,34 +62,45 @@ export const TripsCommunityItem = ({ trip, locale, today, content, isAlreadyLike
       </Link>
 
       <HeartButton tripId={trip.id} initialFavorited={isAlreadyLiked} />
-
-      <Link href={`/trips/${trip.id}`} className="block flex-1">
+      <Link href={`/explore/${trip.id}`} className="block flex-1">
         <div className="py-3 sm:py-2 flex flex-col h-full">
           <h3 className="font-medium text-base sm:text-lg text-gray-900 group-hover:text-gray-700 transition-colors duration-300 line-clamp-2">
             {trip.title}
           </h3>
 
-          {trip.description && (
-            <p className="text-sm text-gray-400 line-clamp-2 mb-3 leading-relaxed">
-              {trip.description}
-            </p>
-          )}
+          <p className="text-sm text-gray-400 line-clamp-2 mb-3 leading-relaxed">
+            France
+          </p>
 
           <div className="mt-auto space-y-3">
-            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
-
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 text-gray-600">
-                <span className="font-medium">
-                  {start.toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })} - {end.toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })}
-                </span>
-              </div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-lg font-bold text-gray-900">
+                {trip.currency || "$"} à venir...
+              </span>
             </div>
 
-            <div className="flex items-center justify-between pt-2">            
-              <div className="flex items-center gap-2 text-gray-900 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                <span className="text-xs font-semibold hidden sm:inline">{content.viewMore.value}</span>
-                <ArrowRight className="h-4 w-4" />
+            <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+
+              <div className="flex items-center gap-1.5">
+                <Lock className="h-3.5 w-3.5" />
+                <span>à venir...</span>
+              </div>
+
+
+              <div className="flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5" />
+                <span>{days} {days === 1 ? 'Day' : 'Days'}</span>
+              </div>
+
+
+              <div className="flex items-center gap-1.5">
+                <RefreshCw className="h-3.5 w-3.5" />
+                <span>à venir...</span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5" />
+                <span>à venir...</span>
               </div>
             </div>
           </div>

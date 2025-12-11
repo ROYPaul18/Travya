@@ -31,23 +31,7 @@ export default async function TripsPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="px-4 lg:px-24 py-4 lg:py-12 relative z-10 space-y-8">
-        <div className="space-y-6">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-            <div className="space-y-2">
-              <h1 className="text-xl font-medium text-gray-900">
-                {content.dashboard}
-              </h1>
-              <p className="text-sm font-light text-gray-600">{content.dashboardSubtitle}</p>
-            </div>
-            <Link href={"/trips/new"}>
-              <Button className="bg-green-950 hover:bg-green-900 text-white hover:shadow-lg transition-all duration-200 flex items-center gap-2 font-light cursor-pointer">
-                <Plus className="h-5 w-5" />
-                {content.newTrip}
-              </Button>
-            </Link>
-          </div>
-        </div>
+      <div className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-24 py-6 sm:py-8 max-w-[1920px] mx-auto relative z-10">
         <TripsClient
           trips={JSON.parse(JSON.stringify(sortedTrips))}
           locale={locale}

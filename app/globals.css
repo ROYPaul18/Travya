@@ -124,10 +124,10 @@
         @apply bg-background text-foreground;
     }
 }
-
-body {
-  /* font-family: "Inter", sans-serif; */
+body{
+        background: #052415, rgb(5, 36, 21);
 }
+
 .pac-container {
     background-color: white !important;
     border-radius: 0.125rem !important; /* rounded-sm */
@@ -135,6 +135,7 @@ body {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
     z-index: 9999 !important;
     margin-top: 4px !important;
+    position: absolute !important;
     
 }
 

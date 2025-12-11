@@ -52,7 +52,7 @@ export default function NewTrip() {
           <Link href="/trips">
             <Button 
               variant="ghost" 
-              className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 gap-2 pl-0 rounded-sm transition-colors font-light"
+              className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 gap-2 pl-0 rounded-sm transition-colors font-light"
             >
               <ArrowLeft className="h-4 w-4" />
               <span>Retour aux voyages</span>

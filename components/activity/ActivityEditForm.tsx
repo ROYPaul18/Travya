@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {  Image as ImageIcon,
-  Loader2,
-} from "lucide-react";
+import { Image as ImageIcon, Loader2 } from "lucide-react";
 import { useIntlayer } from "next-intlayer";
 import { ActivityEditFormProps } from "@/lib/utils/types/types";
 import { formatTimeForInput } from "@/lib/utils/formatDate";
@@ -21,7 +19,8 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
   const content = useIntlayer("activity-form");
 
   const [address, setAddress] = useState(activity.address || "");
-  const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
+  const [selectedPlace, setSelectedPlace] =
+    useState<google.maps.places.PlaceResult | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const categories = [
@@ -30,7 +29,11 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
     { value: "museum", label: content.categories.museum, emoji: "🖼️" },
     { value: "park", label: content.categories.park, emoji: "🌳" },
     { value: "activity", label: content.categories.activity, emoji: "🎯" },
-    { value: "accommodation", label: content.categories.accommodation, emoji: "🏨" },
+    {
+      value: "accommodation",
+      label: content.categories.accommodation,
+      emoji: "🏨",
+    },
   ];
 
   const handlePlaceSelected = (place: google.maps.places.PlaceResult) => {
@@ -51,9 +54,18 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
 
       if (selectedPlace) {
         formData.set("placeId", selectedPlace.place_id || "");
-        formData.set("latitude", selectedPlace.geometry?.location?.lat()?.toString() || "");
-        formData.set("longitude", selectedPlace.geometry?.location?.lng()?.toString() || "");
-        formData.set("formattedAddress", selectedPlace.formatted_address || address);
+        formData.set(
+          "latitude",
+          selectedPlace.geometry?.location?.lat()?.toString() || "",
+        );
+        formData.set(
+          "longitude",
+          selectedPlace.geometry?.location?.lng()?.toString() || "",
+        );
+        formData.set(
+          "formattedAddress",
+          selectedPlace.formatted_address || address,
+        );
       }
 
       await updateActivity(activity.id, formData, tripId);
@@ -193,7 +205,11 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
           />
         </div>
 
-        <input type="hidden" name="images" value={JSON.stringify(activity.images)} />
+        <input
+          type="hidden"
+          name="images"
+          value={JSON.stringify(activity.images)}
+        />
 
         {selectedPlace && (
           <div className="bg-green-50 border border-green-300 rounded-sm p-3 text-xs font-light">

@@ -30,34 +30,34 @@ export function TripsFilters({
   };
 
   const peopleOptions = [
-    { id: "solo", label: "Solo (1 personne)", icon: "👤" },
-    { id: "couple", label: "En couple (2)", icon: "👫" },
-    { id: "small", label: "Petit groupe (3-5)", icon: "👥" },
-    { id: "large", label: "Grand groupe (6+)", icon: "👨‍👩‍👧‍👦" },
-  ];
+  { id: "solo", label: "à venir...", icon: "👤" },
+  { id: "couple", label: "à venir...", icon: "👫" },
+  { id: "small", label: "à venir...", icon: "👥" },
+  { id: "large", label: "à venir...", icon: "👨‍👩‍👧‍👦" },
+];
 
-  const countryOptions = [
-    { id: "france", label: "France", flag: "🇫🇷" },
-    { id: "italy", label: "Italie", flag: "🇮🇹" },
-    { id: "spain", label: "Espagne", flag: "🇪🇸" },
-    { id: "japan", label: "Japon", flag: "🇯🇵" },
-    { id: "usa", label: "États-Unis", flag: "🇺🇸" },
-    { id: "thailand", label: "Thaïlande", flag: "🇹🇭" },
-  ];
+const countryOptions = [
+  { id: "france", label: "à venir..." },
+  { id: "italy", label: "à venir..." },
+  { id: "spain", label: "à venir..." },
+  { id: "japan", label: "à venir..." },
+  { id: "usa", label: "à venir..." },
+  { id: "thailand", label: "à venir..." },
+];
 
-  const durationOptions = [
-    { id: "weekend", label: "Week-end (1-3 jours)" },
-    { id: "short", label: "Court séjour (4-7 jours)" },
-    { id: "medium", label: "Moyenne durée (8-14 jours)" },
-    { id: "long", label: "Long séjour (15+ jours)" },
-  ];
+const durationOptions = [
+  { id: "weekend", label: "à venir..." },
+  { id: "short", label: "à venir..." },
+  { id: "medium", label: "à venir..." },
+  { id: "long", label: "à venir..." },
+];
 
-  const budgetOptions = [
-    { id: "budget", label: "Économique (< 500€)" },
-    { id: "moderate", label: "Modéré (500-1500€)" },
-    { id: "comfortable", label: "Confortable (1500-3000€)" },
-    { id: "luxury", label: "Luxe (3000€+)" },
-  ];
+const budgetOptions = [
+  { id: "budget", label: "à venir..." },
+  { id: "moderate", label: "à venir..." },
+  { id: "comfortable", label: "à venir..." },
+  { id: "luxury", label: "à venir..." },
+];
 
   const handleToggle = (
     value: string,

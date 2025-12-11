@@ -29,7 +29,10 @@ export async function GET(
       );
     }
 
-    if (location.trip.userId !== user.id) {
+    const isOwner = location.trip.userId === user.id;
+    const visibility = location.trip.visibility;
+
+    if (visibility === "PRIVATE" && !isOwner) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
     }
 

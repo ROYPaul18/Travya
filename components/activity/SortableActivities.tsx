@@ -32,9 +32,11 @@ import { Activity } from "@/lib/utils/types/types";
 const SortableActivities = ({
   tripId,
   locationId,
+  maxVisible,
 }: {
   tripId: string;
   locationId: string;
+  maxVisible?: number;
 }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -119,6 +121,9 @@ const SortableActivities = ({
     }
   };
 
+  const displayedActivities =
+    maxVisible !== undefined ? activities.slice(0, maxVisible) : activities;
+
   if (isLoading) {
     return (
       <div className="bg-white rounded-sm p-8 border border-gray-300">
@@ -149,9 +154,9 @@ const SortableActivities = ({
   return (
     <>
       <div className="space-y-4">
-        {activities.length > 0 && (
+        {displayedActivities.length > 0 && (
           <div>
-            {activities.map((activity) => (
+            {displayedActivities.map((activity) => (
               <ActivityItem
                 key={activity.id}
                 activity={activity}
@@ -184,8 +189,6 @@ const SortableActivities = ({
           </button>
         </div>
       </div>
-
-      {/* Edit Activity Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
         <DialogContent className="bg-white max-w-2xl max-h-[90vh] overflow-y-auto border-gray-300 rounded-sm">
           <DialogHeader>

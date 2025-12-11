@@ -10,8 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { useIntlayer } from "next-intlayer/server";
 import { getUser } from "@/lib/auth-server";
-import { HowItWorksClient } from "@/components/home/HowItsWork";
-
 
 interface PageProps {
   params: Promise<{ locale: string }>
@@ -66,12 +64,11 @@ export default async function Home({ params }: PageProps) {
             </div>
 
             
-            <div className="relative mx-auto max-w-4xl mt-12 rounded-lg border border-gray-200 bg-gray-50/50 p-2 shadow-sm lg:mt-20">
+            <div className="relative mx-auto max-w-2xl mt-12 rounded-lg border border-gray-200 bg-gray-50/50 p-2 shadow-sm lg:mt-20">
                <div className="aspect-[16/9] overflow-hidden rounded-md bg-white flex items-center justify-center text-gray-300">
-            
                   <div className="text-center">
                     <MapIcon className="h-16 w-16 mx-auto mb-4 opacity-20" />
-                    <span className="text-sm font-medium opacity-40">Interactive Trip Planner Preview</span>
+                    <span className="text-sm font-medium opacity-40">A venir...</span>
                   </div>
                </div>
             </div>
@@ -132,15 +129,9 @@ export default async function Home({ params }: PageProps) {
             </div>
           </div>
         </section>
-
-        
-        <section className="container mx-auto px-4 py-20 lg:py-28">
-            <HowItWorksClient content={content} /> 
-        </section>
-
         
         <section className="container mx-auto px-4 py-24">
-          <div className="max-w-5xl mx-auto bg-neutral-900 rounded-2xl p-12 lg:p-20 text-center relative overflow-hidden">
+          <div className="max-w-5xl mx-auto bg-green-950 rounded-2xl p-12 lg:p-20 text-center relative overflow-hidden">
         
             <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-500 opacity-10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
@@ -156,7 +147,7 @@ export default async function Home({ params }: PageProps) {
             
             <div className="flex justify-center">
                 <Link href={user ? "/trips/new" : "/auth/signin"}>
-                <Button size="lg" className="bg-white hover:bg-gray-100 text-neutral-900 font-medium px-10 py-7 text-lg rounded-full transition-all duration-300 hover:scale-105 flex items-center gap-2">
+                <Button size="lg" className="bg-white hover:bg-gray-100 text-neutral-900 font-medium px-10 py-7 text-lg rounded-full transition-all duration-300 flex items-center gap-2">
                     {content.createFirstTrip}
                     <ArrowRight className="h-5 w-5" />
                 </Button>

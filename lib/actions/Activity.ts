@@ -5,9 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { Categorie } from "@/app/generated/prisma";
 import { getUser } from "../auth-server";
-import { redirect } from "next/navigation";
 
-// Fonction helper pour géocoder l'adresse
 async function geocodeAddress(address: string) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
   const response = await fetch(
@@ -24,8 +22,6 @@ async function geocodeAddress(address: string) {
   const { lat, lng } = data.results[0].geometry.location;
   return { lat, lng };
 }
-
-// Mapper les catégories du formulaire vers l'enum Prisma
 function mapCategory(category: string): Categorie {
   const mapping: Record<string, Categorie> = {
     restaurant: Categorie.RESTAURANT,
@@ -41,7 +37,6 @@ function mapCategory(category: string): Categorie {
   return mapping[category] || Categorie.AUTRE;
 }
 
-// Ajouter une activité
 export async function addActivity(
   formData: FormData,
   locationId: string,
@@ -52,8 +47,6 @@ export async function addActivity(
   if (!user) {
     throw new Error("Not authenticated");
   }
-
-  // Vérifier que la location appartient au trip de l'utilisateur
   const location = await prisma.location.findUnique({
     where: { id: locationId },
     include: { trip: true },
@@ -66,8 +59,6 @@ export async function addActivity(
   if (location.trip.userId !== user.id) {
     throw new Error("Non autorisé");
   }
-
-  // Récupérer les données du formulaire
   const name = formData.get("name")?.toString();
   const address = formData.get("address")?.toString();
   const category = formData.get("category")?.toString();
@@ -80,19 +71,12 @@ export async function addActivity(
   if (!name || !address || !category) {
     throw new Error("Champs obligatoires manquants");
   }
-
-  // Géocoder l'adresse
   const { lat, lng } = await geocodeAddress(address);
-
-  // Parser les images
   const images = imagesJson ? JSON.parse(imagesJson) : [];
-
-  // Compter les activités existantes pour définir l'ordre
   const count = await prisma.activity.count({
     where: { locationId },
   });
 
-  // Créer l'activité
   await prisma.activity.create({
     data: {
       name,
