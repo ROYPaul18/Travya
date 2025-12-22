@@ -8,9 +8,9 @@
     "start": "next start && ",
     "lint": "next lint",
     "db:seed": "tsx prisma/seed.ts",
-    "db:reset": "npx prisma migrate reset --force"
+    "db:reset": "npx prisma migrate reset --force",
+    "postinstall": "prisma generate"
   },
-
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
     "@dnd-kit/core": "^6.3.1",
