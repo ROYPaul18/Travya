@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@/lib/auth";
+
 import { prisma } from "../prisma";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";

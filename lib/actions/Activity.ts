@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { Categorie } from "@/app/generated/prisma";
+import { Categorie } from "@/generated/prisma/client";
 import { getUser } from "../auth-server";
 
 function mapCategory(category: string): Categorie {

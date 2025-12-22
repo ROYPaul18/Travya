@@ -2,8 +2,6 @@
 
 import {prisma} from '@/lib/prisma'
 import { getUser } from '@/lib/auth-server' 
-import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
 
 export async function toggleFavorite(tripId: string) {
   const user = await getUser()
