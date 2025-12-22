@@ -1,13 +1,11 @@
 // prisma/seed.ts
-import { PrismaClient, Categorie, Visibility } from '@prisma/client';
+import { PrismaClient, Categorie, Visibility } from '@/app/generated/prisma';
 import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
 
-// Configuration pour des données reproductibles
 faker.seed(123);
 
-// Données de référence pour plus de réalisme
 const CITIES = [
   { name: 'Paris', country: 'France', lat: 48.8566, lng: 2.3522 },
   { name: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503 },
