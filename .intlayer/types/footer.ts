@@ -1,0 +1,24 @@
+/* eslint-disable */
+export default {
+  "key": "footer",
+  "content": {
+    "nodeType": "translation",
+    "translation": {
+      "en": {
+        "copyright": "© 2025 Travya. Start your journey today.",
+        "tagline": "Start your journey today"
+      },
+      "fr": {
+        "copyright": "© 2025 Travya. Commencez votre voyage aujourd'hui.",
+        "tagline": "Commencez votre voyage aujourd'hui"
+      },
+      "es": {
+        "copyright": "© 2025 Travya. Comienza tu viaje hoy.",
+        "tagline": "Comienza tu viaje hoy"
+      }
+    }
+  },
+  "localIds": [
+    "footer::local::components/footer/footer.content.ts"
+  ]
+} as const;

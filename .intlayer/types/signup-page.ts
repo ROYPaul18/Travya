@@ -1,0 +1,30 @@
+/* eslint-disable */
+export default {
+  "key": "signup-page",
+  "content": {
+    "nodeType": "translation",
+    "translation": {
+      "en": {
+        "title": "Create an account",
+        "description": "Join the adventure, discover the world differently 🌍",
+        "footerText": "Already have an account?",
+        "loginLink": "Sign in"
+      },
+      "fr": {
+        "title": "Créer un compte",
+        "description": "Rejoins l'aventure, découvre le monde autrement 🌍",
+        "footerText": "Déjà un compte ?",
+        "loginLink": "Se connecter"
+      },
+      "es": {
+        "title": "Crear una cuenta",
+        "description": "Únete a la aventura, descubre el mundo de otra manera 🌍",
+        "footerText": "¿Ya tienes una cuenta?",
+        "loginLink": "Iniciar sesión"
+      }
+    }
+  },
+  "localIds": [
+    "signup-page::local::app/[locale]/auth/signup/page.content.ts"
+  ]
+} as const;

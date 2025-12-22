@@ -1,0 +1,45 @@
+/* eslint-disable */
+export default {
+  "key": "navbar",
+  "content": {
+    "nodeType": "translation",
+    "translation": {
+      "en": {
+        "myTrips": "My Trips",
+        "globe": "Globe",
+        "family": "Family",
+        "loginGoogle": "Sign in with Google",
+        "loginGithub": "Sign in with GitHub",
+        "signInGoogle": "Sign in (Google)",
+        "signInGithub": "Sign in (GitHub)",
+        "logoutText": "Logout",
+        "language": "Language"
+      },
+      "fr": {
+        "myTrips": "Mes voyages",
+        "globe": "Globe",
+        "family": "Famille",
+        "loginGoogle": "Se connecter avec Google",
+        "loginGithub": "Se connecter avec GitHub",
+        "signInGoogle": "Connexion (Google)",
+        "signInGithub": "Connexion (GitHub)",
+        "logoutText": "Déconnexion",
+        "language": "Langue"
+      },
+      "es": {
+        "myTrips": "Mis viajes",
+        "globe": "Globo",
+        "family": "Familia",
+        "loginGoogle": "Iniciar sesión con Google",
+        "loginGithub": "Iniciar sesión con GitHub",
+        "signInGoogle": "Iniciar sesión (Google)",
+        "signInGithub": "Iniciar sesión (GitHub)",
+        "logoutText": "Cerrar sesión",
+        "language": "Idioma"
+      }
+    }
+  },
+  "localIds": [
+    "navbar::local::components/navbar/navbar.content.ts"
+  ]
+} as const;

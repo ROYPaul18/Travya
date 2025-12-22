@@ -1,0 +1,63 @@
+/* eslint-disable */
+export default {
+  "key": "signup-form",
+  "content": {
+    "nodeType": "translation",
+    "translation": {
+      "en": {
+        "labels": {
+          "name": "Full name",
+          "email": "Email",
+          "password": "Password"
+        },
+        "placeholders": {
+          "name": "John Doe",
+          "email": "example@email.com",
+          "password": "••••••••"
+        },
+        "buttons": {
+          "submit": "Create my account",
+          "submitting": "Creating..."
+        },
+        "divider": "Or continue with"
+      },
+      "fr": {
+        "labels": {
+          "name": "Nom complet",
+          "email": "Email",
+          "password": "Mot de passe"
+        },
+        "placeholders": {
+          "name": "Alex Dupont",
+          "email": "exemple@email.com",
+          "password": "••••••••"
+        },
+        "buttons": {
+          "submit": "Créer mon compte",
+          "submitting": "Création en cours..."
+        },
+        "divider": "Ou continuer avec"
+      },
+      "es": {
+        "labels": {
+          "name": "Nombre completo",
+          "email": "Correo electrónico",
+          "password": "Contraseña"
+        },
+        "placeholders": {
+          "name": "Juan Pérez",
+          "email": "ejemplo@email.com",
+          "password": "••••••••"
+        },
+        "buttons": {
+          "submit": "Crear mi cuenta",
+          "submitting": "Creando..."
+        },
+        "divider": "O continuar con"
+      }
+    }
+  },
+  "localIds": [
+    "signup-form::local::app/[locale]/auth/signup/signup.content.ts"
+  ]
+} as const;
