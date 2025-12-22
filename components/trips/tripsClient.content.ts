@@ -117,7 +117,45 @@ const tripsClientContent = {
       en: 'D-{days}',
       fr: 'J-{days}',
       es: 'D-{days}'
-    })
+    }),
+
+    // Nouveaux textes à ajouter :
+    filters: t({
+      en: 'Filters',
+      fr: 'Filtres',
+      es: 'Filtros'
+    }),
+
+    newTrip: t({
+      en: 'New Trip',
+      fr: 'Nouveau Voyage',
+      es: 'Nuevo Viaje'
+    }),
+
+    // Autres textes potentiellement utiles
+    createNewTrip: t({
+      en: 'Create New Trip',
+      fr: 'Créer un Nouveau Voyage',
+      es: 'Crear Nuevo Viaje'
+    }),
+
+    tripsCount: t({
+      en: '{count} trips',
+      fr: '{count} voyages',
+      es: '{count} viajes'
+    }),
+
+    noTrips: t({
+      en: 'No trips yet',
+      fr: 'Aucun voyage pour le moment',
+      es: 'Aún no hay viajes'
+    }),
+
+    startPlanning: t({
+      en: 'Start planning your first trip',
+      fr: 'Commencez à planifier votre premier voyage',
+      es: 'Comienza a planificar tu primer viaje'
+    }),
   },
 } satisfies Dictionary;
 

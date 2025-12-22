@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,22 +12,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import ActivityForm from "@/components/activity/ActivityForm";
-import ActivityEditForm from "@/components/activity/ActivityEditForm";
 import ActivityItem from "@/components/activity/ActivityItem";
-import {
-  addActivity,
-  deleteActivity,
-  updateActivity,
-} from "@/lib/actions/Activity";
+import { deleteActivity, } from "@/lib/actions/Activity";
 import { useIntlayer } from "next-intlayer";
-import { Activity } from "@/lib/utils/types/types";
+import { Activity, Location } from "@/lib/utils/types/types";
+import { useRouter } from "next/navigation";
+import ActivityItemSkeleton from "./ActivityItemSkeleton";
+import { Link } from "../Link";
 
 const SortableActivities = ({
   tripId,
@@ -42,13 +33,9 @@ const SortableActivities = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [activityToDelete, setActivityToDelete] = useState<Activity | null>(
-    null
-  );
-  const [activityToEdit, setActivityToEdit] = useState<Activity | null>(null);
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [activityToDelete, setActivityToDelete] = useState<Activity | null>(null);
   const content = useIntlayer("activities");
+  const router = useRouter();
 
   const fetchActivities = async () => {
     try {
@@ -78,25 +65,8 @@ const SortableActivities = ({
     fetchActivities();
   }, [locationId]);
 
-  const handleActivityAdded = () => {
-    setShowAddDialog(false);
-    fetchActivities();
-  };
-
   const handleEditClick = (activity: Activity) => {
-    setActivityToEdit(activity);
-    setShowEditDialog(true);
-  };
-
-  const handleEditSuccess = () => {
-    setActivityToEdit(null);
-    setShowEditDialog(false);
-    fetchActivities();
-  };
-
-  const handleEditCancel = () => {
-    setActivityToEdit(null);
-    setShowEditDialog(false);
+    router.push(`/trips/${tripId}/${locationId}/${activity.id}/edit`);
   };
 
   const handleDeleteClick = (activity: Activity) => {
@@ -126,13 +96,10 @@ const SortableActivities = ({
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-sm p-8 border border-gray-300">
-        <div className="flex items-center justify-center gap-2">
-          <Loader2 className="h-5 w-5 text-gray-600 animate-spin" />
-          <span className="text-gray-600 font-light">
-            {content.loadingActivities?.value || content.loadingActivities}
-          </span>
-        </div>
+      <div className="bg-white rounded-sm p-4 space-y-4">
+        {Array.from({ length: maxVisible ?? 3 }).map((_, index) => (
+          <ActivityItemSkeleton key={index} />
+        ))}
       </div>
     );
   }
@@ -159,11 +126,13 @@ const SortableActivities = ({
             {displayedActivities.map((activity) => (
               <ActivityItem
                 key={activity.id}
+                tripId={tripId}
+                locationId={locationId}
                 activity={activity}
                 onDeleteClick={handleDeleteClick}
                 onEditClick={handleEditClick}
                 deletingId={deletingId}
-                isEditing={showEditDialog}
+                isEditing={false}
               />
             ))}
           </div>
@@ -176,49 +145,22 @@ const SortableActivities = ({
         )}
 
         <div className="mt-4">
-          <button
-            onClick={() => setShowAddDialog(true)}
-            className="w-full bg-white hover:bg-gray-50 border-2 border-dashed border-gray-300 hover:border-neutral-900 rounded-sm p-4 transition-all group"
+          <Link
+            href={`/trips/${tripId}/${locationId}/add`}
+            className="block w-full"
           >
-            <div className="flex items-center justify-center gap-2 text-gray-600 group-hover:text-gray-900">
-              <Plus className="h-5 w-5" />
-              <span className="font-medium">
-                {content.addActivity?.value || content.addActivity}
-              </span>
+            <div className="bg-white hover:bg-gray-50 border-2 border-dashed border-gray-300 hover:border-neutral-900 rounded-sm p-4 transition-all group">
+              <div className="flex items-center justify-center gap-2 text-gray-600 group-hover:text-gray-900">
+                <Plus className="h-5 w-5" />
+                <span className="font-medium">
+                  {content.addActivity?.value || content.addActivity}
+                </span>
+              </div>
             </div>
-          </button>
+          </Link>
+
         </div>
       </div>
-      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="bg-white max-w-2xl max-h-[90vh] overflow-y-auto border-gray-300 rounded-sm">
-          <DialogHeader>
-            <DialogTitle></DialogTitle>
-          </DialogHeader>
-          {activityToEdit && (
-            <ActivityEditForm
-              activity={activityToEdit}
-              locationId={locationId}
-              tripId={tripId}
-              onCancel={handleEditCancel}
-              onSuccess={handleEditSuccess}
-              updateActivity={updateActivity}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto border-gray-300 rounded-sm">
-          <DialogTitle></DialogTitle>
-          <ActivityForm
-            locationId={locationId}
-            tripId={tripId}
-            onCancel={() => setShowAddDialog(false)}
-            addActivity={addActivity}
-            onSuccess={handleActivityAdded}
-          />
-        </DialogContent>
-      </Dialog>
 
       <AlertDialog
         open={!!activityToDelete}

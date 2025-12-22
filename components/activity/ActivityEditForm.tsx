@@ -85,7 +85,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
         <h3 className="text-lg sm:text-xl font-light text-gray-900">
-          {content.editActivity}
+          {content.editActivity.value}
         </h3>
       </div>
 
@@ -93,7 +93,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
         {/* Nom */}
         <div>
           <label className="block text-sm font-light text-gray-900 mb-1.5">
-            {content.activityName}
+            {content.activityName.value}
           </label>
           <input
             type="text"
@@ -109,7 +109,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
         {/* Adresse */}
         <div>
           <label className="block text-sm font-light text-gray-900 mb-1.5">
-            {content.address}
+            {content.address.value}
           </label>
           <GooglePlacesAutocomplete
             value={address}
@@ -118,15 +118,15 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
             placeholder={content.addressPlaceholder.value}
             disabled={isSubmitting}
             className="border-gray-300 text-gray-900 placeholder:text-gray-400 focus:ring-gray-200 rounded-sm h-11 font-light"
+            types={['geocode', 'establishment']}          
           />
 
           <input type="hidden" name="address" value={address} />
         </div>
 
-        {/* Catégorie */}
         <div>
           <label className="block text-sm font-light text-gray-900 mb-1.5">
-            {content.category}
+            {content.category.value}
           </label>
 
           <select
@@ -136,10 +136,10 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
             defaultValue={activity.category}
             className="w-full bg-white border border-gray-300 rounded-sm px-4 h-11 text-gray-900 focus:ring-2 focus:ring-gray-200 appearance-none font-light"
           >
-            <option value="">{content.selectCategory}</option>
+            <option value="">{content.selectCategory.value}</option>
             {categories.map((cat) => (
               <option key={cat.value} value={cat.value}>
-                {cat.emoji} {cat.label}
+                {cat.emoji} {cat.label.value}
               </option>
             ))}
           </select>
@@ -149,7 +149,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
             <label className="block text-sm font-light text-gray-900 mb-1.5">
-              {content.startTime}
+              {content.startTime.value}
             </label>
             <Input
               type="time"
@@ -162,7 +162,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
 
           <div>
             <label className="block text-sm font-light text-gray-900 mb-1.5">
-              {content.endTime}
+              {content.endTime.value}
             </label>
             <Input
               type="time"
@@ -176,7 +176,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
 
         <div>
           <label className="block text-sm font-light text-gray-900 mb-1.5">
-            {content.budget}
+            {content.budget.value}
           </label>
           <input
             type="number"
@@ -193,7 +193,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
         {/* Description */}
         <div>
           <label className="block text-sm font-light text-gray-900 mb-1.5">
-            {content.description}
+            {content.description.value}
           </label>
           <textarea
             name="description"
@@ -219,7 +219,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
 
         <div className="bg-blue-50 border border-blue-300 rounded-sm p-3 text-xs font-light">
           <p className="text-blue-700 flex items-start gap-2">
-            {content.imageNote}
+            {content.imageNote.value}
           </p>
         </div>
       </div>
@@ -234,10 +234,10 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
           {isSubmitting ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              {content.saving || "Enregistrement..."}
+              {content.saving.value}
             </>
           ) : (
-            content.saveChanges
+            content.saveChanges.value
           )}
         </button>
 
@@ -247,7 +247,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
           disabled={isSubmitting}
           className="w-full md:w-auto bg-white border border-gray-300 text-gray-600 font-light h-11 rounded-sm hover:bg-gray-50 transition-all"
         >
-          {content.cancel}
+          {content.cancel.value}
         </button>
       </div>
     </form>

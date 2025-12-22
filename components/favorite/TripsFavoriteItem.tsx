@@ -57,7 +57,7 @@ export const TripsCommunityItem = ({ trip, locale, today, content, isAlreadyLike
           )}
 
           <div className="mt-auto space-y-3">
-            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+            <div className="h-px bg-linear-to-r from-transparent via-gray-200 to-transparent" />
 
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2 text-gray-600">

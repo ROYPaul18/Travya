@@ -20,7 +20,7 @@ export interface TripsClientProps {
 }
 
 export default function TripsCommunity({ trips, locale }: TripsClientProps) {
-  const content = useIntlayer('trips-client');
+  const content = useIntlayer('favoris');
   
   const [query, setQuery] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -63,7 +63,7 @@ export default function TripsCommunity({ trips, locale }: TripsClientProps) {
 
       <div className="flex-1 lg:pl-6">
         <div className="py-4">
-        <h1 className="text-4xl"> Mes favoris</h1>
+        <h1 className="text-4xl"> {content.mainTitle}</h1>
         </div>
             
         <div className="mb-6 lg:mb-8">

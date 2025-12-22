@@ -38,7 +38,7 @@ export const LocaleSwitcher: FC = () => {
           <SelectItem 
             key={localeItem} 
             value={localeItem}
-            className="hover:!bg-gray-100 outline-none cursor-pointer transition-colors duration-200 font-light"
+            className="hover:bg-gray-100 outline-none cursor-pointer transition-colors duration-200 font-light"
           >
             {getLocaleName(localeItem, locale)}
           </SelectItem>

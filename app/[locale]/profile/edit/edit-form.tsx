@@ -98,7 +98,7 @@ export const EditForm = (props: {
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold rounded-2xl h-11 flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-cyan-500/40"
+          className="bg-linear-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold rounded-2xl h-11 flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-cyan-500/40"
         >
           {form.formState.isSubmitting ? (
             <>

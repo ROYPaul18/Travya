@@ -43,7 +43,7 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="flex items-center gap-2.5 bg-white hover:!bg-gray-50 border border-gray-300 text-gray-900 rounded-sm transition-all duration-200 hover:shadow-md px-2 py-2 cursor-pointer"
+          className="flex items-center gap-2.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-900 rounded-sm transition-all duration-200 hover:shadow-md px-2 py-2 cursor-pointer"
         >
           <Avatar className="h-8 w-8">
             {user.image ? (
@@ -64,7 +64,7 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
       >
         <DropdownMenuItem
           asChild
-          className="cursor-pointer transition-all duration-200 hover:!bg-gray-100 focus:!bg-gray-100 rounded-sm mb-1"
+          className="cursor-pointer transition-all duration-200 hover:bg-gray-100 focus:bg-gray-100 rounded-sm mb-1"
         >
           <Link href="/profile" className="flex items-center gap-3 w-full px-2 py-2">
             <User />
@@ -74,7 +74,7 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
 
          <DropdownMenuItem
           asChild
-          className="cursor-pointer transition-all duration-200 hover:!bg-gray-100 focus:!bg-gray-100 rounded-sm mb-1"
+          className="cursor-pointer transition-all duration-200 hover:bg-gray-100 focus:bg-gray-100 rounded-sm mb-1"
         >
           <Link href="/favorite" className="flex items-center gap-3 w-full px-2 py-2">
             <Heart />

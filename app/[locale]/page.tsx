@@ -22,13 +22,13 @@ export default async function Home({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size:14px_24px"></div>
       <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-gray-200 opacity-20 blur-[100px]"></div>
 
       <div className="relative z-10">
       
         <section className="px-4 py-24 lg:px-24">
-          <div className="max-w-5xl mx-auto text-center space-y-8">
+          <div className="max-w-5xl mx-auto text-center space-y-8 py-12">
             
             <div className="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full border border-gray-200 shadow-sm mb-6 transition-transform hover:scale-105 cursor-default">
               <Globe className="h-4 w-4 text-green-950" />
@@ -64,8 +64,8 @@ export default async function Home({ params }: PageProps) {
             </div>
 
             
-            <div className="relative mx-auto max-w-2xl mt-12 rounded-lg border border-gray-200 bg-gray-50/50 p-2 shadow-sm lg:mt-20">
-               <div className="aspect-[16/9] overflow-hidden rounded-md bg-white flex items-center justify-center text-gray-300">
+            <div className="relative mx-auto max-w-5xl mt-12 rounded-lg border border-gray-200 bg-gray-50/50 p-2 shadow-sm lg:mt-20">
+               <div className="aspect-video overflow-hidden rounded-md bg-white flex items-center justify-center text-gray-300">
                   <div className="text-center">
                     <MapIcon className="h-16 w-16 mx-auto mb-4 opacity-20" />
                     <span className="text-sm font-medium opacity-40">A venir...</span>

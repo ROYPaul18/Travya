@@ -6,11 +6,7 @@ import { UploadButton } from "@/lib/uploadthings";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState, useTransition } from "react";
-import {
-  Loader2,
-  ArrowLeft,
-  Calendar as CalendarIcon,
-} from "lucide-react";
+import { Loader2, ArrowLeft, Calendar as CalendarIcon, X } from "lucide-react";
 import { useIntlayer } from "next-intlayer";
 import { Link } from "@/components/Link";
 import { format } from "date-fns";
@@ -23,25 +19,32 @@ import {
 
 export default function NewTrip() {
   const [isPending, startTransition] = useTransition();
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [wallpaper, setWallpaper] = useState<string | null>(null);
+  const [images, setImages] = useState<string[]>([]);
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const content = useIntlayer("new-trip-page");
 
   const handleSubmit = (formData: FormData) => {
-    if (imageUrl) {
-      formData.append("imageUrl", imageUrl);
+    if (wallpaper) {
+      formData.append("wallpaper", wallpaper);
+    }
+    if (images.length > 0) {
+      formData.append("images", JSON.stringify(images));
     }
     if (startDate) {
-      formData.append("startDate", startDate.toISOString().split('T')[0]);
+      formData.append("startDate", startDate.toISOString().split("T")[0]);
     }
     if (endDate) {
-      formData.append("endDate", endDate.toISOString().split('T')[0]);
+      formData.append("endDate", endDate.toISOString().split("T")[0]);
     }
     startTransition(() => {
       createTrip(formData);
     });
-    
+  };
+
+  const removeImage = (index: number) => {
+    setImages(images.filter((_, i) => i !== index));
   };
 
   return (
@@ -50,8 +53,8 @@ export default function NewTrip() {
         {/* Header */}
         <div className="mb-8">
           <Link href="/trips">
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 gap-2 pl-0 rounded-sm transition-colors font-light"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -69,7 +72,7 @@ export default function NewTrip() {
           </p>
         </div>
 
-        {/* Form - Sans Card, directement dans la page */}
+        {/* Form */}
         <div className="space-y-8">
           <form
             className="space-y-8"
@@ -129,11 +132,13 @@ export default function NewTrip() {
                         "bg-white border border-gray-300 text-gray-900",
                         "hover:bg-gray-50 hover:text-gray-900",
                         "px-4 py-3 rounded-sm h-auto",
-                        !startDate && "text-gray-400"
+                        !startDate && "text-gray-400",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                      {startDate ? format(startDate, "PPP") : "Sélectionner une date"}
+                      {startDate
+                        ? format(startDate, "PPP")
+                        : "Sélectionner une date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -143,7 +148,9 @@ export default function NewTrip() {
                       onSelect={setStartDate}
                       initialFocus
                       className="bg-white rounded-sm shadow-lg border border-gray-300"
-                      disabled={(date) => date < new Date() || (endDate ? date > endDate : false)}
+                      disabled={(date) =>
+                        date < new Date() || (endDate ? date > endDate : false)
+                      }
                     />
                   </PopoverContent>
                 </Popover>
@@ -162,11 +169,13 @@ export default function NewTrip() {
                         "bg-white border border-gray-300 text-gray-900",
                         "hover:bg-gray-50 hover:text-gray-900",
                         "px-4 py-3 rounded-sm h-auto",
-                        !endDate && "text-gray-400"
+                        !endDate && "text-gray-400",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                      {endDate ? format(endDate, "PPP") : "Sélectionner une date"}
+                      {endDate
+                        ? format(endDate, "PPP")
+                        : "Sélectionner une date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -176,28 +185,92 @@ export default function NewTrip() {
                       onSelect={setEndDate}
                       initialFocus
                       className="bg-white rounded-sm shadow-lg border border-gray-300"
-                      disabled={(date) => date < new Date() || (startDate ? date < startDate : false)}
+                      disabled={(date) =>
+                        date < new Date() ||
+                        (startDate ? date < startDate : false)
+                      }
                     />
                   </PopoverContent>
                 </Popover>
               </div>
             </div>
 
-            {/* Image Upload */}
+            {/* Wallpaper Upload */}
             <div className="space-y-3">
               <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                {content.imageLabel}
+                Image de couverture (Wallpaper)
               </label>
 
-              {imageUrl && (
+              {wallpaper && (
                 <div className="relative rounded-sm overflow-hidden border border-gray-300">
                   <Image
-                    src={imageUrl}
-                    alt={content.imageAltText}
+                    src={wallpaper}
+                    alt="Wallpaper du voyage"
                     className="w-full h-64 object-cover"
                     width={800}
                     height={256}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setWallpaper(null)}
+                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
+
+              {!wallpaper && (
+                <div className="bg-white border-2 border-dashed border-gray-300 rounded-sm p-6 sm:p-8 text-center hover:border-gray-400 transition-all duration-200">
+                  <UploadButton
+                    endpoint={"imageUploader"}
+                    onClientUploadComplete={(res) => {
+                      if (res && res[0].ufsUrl) {
+                        setWallpaper(res[0].ufsUrl);
+                      }
+                    }}
+                    onUploadError={(error: Error) => {
+                      console.error("Upload error", error);
+                    }}
+                    appearance={{
+                      button:
+                        "bg-gray-900 text-white hover:bg-gray-800 border-0 rounded-sm font-medium py-3 px-4 h-auto",
+                      allowedContent: "text-gray-500 text-sm font-light",
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Additional Images Gallery */}
+            <div className="space-y-3">
+              <label className="text-sm font-light text-gray-900 flex items-center gap-2">
+                Galerie d'images supplémentaires
+              </label>
+
+              {images.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {images.map((img, index) => (
+                    <div
+                      key={index}
+                      className="relative rounded-sm overflow-hidden border border-gray-300"
+                    >
+                      <Image
+                        src={img}
+                        alt={`Image ${index + 1}`}
+                        className="w-full h-32 object-cover"
+                        width={300}
+                        height={128}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
 
@@ -206,13 +279,13 @@ export default function NewTrip() {
                   endpoint={"imageUploader"}
                   onClientUploadComplete={(res) => {
                     if (res && res[0].ufsUrl) {
-                      setImageUrl(res[0].ufsUrl);
+                      setImages([...images, res[0].ufsUrl]);
                     }
                   }}
                   onUploadError={(error: Error) => {
                     console.error("Upload error", error);
                   }}
-                  appearance={{                
+                  appearance={{
                     button:
                       "bg-gray-900 text-white hover:bg-gray-800 border-0 rounded-sm font-medium py-3 px-4 h-auto",
                     allowedContent: "text-gray-500 text-sm font-light",
@@ -240,9 +313,7 @@ export default function NewTrip() {
                     {content.submitButtonCreating}
                   </>
                 ) : (
-                  <>
-                    {content.submitButtonSave}
-                  </>
+                  <>{content.submitButtonSave}</>
                 )}
               </Button>
             </div>

@@ -1,27 +1,10 @@
 "use server";
 
-
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { Categorie } from "@/app/generated/prisma";
 import { getUser } from "../auth-server";
 
-async function geocodeAddress(address: string) {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!;
-  const response = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      address
-    )}&key=${apiKey}`
-  );
-  const data = await response.json();
-
-  if (!data.results || data.results.length === 0) {
-    throw new Error("Adresse introuvable");
-  }
-
-  const { lat, lng } = data.results[0].geometry.location;
-  return { lat, lng };
-}
 function mapCategory(category: string): Categorie {
   const mapping: Record<string, Categorie> = {
     restaurant: Categorie.RESTAURANT,
@@ -47,6 +30,7 @@ export async function addActivity(
   if (!user) {
     throw new Error("Not authenticated");
   }
+
   const location = await prisma.location.findUnique({
     where: { id: locationId },
     include: { trip: true },
@@ -59,6 +43,7 @@ export async function addActivity(
   if (location.trip.userId !== user.id) {
     throw new Error("Non autorisé");
   }
+
   const name = formData.get("name")?.toString();
   const address = formData.get("address")?.toString();
   const category = formData.get("category")?.toString();
@@ -67,11 +52,18 @@ export async function addActivity(
   const endTime = formData.get("endTime")?.toString();
   const budget = formData.get("budget")?.toString();
   const imagesJson = formData.get("images")?.toString();
+  
+  const lat = parseFloat(formData.get("lat")?.toString() || "0");
+  const lng = parseFloat(formData.get("lng")?.toString() || "0");
 
-  if (!name || !address || !category) {
+  if (!name || !address || !category || !lat || !lng) {
     throw new Error("Champs obligatoires manquants");
   }
-  const { lat, lng } = await geocodeAddress(address);
+
+  if (lat === 0 || lng === 0) {
+    throw new Error("Coordonnées invalides");
+  }
+
   const images = imagesJson ? JSON.parse(imagesJson) : [];
   const count = await prisma.activity.count({
     where: { locationId },
@@ -80,9 +72,9 @@ export async function addActivity(
   await prisma.activity.create({
     data: {
       name,
-      adress: address,
-      lat,
-      lng,
+      address: address,
+      lat, 
+      lng, 
       category: mapCategory(category),
       description,
       images,
@@ -93,6 +85,8 @@ export async function addActivity(
       order: count,
     },
   });
+
+  revalidatePath(`/trips/${tripId}`);
   return { success: true };
 }
 
@@ -125,6 +119,7 @@ export async function deleteActivity(activityId: string, tripId: string) {
     where: { id: activityId },
   });
 
+  revalidatePath(`/trips/${tripId}`);
   return { success: true };
 }
 
@@ -165,16 +160,15 @@ export async function updateActivity(
   const budget = formData.get("budget")?.toString();
   const imagesJson = formData.get("images")?.toString();
 
-  if (!name || !address || !category) {
+  const lat = parseFloat(formData.get("lat")?.toString() || "0");
+  const lng = parseFloat(formData.get("lng")?.toString() || "0");
+
+  if (!name || !address || !category || !lat || !lng) {
     throw new Error("Champs obligatoires manquants");
   }
 
-  let lat = activity.lat;
-  let lng = activity.lng;
-  if (address !== activity.adress) {
-    const coords = await geocodeAddress(address);
-    lat = coords.lat;
-    lng = coords.lng;
+  if (lat === 0 || lng === 0) {
+    throw new Error("Coordonnées invalides");
   }
 
   const images = imagesJson ? JSON.parse(imagesJson) : [];
@@ -183,7 +177,7 @@ export async function updateActivity(
     where: { id: activityId },
     data: {
       name,
-      adress: address,
+      address: address,
       lat,
       lng,
       category: mapCategory(category),

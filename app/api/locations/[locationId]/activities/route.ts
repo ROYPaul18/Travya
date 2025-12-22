@@ -44,21 +44,11 @@ export async function GET(
     const formattedActivities = activities.map((activity) => ({
       id: activity.id,
       name: activity.name,
-      address: activity.adress,
+      address: activity.address,
       category: activity.category,
       description: activity.description,
-      startTime: activity.startTime
-        ? new Date(activity.startTime).toLocaleTimeString("fr-FR", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })
-        : null,
-      endTime: activity.endTime
-        ? new Date(activity.endTime).toLocaleTimeString("fr-FR", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })
-        : null,
+      startTime: activity.startTime,
+      endTime: activity.endTime,
       budget: activity.budget || 0,
       images: activity.images,
       order: activity.order,

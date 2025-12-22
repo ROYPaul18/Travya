@@ -134,6 +134,62 @@ const activityFormContent = {
       fr: "Enregistrer les modifications",
       es: "Guardar cambios",
     }),
+
+    // Loading states
+    adding: t({
+      en: "Adding...",
+      fr: "Ajout...",
+      es: "Agregando...",
+    }),
+
+    saving: t({
+      en: "Saving...",
+      fr: "Enregistrement...",
+      es: "Guardando...",
+    }),
+
+    // Error messages
+    selectValidAddressError: t({
+      en: "Please select a valid address from the list",
+      fr: "Veuillez sélectionner une adresse valide dans la liste",
+      es: "Por favor, selecciona una dirección válida de la lista",
+    }),
+
+    enterAddressError: t({
+      en: "Please enter an address",
+      fr: "Veuillez saisir une adresse",
+      es: "Por favor, introduce una dirección",
+    }),
+
+    selectAddressFromListError: t({
+      en: "Please select a valid address from the suggestions list",
+      fr: "Veuillez sélectionner une adresse valide dans la liste de suggestions",
+      es: "Por favor, selecciona una dirección válida de la lista de sugerencias",
+    }),
+
+    addActivityError: t({
+      en: "An error occurred while adding the activity",
+      fr: "Une erreur s'est produite lors de l'ajout de l'activité",
+      es: "Ocurrió un error al agregar la actividad",
+    }),
+
+    addressValidated: t({
+      en: "Address validated",
+      fr: "Adresse validée",
+      es: "Dirección validada",
+    }),
+
+    coordinatesLabel: t({
+      en: "Coordinates",
+      fr: "Coordonnées",
+      es: "Coordenadas",
+    }),
+    
+    testButton: t({
+      en: "Manual Test",
+      fr: "Test Manuel",
+      es: "Prueba Manual",
+    }),
   },
 } satisfies Dictionary;
 

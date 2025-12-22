@@ -128,7 +128,7 @@ export default function GlobePage() {
             </p>
           </div>
         </div>
-        <div className="bg-white/90  rounded-sm p-2 border border-gray-200 space-y-3 min-w-[220px] max-h-64 overflow-y-auto custom-scrollbar">
+        <div className="bg-white/90  rounded-sm p-2 border border-gray-200 space-y-4 min-w-[220px] max-h-64 overflow-y-auto custom-scrollbar">
           <h2 className="text-base font-medium text-gray-900 mb-2">
             Pays Explorés
           </h2>
@@ -146,14 +146,14 @@ export default function GlobePage() {
                 key={key}
                 onMouseEnter={() => setHoveredCountry(country)}
                 onMouseLeave={() => setHoveredCountry(null)}
-                className={`flex items-center justify-between gap-2 py-2 rounded-lg transition-all duration-300`}
+                className={`flex items-center justify-between gap-2 rounded-lg transition-all duration-300`}
               >
 
                 <div className="flex items-center gap-3 w-3/4">
                   <span className="font-light text-gray-800 text-sm truncate">{country}</span>
                 </div>
 
-                <span className="text-xs text-gray-600 font-semibold flex-shrink-0">
+                <span className="text-xs text-gray-600 font-semibold shrink-0">
                   {countryLocations[country]} {getSpotsText(countryLocations[country])}
                 </span>
               </div>

@@ -6,23 +6,20 @@ import { revalidatePath } from "next/cache";
 import { getUser } from "../auth-server";
 import { NextResponse } from "next/server";
 
-// Fonction utilitaire pour calculer le nombre de jours entre deux dates
 function getDaysBetween(startDate: Date, endDate: Date): number {
   const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays + 1; // +1 pour inclure le jour de départ
+  return diffDays + 1;
 }
 
-// Fonction utilitaire pour générer les dates de chaque jour
 function generateDayDates(startDate: Date, endDate: Date): Date[] {
   const dates: Date[] = [];
   const current = new Date(startDate);
-  
+
   while (current <= endDate) {
     dates.push(new Date(current));
     current.setDate(current.getDate() + 1);
   }
-  
   return dates;
 }
 
@@ -35,9 +32,13 @@ export async function createTrip(formData: FormData) {
 
   const title = formData.get("title")?.toString();
   const description = formData.get("description")?.toString();
-  const imageUrl = formData.get("imageUrl")?.toString();
+  const wallpaper = formData.get("wallpaper")?.toString();
   const startDateStr = formData.get("startDate")?.toString();
   const endDateStr = formData.get("endDate")?.toString();
+
+  // Gérer les images multiples (si envoyées en JSON)
+  const imagesStr = formData.get("images")?.toString();
+  const images = imagesStr ? JSON.parse(imagesStr) : [];
 
   if (!title || !description || !startDateStr || !endDateStr) {
     throw new Error("Tous les champs sont requis");
@@ -56,7 +57,8 @@ export async function createTrip(formData: FormData) {
     data: {
       title,
       description,
-      imageUrl,
+      wallpaper: wallpaper || null,
+      images,
       startDate,
       endDate,
       userId: user.id,
@@ -83,9 +85,13 @@ export async function editTrip(formData: FormData, tripId: string) {
 
   const title = formData.get("title")?.toString();
   const description = formData.get("description")?.toString();
-  const imageUrl = formData.get("imageUrl")?.toString();
+  const wallpaper = formData.get("wallpaper")?.toString();
   const startDateStr = formData.get("startDate")?.toString();
   const endDateStr = formData.get("endDate")?.toString();
+
+  // Gérer les images multiples
+  const imagesStr = formData.get("images")?.toString();
+  const images = imagesStr ? JSON.parse(imagesStr) : [];
 
   if (!title || !description || !startDateStr || !endDateStr) {
     throw new Error("Tous les champs sont requis !");
@@ -108,7 +114,10 @@ export async function editTrip(formData: FormData, tripId: string) {
   }
 
   // Calculer le nombre de jours avant et après modification
-  const oldDaysCount = getDaysBetween(existingTrip.startDate, existingTrip.endDate);
+  const oldDaysCount = getDaysBetween(
+    existingTrip.startDate,
+    existingTrip.endDate,
+  );
   const newDaysCount = getDaysBetween(startDate, endDate);
   const dayDates = generateDayDates(startDate, endDate);
 
@@ -120,7 +129,8 @@ export async function editTrip(formData: FormData, tripId: string) {
       data: {
         title,
         description,
-        imageUrl,
+        wallpaper: wallpaper || null,
+        images,
         startDate,
         endDate,
       },
@@ -186,7 +196,10 @@ export async function deleteTrip(tripId: string) {
   redirect("/trips");
 }
 
-export async function updateTripVisibility(id: string, visibility: "COMMUNITY" | "FRIENDS" | "PRIVATE") {
+export async function updateTripVisibility(
+  id: string,
+  visibility: "COMMUNITY" | "FRIENDS" | "PRIVATE",
+) {
   await prisma.trip.update({
     where: { id },
     data: { visibility },

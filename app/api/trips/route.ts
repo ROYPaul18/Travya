@@ -24,7 +24,7 @@ export async function GET() {
         name: true,
         lat: true,
         lng: true,
-        adress: true,
+        address: true,
         location: {
           select: {
             locationTitle: true,

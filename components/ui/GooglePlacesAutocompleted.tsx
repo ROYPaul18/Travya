@@ -1,14 +1,14 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
-import Autocomplete from "react-google-autocomplete"
-import { cn } from "@/lib/utils" 
+import { useState, useEffect, useRef } from "react"
+import { cn } from "@/lib/utils"
 import { MapPin, Loader2 } from "lucide-react"
 
-interface PlaceResult extends google.maps.places.PlaceResult {}
+interface PlaceResult extends google.maps.places.PlaceResult { }
 
 interface GooglePlacesAutocompleteProps {
     value?: string
+    defaultValue?: string
     onChange?: (value: string) => void
     onPlaceSelected?: (place: PlaceResult) => void
     placeholder?: string
@@ -18,10 +18,12 @@ interface GooglePlacesAutocompleteProps {
     fields?: string[]
     showIcon?: boolean
     error?: string
+    name?: string
 }
 
 export default function GooglePlacesAutocomplete({
-    value = "",
+    value,
+    defaultValue = "",
     onChange,
     onPlaceSelected,
     placeholder = "Rechercher une adresse...",
@@ -36,18 +38,23 @@ export default function GooglePlacesAutocomplete({
         "name"
     ],
     showIcon = true,
-    error
+    error,
+    name
 }: GooglePlacesAutocompleteProps) {
-    
-    const [inputValue, setInputValue] = useState(value)
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+
+    const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const inputRef = useRef<HTMLInputElement>(null)
+    const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
+
+    const onChangeRef = useRef(onChange)
+    const onPlaceSelectedRef = useRef(onPlaceSelected)
 
     useEffect(() => {
-        if (value !== inputValue) {
-            setInputValue(value)
-        }
-    }, [value])
+        onChangeRef.current = onChange
+        onPlaceSelectedRef.current = onPlaceSelected
+    }, [onChange, onPlaceSelected])
+
     useEffect(() => {
         const checkGoogleMaps = () => {
             if (window.google && window.google.maps && window.google.maps.places) {
@@ -57,8 +64,8 @@ export default function GooglePlacesAutocomplete({
             }
             return false
         }
-
         if (checkGoogleMaps()) return
+
         const interval = setInterval(() => {
             if (checkGoogleMaps()) {
                 clearInterval(interval)
@@ -68,10 +75,7 @@ export default function GooglePlacesAutocomplete({
         const timeout = setTimeout(() => {
             clearInterval(interval)
             setIsLoading(false)
-            if (!isLoaded) {
-               
-            }
-        }, 3000) 
+        }, 3000)
 
         return () => {
             clearInterval(interval)
@@ -79,29 +83,104 @@ export default function GooglePlacesAutocomplete({
         }
     }, [])
 
-    
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value) 
-        onChange?.(e.target.value)    
-    }, [onChange])
+    useEffect(() => {
+        if (!isLoaded || !inputRef.current || autocompleteRef.current) return
 
-    const handlePlaceSelected = useCallback((place: PlaceResult) => {
-        const placeName = place.formatted_address || place.name || ""
-        
-        setInputValue(placeName)
-        
-        onChange?.(placeName)
-        
-        onPlaceSelected?.(place)
-    }, [onChange, onPlaceSelected])
+        console.log("🚀 Initialisation de l'autocomplete Google Places");
+
+        try {
+            const options: google.maps.places.AutocompleteOptions = {
+                fields: fields
+            }
+
+            if (types && types.length > 0) {
+                options.types = types
+                console.log("📍 Types configurés:", types);
+            }
+
+            const autocomplete = new google.maps.places.Autocomplete(
+                inputRef.current,
+                options
+            )
+
+            let pacContainerInitialized = false
+            const initializePacContainer = () => {
+                const pacContainers = document.querySelectorAll('.pac-container')
+                pacContainers.forEach(container => {
+                    if (!pacContainerInitialized) {
+                        (container as HTMLElement).style.zIndex = '99999';
+                        container.setAttribute('data-pac-container', 'true')
+                        pacContainerInitialized = true
+                    }
+                })
+            }
+
+            const observer = new MutationObserver(() => {
+                if (!pacContainerInitialized) {
+                    initializePacContainer()
+                }
+            })
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            })
+
+            const listener = autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace()
+
+                const placeName = place.formatted_address || place.name || ""
+
+                if (!placeName) return
+
+                // Mettre à jour l'input DOM
+                if (inputRef.current) {
+                    inputRef.current.value = placeName
+                }
+
+                // Notifier le parent
+                onChangeRef.current?.(placeName)
+                onPlaceSelectedRef.current?.(place)
+            })
+
+            autocompleteRef.current = autocomplete
+            console.log("✅ Autocomplete initialisé avec succès");
+
+            return () => {
+                console.log("🧹 Nettoyage de l'autocomplete");
+                observer.disconnect()
+                if (listener) {
+                    google.maps.event.removeListener(listener)
+                }
+            }
+        } catch (error) {
+            console.error("❌ Erreur lors de l'initialisation de l'autocomplete:", error)
+        }
+    }, [isLoaded, types, fields])
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChangeRef.current?.(e.target.value)
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            const pacContainer = document.querySelector('.pac-container')
+            const isVisible = pacContainer && window.getComputedStyle(pacContainer).display !== 'none'
+
+            if (isVisible) {
+                console.log("⏸️ Entrée bloquée car liste visible");
+                e.preventDefault()
+            }
+        }
+    }
 
     const inputClasses = cn(
         "w-full px-4 py-3 rounded-lg",
         "border transition-all duration-200",
         "focus:outline-none focus:ring-2",
         "disabled:opacity-50 disabled:cursor-not-allowed",
-        error 
-            ? "border-red-300 focus:border-red-500 focus:ring-red-500/20" 
+        error
+            ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
             : "border-gray-200 focus:border-blue-500 focus:ring-blue-500/20",
         showIcon && "pl-11",
         className
@@ -115,10 +194,10 @@ export default function GooglePlacesAutocomplete({
                         <Loader2 className="h-5 w-5 animate-spin" />
                     </div>
                 )}
-                <input 
-                    type="text" 
-                    placeholder="Chargement de Google Maps..." 
-                    disabled 
+                <input
+                    type="text"
+                    placeholder="Chargement de Google Maps..."
+                    disabled
                     className={inputClasses}
                 />
             </div>
@@ -134,10 +213,10 @@ export default function GooglePlacesAutocomplete({
                             <MapPin className="h-5 w-5" />
                         </div>
                     )}
-                    <input 
-                        type="text" 
-                        placeholder="Erreur de chargement de Google Maps" 
-                        disabled 
+                    <input
+                        type="text"
+                        placeholder="Erreur de chargement de Google Maps"
+                        disabled
                         className={cn(inputClasses, "border-red-300 bg-red-50")}
                     />
                 </div>
@@ -156,20 +235,18 @@ export default function GooglePlacesAutocomplete({
                         <MapPin className="h-5 w-5" />
                     </div>
                 )}
-     
-                <Autocomplete
-                    apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-                    value={inputValue} 
-                    onChange={handleChange}
-                    onPlaceSelected={handlePlaceSelected}
-                    options={{
-                        types,
-                        fields
-                    }}
+
+                <input
+                    ref={inputRef}
+                    type="text"
+                    name={name}
+                    defaultValue={defaultValue || value}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
                     placeholder={placeholder}
                     disabled={disabled}
                     className={inputClasses}
-                    
+                    autoComplete="off"
                 />
             </div>
             {error && (

@@ -1,11 +1,11 @@
 "use client";
 
-import { Activity } from "@/app/generated/prisma";
-import { GoogleMap, Marker } from "@react-google-maps/api";
-import { useMemo } from "react";
+import { MapActivity } from "@/lib/utils/types/types";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+import { useMemo, useState } from "react";
 
 interface MapProps {
-    activities: Activity[];
+    activities: MapActivity[];
 }
 
 const airbnbMapStyle = [
@@ -92,17 +92,15 @@ const MAP_CONTAINER_STYLE = {
 };
 
 export default function Map({ activities }: MapProps) {
+    const [hoveredActivity, setHoveredActivity] = useState<MapActivity | null>(null);
+
     const center = useMemo(() => {
         if (activities.length === 0) {
             return { lat: 48.8566, lng: 2.3522 }; 
         }
-
-        const sumLat = activities.reduce((sum, activity) => sum + activity.lat, 0);
-        const sumLng = activities.reduce((sum, activity) => sum + activity.lng, 0);
-
         return {
-            lat: sumLat / activities.length,
-            lng: sumLng / activities.length,
+            lat: activities[0].lat,
+            lng: activities[0].lng,
         };
     }, [activities]);
 
@@ -156,8 +154,37 @@ export default function Map({ activities }: MapProps) {
                             : undefined
                     }
                     title={activity.name}
+                    onMouseOver={() => setHoveredActivity(activity)}
+                    onMouseOut={() => setHoveredActivity(null)}
+                    onClick={() => setHoveredActivity(activity)}
                 />
             ))}
+
+            {hoveredActivity && (
+                <InfoWindow
+                    position={{ lat: hoveredActivity.lat, lng: hoveredActivity.lng }}
+                    onCloseClick={() => setHoveredActivity(null)}
+                >
+                    <div className="p-2 max-w-xs">
+                        <h3 className="font-semibold text-gray-900 mb-1">
+                            {hoveredActivity.name}
+                        </h3>
+                        {hoveredActivity.description && (
+                            <p className="text-sm text-gray-600 mb-2">
+                                {hoveredActivity.description}
+                            </p>
+                        )}
+                        <div className="flex flex-col gap-1 text-xs text-gray-500">
+                            {hoveredActivity.address && (
+                                <p>📍 {hoveredActivity.address}</p>
+                            )}
+                            {hoveredActivity.category && (
+                                <p>🏷️ {hoveredActivity.category}</p>
+                            )}
+                        </div>
+                    </div>
+                </InfoWindow>
+            )}
         </GoogleMap>
     );
 }

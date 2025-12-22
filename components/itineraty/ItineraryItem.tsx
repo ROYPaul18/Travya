@@ -42,7 +42,7 @@ export default function ItineraryItem({ item, tripId }: ItineraryItemProps) {
             <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-3">
-                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-950 text-white font-medium flex-shrink-0">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-950 text-white font-medium">
                             {item.order + 1}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -65,7 +65,7 @@ export default function ItineraryItem({ item, tripId }: ItineraryItemProps) {
 
                 </div>
                 {hasMoreThanTwo && (
-                    <div className="flex items-center flex-shrink-0">
+                    <div className="flex items-center shrink-0">
                         <button
                             onClick={() => setOpen((prev) => !prev)}
                             className="p-2 hover:bg-gray-100 rounded-sm transition-colors"

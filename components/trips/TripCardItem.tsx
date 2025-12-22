@@ -11,6 +11,7 @@ export interface Trip {
   startDate: string;
   endDate: string;
   imageUrl: string;
+  wallpaper:string;
 }
 
 interface TripCardItemProps {
@@ -32,7 +33,7 @@ export function TripCardItem({ trip, locale, today, content }: TripCardItemProps
 
   return (
     <Link href={`/trips/${trip.id}`} className="block h-full">
-      <article className="group relative rounded-lg overflow-hidden border border-gray-200/50 bg-white transition-all duration-500 h-full flex flex-col p-2 hover:shadow-sm">
+      <article className="group relative rounded-lg overflow-hidden border border-gray-200/50 bg-white transition-all duration-500 h-full flex flex-col hover:shadow-sm">
         {upcoming && (
           <div className="absolute top-4 left-4 z-10 bg-green-950 text-white text-xs font-semibold px-3 py-1.5 rounded-sm">
             {content.daysUntil.value.replace('{days}', daysUntil.toString())}
@@ -40,9 +41,9 @@ export function TripCardItem({ trip, locale, today, content }: TripCardItemProps
         )}
 
         <div className="relative h-48 sm:h-56 bg-gray-100 rounded-sm overflow-hidden">
-          {trip.imageUrl ? (
+          {trip.wallpaper ? (
             <Image
-              src={trip.imageUrl}
+              src={trip.wallpaper}
               alt={trip.title}
               width={600}
               height={400}
@@ -57,7 +58,7 @@ export function TripCardItem({ trip, locale, today, content }: TripCardItemProps
           <div className="absolute inset-0 bg-gray-300 opacity-10 group-hover:opacity-30 transition-opacity duration-500" />
         </div>
 
-        <div className="py-3 sm:py-2 flex flex-col flex-1">
+        <div className="py-3 sm:py-2 px-2 flex flex-col flex-1">
           <h3 className="font-medium text-base sm:text-lg text-gray-900 group-hover:text-gray-700 transition-colors duration-300 line-clamp-2">
             {trip.title}
           </h3>
@@ -69,7 +70,7 @@ export function TripCardItem({ trip, locale, today, content }: TripCardItemProps
           )}
 
           <div className="mt-auto space-y-3">
-            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+            <div className="h-px bg-linear-to-r from-transparent via-gray-200 to-transparent" />
 
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2 text-gray-600">

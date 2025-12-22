@@ -25,7 +25,7 @@ const HeartButton = ({ tripId, initialFavorited }: HeartButtonProps) => {
       aria-label={
         isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"
       }
-      className="absolute top-4 right-4 z-10 p-2 rounded-full transition-colors duration-300 backdrop-blur-sm bg-white/70 hover:bg-white/90"
+      className="absolute top-4 right-4 z-10 p-2 rounded-full transition-colors duration-300 backdrop-blur-sm  hover:bg-white/90"
       disabled={isPending}
     >
       <Heart

@@ -55,7 +55,7 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 font-medium"
         >
-          <span>Filtres</span>
+          <span>{content.filters}</span>
           <svg
             className={`w-5 h-5 transition-transform ${sidebarOpen ? 'rotate-180' : ''}`}
             fill="none"
@@ -75,7 +75,7 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
       />
 
       <div className="flex-1 lg:pl-6">
-        <div className="flex items-center  mb-6 lg:mb-8">
+        <div className="flex items-center mb-6 lg:mb-8">
           <div className="relative max-w-full lg:max-w-md pr-8">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
@@ -83,14 +83,14 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={content.searchPlaceholder.value}
-              aria-label={content.searchLabel.value}
+              aria-label={content.searchLabel}
               className="w-full pl-10 pr-4 py-3 text-sm rounded-sm bg-white border border-gray-300 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-gray-500 focus:ring-2 focus:ring-gray-200 transition-all"
             />
           </div>
           <Link href={"/trips/new"}>
             <Button className="py-5 bg-green-950 hover:bg-green-900 text-white hover:shadow-lg transition-all duration-200 flex items-center gap-2 font-light cursor-pointer">
               <Plus className="h-5 w-5" />
-               Nouveau Voyage
+              {content.newTrip}
             </Button>
           </Link>
         </div>
@@ -101,10 +101,10 @@ export default function TripsClient({ trips, locale }: TripsClientProps) {
               <Search className="h-12 w-12 text-gray-300" />
             </div>
             <p className="text-gray-600 text-lg lg:text-xl font-medium">
-              {content.noResults.value}
+              {content.noResults}
             </p>
             <p className="text-gray-500 text-sm mt-2">
-              {content.noResultsHint.value}
+              {content.noResultsHint}
             </p>
           </div>
         ) : (
