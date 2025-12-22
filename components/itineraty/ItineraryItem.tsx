@@ -1,5 +1,5 @@
 "use client";
-import { Location } from "@/app/generated/prisma";
+import { Location } from "@/app/generated/prisma/client";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import SortableActivities from "../activity/SortableActivities";

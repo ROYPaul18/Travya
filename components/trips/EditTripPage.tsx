@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Trip } from "@/app/generated/prisma";
+import { Trip } from "@/app/generated/prisma/client";
 import { editTrip } from "@/lib/actions/Trip";
 import { UploadButton } from "@/lib/uploadthings";
 import { cn } from "@/lib/utils";

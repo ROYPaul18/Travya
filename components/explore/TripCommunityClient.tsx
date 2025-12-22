@@ -1,7 +1,6 @@
 "use client";
 
 import { TripWithLocation } from "@/lib/utils/types/types";
-import { useState } from "react";
 import { TripHeaderCommunity } from "./TripHeaderCommunity";
 import { TripImagesCommunity } from "./TripImagesCommunity";
 import { TripMetaCommunity } from "./TripMetaCommunity";

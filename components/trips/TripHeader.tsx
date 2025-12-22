@@ -1,6 +1,6 @@
 "use client";
 
-import { Trip } from "@/app/generated/prisma";
+import { Trip } from "@/app/generated/prisma/client";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/Link";

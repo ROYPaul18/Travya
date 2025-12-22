@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { NavLink } from "./NavLink";
+
 import { LocaleSwitcher } from "../ui/LocaleSwitcher";
 import { Menu, X, LogOut, User2, MapPin, Compass, Globe } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";

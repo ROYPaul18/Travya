@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Categorie } from "@/app/generated/prisma";
+import { Categorie } from "@/app/generated/prisma/client";
 import { addActivity } from "@/lib/actions/Activity";
 import { UploadButton } from "@/lib/uploadthings";
 import { cn } from "@/lib/utils";
