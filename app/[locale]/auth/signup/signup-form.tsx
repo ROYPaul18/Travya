@@ -156,7 +156,7 @@ export const SignUpForm = () => {
             </Form>
 
             <div className="relative my-6">
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+                <div className="h-px bg-linear-to-r from-transparent via-gray-200 to-transparent"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                     <span className="px-4 text-gray-500 text-xs font-light uppercase tracking-wider bg-white">
                         {content.divider}
