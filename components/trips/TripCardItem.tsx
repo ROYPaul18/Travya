@@ -32,7 +32,7 @@ export function TripCardItem({ trip, locale, today, content }: TripCardItemProps
 
   return (
     <Link href={`/trips/${trip.id}`} className="group block">
-      <article className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-300 transition-all duration-300 shadow-xs hover:shadow-md h-full flex flex-col">
+      <article className="bg-white rounded-sm overflow-hidden border border-gray-100 hover:border-gray-300 transition-all duration-300 shadow-xs hover:shadow-md h-full flex flex-col">
         {/* Image avec Overlay Statut */}
         <div className="relative h-44 w-full overflow-hidden">
           {trip.wallpaper ? (
