@@ -34,13 +34,6 @@ export default function EditActivityPage({ activity, tripId }: EditActivityPageP
     });
 
     const handleSubmit = (formData: FormData) => {
-        console.log("=== DEBUG FORMULAIRE ===");
-        console.log("📦 État sélectionné (selectedCategory):", selectedCategory);
-        console.log("📦 Coordonnées:", coordinates);
-        console.log("📦 FormData initial:");
-        for (let [key, value] of formData.entries()) {
-            console.log(`  ${key}:`, value);
-        }
         if (image) {
             formData.append("image", image);
         }
@@ -52,20 +45,6 @@ export default function EditActivityPage({ activity, tripId }: EditActivityPageP
         if (coordinates.lng !== null) {
             formData.set("lng", coordinates.lng.toString());
         }
-
-        console.log("📦 FormData final:");
-        for (let [key, value] of formData.entries()) {
-            console.log(`  ${key}:`, value);
-        }
-        console.log("✅ startTime envoyée:", formData.get("startTime"));
-        console.log("✅ endTime envoyée:", formData.get("endTime"));
-        console.log("✅ price envoyée:", formData.get("budget"));
-        console.log("✅ name envoyée:", formData.get("name"));
-        console.log("✅ Catégorie envoyée:", formData.get("category"));
-        console.log("✅ Adresse envoyée:", formData.get("address"));
-        console.log("✅ Latitude envoyée:", formData.get("latitude"));
-        console.log("✅ Longitude envoyée:", formData.get("longitude"));
-        console.log("✅ images envoyées:", formData.get("images"));
 
         startTransition(async () => {
             try {
@@ -154,9 +133,7 @@ export default function EditActivityPage({ activity, tripId }: EditActivityPageP
                                         </button>
                                     ))}
                                 </div>
-                                <p className="text-xs text-gray-500 mt-1">
-                                    {content.selectedCategory.value}: {selectedCategory}
-                                </p>
+                           
                             </div>
 
                             <div className="space-y-2">
@@ -223,12 +200,6 @@ export default function EditActivityPage({ activity, tripId }: EditActivityPageP
                                     placeholder={content.addressPlaceholder.value}
                                     showIcon
                                 />
-                                {coordinates.lat !== null && coordinates.lng !== null && (
-                                    <div className="text-xs text-gray-500 mt-1">
-                                        📍 {content.latitude.value} : <span className="font-mono">{coordinates.lat}</span> ·
-                                        {content.longitude.value} : <span className="font-mono">{coordinates.lng}</span>
-                                    </div>
-                                )}
                             </div>
                         </div>
 

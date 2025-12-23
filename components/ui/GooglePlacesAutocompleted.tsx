@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { cn } from "@/lib/utils"
-import { MapPin, Loader2 } from "lucide-react"
+import { MapPin, Loader2, X } from "lucide-react"
 
 interface PlaceResult extends google.maps.places.PlaceResult { }
 
@@ -44,8 +44,10 @@ export default function GooglePlacesAutocomplete({
 
     const [isLoaded, setIsLoaded] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+    const [inputValue, setInputValue] = useState(defaultValue || value || "")
     const inputRef = useRef<HTMLInputElement>(null)
     const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
+    const listenerRef = useRef<google.maps.MapsEventListener | null>(null)
 
     const onChangeRef = useRef(onChange)
     const onPlaceSelectedRef = useRef(onPlaceSelected)
@@ -83,83 +85,103 @@ export default function GooglePlacesAutocomplete({
         }
     }, [])
 
-    useEffect(() => {
-        if (!isLoaded || !inputRef.current || autocompleteRef.current) return
+    // Fonction pour initialiser l'autocomplete
+    const initAutocomplete = () => {
+        if (!isLoaded || !inputRef.current) return
 
-        console.log("🚀 Initialisation de l'autocomplete Google Places");
+        // Nettoyer l'ancien autocomplete s'il existe
+        if (listenerRef.current) {
+            google.maps.event.removeListener(listenerRef.current)
+        }
+        if (autocompleteRef.current) {
+            google.maps.event.clearInstanceListeners(autocompleteRef.current)
+        }
 
-        try {
-            const options: google.maps.places.AutocompleteOptions = {
-                fields: fields
-            }
+        console.log("🚀 (Ré)initialisation de l'autocomplete");
 
-            if (types && types.length > 0) {
-                options.types = types
-                console.log("📍 Types configurés:", types);
-            }
+        const options: google.maps.places.AutocompleteOptions = {
+            fields: fields
+        }
 
-            const autocomplete = new google.maps.places.Autocomplete(
-                inputRef.current,
-                options
-            )
+        if (types && types.length > 0) {
+            options.types = types
+        }
 
-            let pacContainerInitialized = false
-            const initializePacContainer = () => {
-                const pacContainers = document.querySelectorAll('.pac-container')
-                pacContainers.forEach(container => {
-                    if (!pacContainerInitialized) {
-                        (container as HTMLElement).style.zIndex = '99999';
-                        container.setAttribute('data-pac-container', 'true')
-                        pacContainerInitialized = true
-                    }
-                })
-            }
+        const autocomplete = new google.maps.places.Autocomplete(
+            inputRef.current,
+            options
+        )
 
-            const observer = new MutationObserver(() => {
+        let pacContainerInitialized = false
+        const initializePacContainer = () => {
+            const pacContainers = document.querySelectorAll('.pac-container')
+            pacContainers.forEach(container => {
                 if (!pacContainerInitialized) {
-                    initializePacContainer()
+                    (container as HTMLElement).style.zIndex = '99999';
+                    container.setAttribute('data-pac-container', 'true')
+                    pacContainerInitialized = true
                 }
             })
+        }
 
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            })
+        const observer = new MutationObserver(() => {
+            if (!pacContainerInitialized) {
+                initializePacContainer()
+            }
+        })
 
-            const listener = autocomplete.addListener('place_changed', () => {
-                const place = autocomplete.getPlace()
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        })
 
-                const placeName = place.formatted_address || place.name || ""
+        const listener = autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace()
+            const placeName = place.formatted_address || place.name || ""
 
-                if (!placeName) return
-
-                // Mettre à jour l'input DOM
-                if (inputRef.current) {
-                    inputRef.current.value = placeName
-                }
-
-                // Notifier le parent
+            if (placeName) {
+                setInputValue(placeName)
                 onChangeRef.current?.(placeName)
                 onPlaceSelectedRef.current?.(place)
-            })
-
-            autocompleteRef.current = autocomplete
-            console.log("✅ Autocomplete initialisé avec succès");
-
-            return () => {
-                console.log("🧹 Nettoyage de l'autocomplete");
-                observer.disconnect()
-                if (listener) {
-                    google.maps.event.removeListener(listener)
-                }
             }
-        } catch (error) {
-            console.error("❌ Erreur lors de l'initialisation de l'autocomplete:", error)
+        })
+
+        autocompleteRef.current = autocomplete
+        listenerRef.current = listener
+    }
+
+    useEffect(() => {
+        initAutocomplete()
+
+        return () => {
+            if (listenerRef.current) {
+                google.maps.event.removeListener(listenerRef.current)
+            }
         }
     }, [isLoaded, types, fields])
 
+    // Synchroniser avec la prop value
+    useEffect(() => {
+        if (value !== undefined) {
+            setInputValue(value)
+        }
+    }, [value])
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onChangeRef.current?.(e.target.value)
+        const newValue = e.target.value
+        setInputValue(newValue)
+        onChangeRef.current?.(newValue)
+    }
+
+    const handleClear = () => {
+        setInputValue("")
+        onChangeRef.current?.("")
+        if (inputRef.current) {
+            inputRef.current.value = ""
+            inputRef.current.focus()
+        }
+        // Réinitialiser l'autocomplete pour un nouveau départ propre
+        initAutocomplete()
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -168,7 +190,6 @@ export default function GooglePlacesAutocomplete({
             const isVisible = pacContainer && window.getComputedStyle(pacContainer).display !== 'none'
 
             if (isVisible) {
-                console.log("⏸️ Entrée bloquée car liste visible");
                 e.preventDefault()
             }
         }
@@ -183,6 +204,7 @@ export default function GooglePlacesAutocomplete({
             ? "border-red-300 focus:border-red-500 focus:ring-red-500/20"
             : "border-gray-200 focus:border-blue-500 focus:ring-blue-500/20",
         showIcon && "pl-11",
+        inputValue && "pr-10",
         className
     )
 
@@ -240,7 +262,7 @@ export default function GooglePlacesAutocomplete({
                     ref={inputRef}
                     type="text"
                     name={name}
-                    defaultValue={defaultValue || value}
+                    value={inputValue}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder}
@@ -248,6 +270,17 @@ export default function GooglePlacesAutocomplete({
                     className={inputClasses}
                     autoComplete="off"
                 />
+
+                {inputValue && !disabled && (
+                    <button
+                        type="button"
+                        onClick={handleClear}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Effacer"
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+                )}
             </div>
             {error && (
                 <p className="text-xs text-red-500 ml-1">

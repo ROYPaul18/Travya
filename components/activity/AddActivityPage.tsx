@@ -34,9 +34,6 @@ export default function AddActivityPage({ tripId, locationId }: AddActivityPageP
     });
 
     const handleSubmit = (formData: FormData) => {
-        console.log("=== DEBUG FORMULAIRE ===");
-        console.log("📦 État sélectionné (selectedCategory):", selectedCategory);
-        console.log("📦 Coordonnées:", coordinates);
 
         if (!locationId || locationId === "undefined") {
             console.error("Erreur: locationId est manquant au moment du submit");
@@ -54,10 +51,7 @@ export default function AddActivityPage({ tripId, locationId }: AddActivityPageP
         if (coordinates.lng !== null) {
             formData.set("lng", coordinates.lng.toString());
         }
-        
-        for (let [key, value] of formData.entries()) {
-            console.log(`  ${key}:`, value);
-        }
+
 
         startTransition(async () => {
             try {
@@ -146,9 +140,6 @@ export default function AddActivityPage({ tripId, locationId }: AddActivityPageP
                                         </button>
                                     ))}
                                 </div>
-                                <p className="text-xs text-gray-500 mt-1">
-                                    {content.selectedCategory.value}: {selectedCategory}
-                                </p>
                             </div>
 
                             <div className="space-y-2">
@@ -212,12 +203,6 @@ export default function AddActivityPage({ tripId, locationId }: AddActivityPageP
                                     placeholder={content.addressPlaceholder.value}
                                     showIcon
                                 />
-                                {coordinates.lat !== null && coordinates.lng !== null && (
-                                    <div className="text-xs text-gray-500 mt-1">
-                                        📍 {content.latitude.value} : <span className="font-mono">{coordinates.lat}</span> ·
-                                        {content.longitude.value} : <span className="font-mono">{coordinates.lng}</span>
-                                    </div>
-                                )}
                             </div>
                         </div>
 
