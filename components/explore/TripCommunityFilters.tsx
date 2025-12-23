@@ -130,16 +130,16 @@ export function TripsFilters() {
   const hasAnyFilters = selectedPeople.length + selectedCountries.length + selectedDurations.length > 0;
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full">
       <div className="flex flex-wrap items-center gap-3">
         {/* Bouton Filtres Principal (désactivé pour l'instant) */}
-        <button className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed font-medium text-[13px] text-gray-500">
+        <button className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 bg-white opacity-50 cursor-not-allowed font-medium text-[13px] text-gray-500">
           <SlidersHorizontal className="w-4 h-4 text-green-950" />
           {content.filters}
         </button>
 
         {/* Séparateur vertical */}
-        <div className="h-6 w-[1px] bg-gray-200 mx-1 hidden sm:block" />
+        <div className="h-6 w-1p] bg-gray-200 mx-1 hidden sm:block" />
 
         {/* Filtre Voyageurs - Activé pour l'exemple (tu peux mettre true pour Bientôt) */}
         <FilterButton
