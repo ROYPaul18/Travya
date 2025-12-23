@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Users, Globe, Calendar, Euro, X } from "lucide-react";
+import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,40 +12,34 @@ import { useIntlayer } from "next-intlayer";
 
 export function TripsFilters() {
   const content = useIntlayer("trips-community-filters");
-  
+
+  // States pour les filtres (prêts pour ta future logique)
   const [selectedPeople, setSelectedPeople] = useState<string[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
   const [selectedBudgets, setSelectedBudgets] = useState<string[]>([]);
 
   const peopleOptions = [
-    { id: "solo", label: content.comingSoon, icon: "👤" },
-    { id: "couple", label: content.comingSoon, icon: "👫" },
-    { id: "small", label: content.comingSoon, icon: "👥" },
-    { id: "large", label: content.comingSoon, icon: "👨‍👩‍👧‍👦" },
+    { id: "solo", label: content.soloTraveler, icon: "👤" },
+    { id: "couple", label: content.couple, icon: "👫" },
+    { id: "small", label: content.smallGroup, icon: "👥" },
+    { id: "large", label: content.largeGroup, icon: "👨‍👩‍👧‍👦" },
   ];
 
   const countryOptions = [
-    { id: "france", label: content.comingSoon, flag: "🇫🇷" },
-    { id: "italy", label: content.comingSoon, flag: "🇮🇹" },
-    { id: "spain", label: content.comingSoon, flag: "🇪🇸" },
-    { id: "japan", label: content.comingSoon, flag: "🇯🇵" },
-    { id: "usa", label: content.comingSoon, flag: "🇺🇸" },
-    { id: "thailand", label: content.comingSoon, flag: "🇹🇭" },
+    { id: "france", label: content.france, flag: "🇫🇷" },
+    { id: "italy", label: content.italy, flag: "🇮🇹" },
+    { id: "spain", label: content.spain, flag: "🇪🇸" },
+    { id: "japan", label: content.japan, flag: "🇯🇵" },
+    { id: "usa", label: content.usa, flag: "🇺🇸" },
+    { id: "thailand", label: content.thailand, flag: "🇹🇭" },
   ];
 
   const durationOptions = [
-    { id: "weekend", label: content.comingSoon },
-    { id: "short", label: content.comingSoon },
-    { id: "medium", label: content.comingSoon },
-    { id: "long", label: content.comingSoon },
-  ];
-
-  const budgetOptions = [
-    { id: "budget", label: content.comingSoon },
-    { id: "moderate", label: content.comingSoon },
-    { id: "comfortable", label: content.comingSoon },
-    { id: "luxury", label: content.comingSoon },
+    { id: "weekend", label: content.weekend },
+    { id: "short", label: content.shortTrip },
+    { id: "medium", label: content.mediumTrip },
+    { id: "long", label: content.longTrip },
   ];
 
   const handleToggle = (
@@ -60,14 +54,6 @@ export function TripsFilters() {
     );
   };
 
-  const removeFilter = (
-    value: string,
-    selected: string[],
-    setter: (val: string[]) => void
-  ) => {
-    setter(selected.filter(v => v !== value));
-  };
-
   const clearAllFilters = () => {
     setSelectedPeople([]);
     setSelectedCountries([]);
@@ -75,141 +61,118 @@ export function TripsFilters() {
     setSelectedBudgets([]);
   };
 
-  const getFilterLabel = (type: string, id: string) => {
-    let options: any[] = [];
-    let prefix = "";
-    
-    switch(type) {
-      case "people":
-        options = peopleOptions;
-        prefix = content.peoplePrefix;
-        break;
-      case "country":
-        options = countryOptions;
-        prefix = content.countriesPrefix;
-        break;
-      case "duration":
-        options = durationOptions;
-        prefix = content.durationPrefix;
-        break;
-      case "budget":
-        options = budgetOptions;
-        prefix = content.budgetPrefix;
-        break;
-    }
-    
-    const option = options.find(opt => opt.id === id);
-    return option ? `${prefix}: ${option.label}` : id;
-  };
-
-  const FilterDropdown = ({
+  /**
+   * Sous-composant pour les boutons de filtres
+   */
+  const FilterButton = ({
     title,
-    icon: Icon,
     options,
     selected,
     onToggle,
-    showFlags = false,
-    showIcons = false,
+    isComingSoon = false,
   }: any) => {
     const hasSelection = selected.length > 0;
 
     return (
-      <div className="flex">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className={`flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-light transition-all whitespace-nowrap h-[36px] ${
-                hasSelection 
-                  ? "bg-gray-100 text-gray-900 border border-gray-300" 
-                  : "bg-white text-gray-700 border border-gray-300 hover:border-gray-400"
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              <span className="text-sm">{title}</span>
-              {hasSelection && (
-                <span className="bg-gray-600 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
-                  {selected.length}
-                </span>
-              )}
-              <ChevronDown className="w-4 h-4" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-64">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild disabled={isComingSoon}>
+          <button
+            className={`
+              relative flex items-center gap-2 px-4 py-2.5 rounded-full border text-[13px] transition-all duration-200
+              ${isComingSoon 
+                ? "opacity-50 cursor-not-allowed bg-gray-50 border-gray-200 text-gray-400" 
+                : "bg-white text-gray-700 border-gray-200 hover:border-green-950 hover:shadow-sm"}
+              ${hasSelection && !isComingSoon
+                ? "border-green-950 bg-green-50/30 font-semibold ring-1 ring-green-950 text-green-950"
+                : ""}
+            `}
+          >
+            <span>{title}</span>
+            
+            {isComingSoon ? (
+              <span className="text-[9px] bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded-md font-bold uppercase">
+                Bientôt
+              </span>
+            ) : hasSelection ? (
+              <span className="flex items-center justify-center bg-green-950 text-white text-[10px] rounded-full h-4 w-4 ml-1">
+                {selected.length}
+              </span>
+            ) : (
+              <ChevronDown className="w-4 h-4 text-gray-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+            )}
+          </button>
+        </DropdownMenuTrigger>
+
+        {!isComingSoon && (
+          <DropdownMenuContent 
+            align="start" 
+            className="w-64 p-2 rounded-2xl shadow-xl border border-gray-100 bg-white z-50"
+          >
             {options.map((option: any) => (
               <DropdownMenuCheckboxItem
                 key={option.id}
                 checked={selected.includes(option.id)}
                 onCheckedChange={() => onToggle(option.id)}
-                className="flex items-center gap-2"
+                className="flex items-center gap-3 p-3 rounded-xl cursor-pointer focus:bg-gray-50 text-sm transition-colors"
               >
-                <span className="flex items-center gap-1.5 font-light">
-                  {showFlags && option.flag}
-                  {showIcons && option.icon}
+                <span className="flex items-center gap-2">
+                  {option.flag || option.icon}
                   {option.label}
                 </span>
               </DropdownMenuCheckboxItem>
             ))}
           </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+        )}
+      </DropdownMenu>
     );
   };
 
-  const hasAnyFilters = 
-    selectedPeople.length > 0 || 
-    selectedCountries.length > 0 || 
-    selectedDurations.length > 0 || 
-    selectedBudgets.length > 0;
+  const hasAnyFilters = selectedPeople.length + selectedCountries.length + selectedDurations.length > 0;
 
   return (
-    <div className="w-full">
-      <div className="flex gap-2 items-center">
-        <FilterDropdown
+    <div className="w-full bg-white">
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Bouton Filtres Principal (désactivé pour l'instant) */}
+        <button className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed font-medium text-[13px] text-gray-500">
+          <SlidersHorizontal className="w-4 h-4 text-green-950" />
+          {content.filters}
+        </button>
+
+        {/* Séparateur vertical */}
+        <div className="h-6 w-[1px] bg-gray-200 mx-1 hidden sm:block" />
+
+        {/* Filtre Voyageurs - Activé pour l'exemple (tu peux mettre true pour Bientôt) */}
+        <FilterButton
           title={content.peopleFilter}
-          icon={Users}
           options={peopleOptions}
           selected={selectedPeople}
-          onToggle={(id: string) =>
-            handleToggle(id, selectedPeople, setSelectedPeople)
-          }
-          showIcons
+          onToggle={(id: string) => handleToggle(id, selectedPeople, setSelectedPeople)}
+          isComingSoon={true} 
         />
 
-        <FilterDropdown
+        {/* Filtre Destinations - Bientôt */}
+        <FilterButton
           title={content.countriesFilter}
-          icon={Globe}
           options={countryOptions}
           selected={selectedCountries}
-          onToggle={(id: string) =>
-            handleToggle(id, selectedCountries, setSelectedCountries)
-          }
-          showFlags
+          onToggle={(id: string) => handleToggle(id, selectedCountries, setSelectedCountries)}
+          isComingSoon={true}
         />
 
-        <FilterDropdown
+        {/* Filtre Durée - Bientôt */}
+        <FilterButton
           title={content.durationFilter}
-          icon={Calendar}
           options={durationOptions}
           selected={selectedDurations}
-          onToggle={(id: string) =>
-            handleToggle(id, selectedDurations, setSelectedDurations)
-          }
+          onToggle={(id: string) => handleToggle(id, selectedDurations, setSelectedDurations)}
+          isComingSoon={true}
         />
 
-        <FilterDropdown
-          title={content.budgetFilter}
-          icon={Euro}
-          options={budgetOptions}
-          selected={selectedBudgets}
-          onToggle={(id: string) =>
-            handleToggle(id, selectedBudgets, setSelectedBudgets)
-          }
-        />
-
+        {/* Action Effacer tout */}
         {hasAnyFilters && (
           <button
             onClick={clearAllFilters}
-            className="text-sm text-gray-500 hover:text-gray-700 underline transition-colors ml-2"
+            className="text-[13px] font-semibold text-green-950 underline underline-offset-4 hover:text-green-900 px-2 py-2 transition-colors"
           >
             {content.clearAll}
           </button>

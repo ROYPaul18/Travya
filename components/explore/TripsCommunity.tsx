@@ -2,18 +2,15 @@
 
 import { useState, useMemo } from "react";
 import { useIntlayer } from "next-intlayer";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search } from "lucide-react";
 import { TripsCommunityItem } from "@/components/explore/TripCommunityItem";
 import { TripsFilters } from "@/components/explore/TripCommunityFilters";
-import { Trip } from "@/lib/utils/types/types"
+import { Trip } from "@/lib/utils/types/types";
 
 export interface TripsClientProps {
   trips: Trip[];
   locale: string;
 }
-
-const DAYS = 1000 * 60 * 60 * 24;
-const daysBetween = (d1: Date, d2: Date) => Math.ceil((d1.getTime() - d2.getTime()) / DAYS);
 
 export default function TripsCommunity({ trips, locale }: TripsClientProps) {
   const content = useIntlayer('trips-client');
@@ -21,7 +18,6 @@ export default function TripsCommunity({ trips, locale }: TripsClientProps) {
 
   const filtered = useMemo(() => {
     let list = trips;
-
     if (query.trim().length > 0) {
       const q = query.toLowerCase();
       list = list.filter(
@@ -37,59 +33,53 @@ export default function TripsCommunity({ trips, locale }: TripsClientProps) {
   today.setHours(0, 0, 0, 0);
 
   return (
-    <div className="min-h-screen bg-white px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-24 py-6 sm:py-8">
-      <div className="max-w-[1920px] mx-auto">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          <div className="flex-1">
-            <div className="flex flex-col sm:flex-row gap-3 mb-6 sm:mb-8">
-              <div className="relative flex-1 max-w-full sm:max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+    <div className="min-h-screen bg-white">
+      {/* Sticky Header pour les filtres (Optionnel mais très Airbnb) */}
+      <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-4">
+            
+            {/* Barre de recherche style "Pill" */}
+            <div className="relative w-full lg:max-w-md">
+              <div className="flex items-center w-full h-12 pl-5 pr-2 rounded-full border border-gray-200 shadow-xs hover:shadow-sm transition-shadow cursor-pointer bg-white">
+                <Search className="w-4 h-4 text-green-950 mr-3" />
                 <input
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={content.searchPlaceholder.value}
-                  aria-label={content.searchLabel.value}
-                  className="w-full h-[36px] pl-9 pr-4 text-sm rounded-md bg-white border border-gray-300 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-green-950 transition-all focus:text-green-950"
+                  className="flex-1 bg-transparent border-none outline-none text-sm placeholder:text-gray-500"
                 />
-              </div>
-
-              {/* Filtres */}
-              <div className="flex-1">
-                <TripsFilters />
               </div>
             </div>
 
-            {/* Résultats */}
-            {filtered.length === 0 ? (
-              <div className="text-center py-12 sm:py-16 lg:py-24">
-                <div className="p-4 sm:p-6 bg-gray-50 rounded-full inline-flex mb-4 sm:mb-6 border border-gray-200">
-                  <Search className="h-10 w-10 sm:h-12 sm:w-12 text-gray-300" />
-                </div>
-                <p className="text-gray-900 text-base sm:text-lg lg:text-xl font-medium mb-2">
-                  {content.noResults.value}
-                </p>
-                <p className="text-gray-500 text-xs sm:text-sm">
-                  {content.noResultsHint.value}
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
-                {filtered.map((trip) => (
-                  <TripsCommunityItem
-                    key={trip.id}
-                    trip={trip}
-                    locale={locale}
-                    today={today}
-                    content={content}
-                    isAlreadyLiked={trip.isAlreadyLiked ?? false}
-                  />
-                ))}
-              </div>
-            )}
+            {/* Filtres déportés à droite */}
+            <TripsFilters />
           </div>
         </div>
       </div>
+
+      <main className="max-w-[2520px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 py-8">
+        {filtered.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-32">
+            <Search className="h-12 w-12 text-gray-200 mb-4" />
+            <p className="text-gray-900 text-xl font-medium">{content.noResults.value}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-6 gap-y-10">
+            {filtered.map((trip) => (
+              <TripsCommunityItem
+                key={trip.id}
+                trip={trip}
+                locale={locale}
+                today={today}
+                content={content}
+                isAlreadyLiked={trip.isAlreadyLiked ?? false}
+              />
+            ))}
+          </div>
+        )}
+      </main>
     </div>
   );
 }

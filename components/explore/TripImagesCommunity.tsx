@@ -10,7 +10,7 @@ interface Props {
 
 export function TripImagesCommunity({ trip }: Props) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 h-[200px] sm:h-[300px] md:h-[350px] lg:h-[450px] pt-4 sm:pt-6">
+    <div className="grid grid-cols-4 gap-2 h-[250px] sm:h-[350px] md:h-[450px] py-8">
       <div className="col-span-1 sm:col-span-2 relative rounded-lg sm:rounded-l-lg overflow-hidden">
         {trip.wallpaper ? (
           <Image src={trip.wallpaper} alt={trip.title} className="object-cover" fill priority />
