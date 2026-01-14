@@ -27,7 +27,7 @@ export function TripHeader({
 }: TripHeaderProps) {
   return (
     <div className="flex items-center justify-between pt-6">
-      <h1 className="text-2xl font-medium text-neutral-900">
+      <h1 className="text-3xl font-stretch-50% font-normal text-neutral-900">
         {trip.title}
       </h1>
 

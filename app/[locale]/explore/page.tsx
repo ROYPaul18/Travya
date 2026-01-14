@@ -34,8 +34,8 @@ export default async function ExplorePage({ params }: PageProps) {
   );
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="relative z-10">
+    <div className="min-h-screen bg-[#FDFDFD]">
+      <div className="relative z-10 px-6 lg:px-8 2xl:px-60">
         <TripsCommunity
           trips={JSON.parse(JSON.stringify(sortedTrips))}
           locale={locale}

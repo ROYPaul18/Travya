@@ -1,7 +1,7 @@
 "use client";
 
 import { TripWithLocation } from "@/lib/utils/types/types";
-import { TripHeaderCommunity } from "./TripHeaderCommunity";
+// import { TripHeaderCommunity } from "./TripHeaderCommunity";
 import { TripImagesCommunity } from "./TripImagesCommunity";
 import { TripMetaCommunity } from "./TripMetaCommunity";
 import { TripItineraryCommunity } from "./TripItineraryCommunity";
@@ -13,29 +13,27 @@ interface Props {
 }
 
 export default function TripCommunityClient({ trip, isAlreadyLiked }: Props) {
-  
   const allActivities = trip.locations.flatMap(
     (location) => location.activities,
   );
-
   return (
     <div className="min-h-screen bg-white">
+      <TripImagesCommunity trip={trip} />
       <div className="px-4 sm:px-6 lg:px-12 xl:px-24 2xl:px-42 pb-8 sm:pb-12">
         <div className="relative w-full max-w-7xl mx-auto">
-          <TripHeaderCommunity trip={trip} isAlreadyLiked={isAlreadyLiked} />
-          <TripImagesCommunity trip={trip} />
+          {/* <TripHeaderCommunity trip={trip} isAlreadyLiked={isAlreadyLiked} /> */}
           <TripMetaCommunity
             description={trip.description}
             startDate={new Date(trip.startDate)}
             endDate={new Date(trip.endDate)}
           />
-          
-          <TripItineraryCommunity 
-            locations={trip.locations} 
-            tripId={trip.id} 
+
+          <TripItineraryCommunity
+            locations={trip.locations}
+            tripId={trip.id}
           />
-          
-          <TripMapCommunity 
+
+          <TripMapCommunity
             activities={allActivities
               .filter((a) => a.address)
               .map((a) => ({

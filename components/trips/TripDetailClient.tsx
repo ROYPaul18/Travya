@@ -22,7 +22,7 @@ export default function TripDetailClient({ trip }: Props) {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="px-6 sm:px-6 lg:px-42 pb-12">
+      <div className="px-6 lg:px-42 2xl:px-60">
         <TripHeader
           trip={{
             ...trip,
@@ -49,7 +49,7 @@ export default function TripDetailClient({ trip }: Props) {
             endDate={new Date(trip.endDate)}
           />
 
-          <div className="mt-8 space-y-12">
+          <div className="my-8 space-y-12">
             <TripItinerarySection
               locations={trip.locations}
               tripId={trip.id}

@@ -6,25 +6,24 @@ import Image from 'next/image';
 import { Link } from '../Link';
 
 const Footer = () => {
-    const content = useIntlayer("footer");
+  const content = useIntlayer("footer");
 
-    return (
-        <footer className="relative bg-white sm:p-4 py-2 lg:py-2 border-t border-gray-200/50 z-50 font-button flex justify-center">
-            <div className="flex justify-between items-center px-6 lg:px-28  w-full max-w-[1280px]">
-                 <div className="flex items-center gap-2">
-                         <Image src="/logo.png" alt="Travya Logo" width={32} height={32} />
-                         <Link href="/" className="flex items-center">
-                           <span className="text-base md:text-xl 2xl:text-2xl font-normal text-white-950 bg-clip-text">
-                             Travya
-                           </span>
-                         </Link>
-                       </div>
-                <p className="font-light text-sm">
-                    {content.copyright}
-                </p>
-            </div>
-        </footer>
-    )
+  return (
+    <footer className="relative bg-white py-7 lg:py-7 2xl:py-8 px-6 lg:px-8 2xl:px-60 border-t border-gray-200/50 z-50 font-button">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center font-logo gap-2">
+            <span className="text-base md:text-xl xl:text-[28px] 2xl:text-2xl font-logo tracking-wide">
+              SILLAGE
+            </span>
+          </Link>
+        </div>
+        <p className="font-light text-sm">
+          {content.copyright}
+        </p>
+      </div>
+    </footer>
+  )
 }
 
 export default Footer;

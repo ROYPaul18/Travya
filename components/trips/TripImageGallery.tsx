@@ -8,7 +8,7 @@ interface TripImageGalleryProps {
 
 export default function TripImageGallery({ trip }: TripImageGalleryProps) {
   return (
-    <div className="grid grid-cols-4 gap-2 h-[250px] sm:h-[350px] md:h-[450px] pt-8">
+    <div className="grid grid-cols-4 gap-2 h-[350px] sm:h-[450px] md:h-[500px] py-6">
       <div className="col-span-4 sm:col-span-2 relative rounded-l-lg overflow-hidden">
         {trip.wallpaper ? (
           <Image

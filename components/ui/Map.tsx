@@ -165,7 +165,7 @@ export default function Map({ activities }: MapProps) {
                     position={{ lat: hoveredActivity.lat, lng: hoveredActivity.lng }}
                     onCloseClick={() => setHoveredActivity(null)}
                 >
-                    <div className="p-2 max-w-xs">
+                    <div className="p-1 max-w-xs">
                         <h3 className="font-semibold text-gray-900 mb-1">
                             {hoveredActivity.name}
                         </h3>

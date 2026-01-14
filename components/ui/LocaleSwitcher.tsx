@@ -2,10 +2,7 @@
 
 import { FC } from "react"
 import { useLocale, setLocaleInStorage } from "next-intlayer"
-import {
-  getLocaleName,
-  getLocalizedUrl,
-} from "intlayer"
+import { getLocaleName, getLocalizedUrl } from "intlayer"
 import { useRouter } from "next/navigation"
 import {
   Select,
@@ -20,25 +17,23 @@ export const LocaleSwitcher: FC = () => {
   const router = useRouter()
 
   const handleChange = (newLocale: string) => {
-    
     setLocale(newLocale)
     setLocaleInStorage(newLocale)
-
     const newUrl = getLocalizedUrl(pathWithoutLocale, newLocale)
     router.push(newUrl)
   }
 
   return (
     <Select value={locale} onValueChange={handleChange}>
-      <SelectTrigger className="bg-white border-gray-300 text-gray-900 hover:bg-gray-50 transition-all duration-200 hover:shadow-md font-light cursor-pointer rounded-sm">
-        <SelectValue placeholder={getLocaleName(locale)} />
+      <SelectTrigger className="w-auto gap-1  bg-transparent hover:bg-white/5 text-zinc-400 hover:text-zinc-500 transition-all text-[13px] font-medium h-8 px-2">
+        <SelectValue placeholder={locale} />
       </SelectTrigger>
-      <SelectContent className="bg-white border border-gray-200 text-gray-900 shadow-xl rounded-sm">
+      <SelectContent className="  text-zinc-400 hover:text-zinc-500 rounded-lg min-w-[120px]">
         {availableLocales.map((localeItem) => (
           <SelectItem 
             key={localeItem} 
             value={localeItem}
-            className="hover:bg-gray-100 outline-none cursor-pointer transition-colors duration-200 font-light"
+            className="focus:bg-white/10 focus:text-white cursor-pointer transition-colors duration-200 text-[13px] hover:text-zinc-500"
           >
             {getLocaleName(localeItem, locale)}
           </SelectItem>

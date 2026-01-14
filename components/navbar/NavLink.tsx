@@ -11,8 +11,8 @@ export function NavLink({ href, children }: { href: string; children: React.Reac
   return (
     <Link
       href={href}
-      className={`flex items-center gap-2 transition-colors duration-300 text-neutral-500 hover:text-green-950
-        ${active ? "underline underline-offset-4 decoration-green-95 text-green-950" : ""}
+      className={`flex items-center gap-2 transition-colors duration-300 text-black hover:text-green-950 uppercase font-button  
+        ${active ? "decoration-green-95 text-green-950" : ""}
       `}
     >
       {children}

@@ -40,7 +40,7 @@ export default async function ProfilePage({ params }: PageProps) {
               {/* Name Section */}
               <div className="flex items-center">
                 <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                  <User className="h-4 w-4 text-gray-500 shrink-0" />
                   <span className="text-sm font-light text-gray-600 tracking-wider">
                     {content.name}
                   </span>
@@ -51,12 +51,12 @@ export default async function ProfilePage({ params }: PageProps) {
               </div>
 
               {/* Divider */}
-              <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+              <div className="h-px bg-linear-to-r from-transparent via-gray-200 to-transparent" />
 
               {/* Email Section */}
               <div className="flex items-center">
                 <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-gray-500 flex-shrink-0" />
+                  <Mail className="h-4 w-4 text-gray-500 shrink-0" />
                   <span className="text-sm font-light text-gray-600 uppercase tracking-wider">
                     {content.email}
                   </span>
@@ -66,7 +66,7 @@ export default async function ProfilePage({ params }: PageProps) {
                     {user.email}
                   </span>
                   {user.emailVerified && (
-                    <div className="flex-shrink-0 bg-gray-900 text-white p-1 rounded-full">
+                    <div className="shrink-0 bg-gray-900 text-white p-1 rounded-full">
                       <Check className="size-3" />
                     </div>
                   )}
@@ -76,7 +76,7 @@ export default async function ProfilePage({ params }: PageProps) {
               {/* Status Badge */}
               {user.emailVerified && (
                 <>
-                  <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+                  <div className="h-px bg-linear-to-r from-transparent via-gray-200 to-transparent" />
                   <div className="flex items-center justify-between pt-2">
                     <span className="text-xs font-medium text-gray-900 bg-gray-100 px-3 py-1.5 rounded-full border border-gray-200">
                       {content.emailVerified || "Email vérifié"}

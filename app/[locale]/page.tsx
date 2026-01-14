@@ -3,9 +3,9 @@ import {
   MapPin,
   Calendar,
   Globe,
-  Compass, 
+  Compass,
   ArrowRight,
-  Map as MapIcon, 
+  Map as MapIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIntlayer } from "next-intlayer/server";
@@ -21,137 +21,106 @@ export default async function Home({ params }: PageProps) {
   const user = await getUser();
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size:14px_24px"></div>
-      <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-gray-200 opacity-20 blur-[100px]"></div>
+    <div className="min-h-screen bg-[#FDFDFD] relative overflow-hidden text-neutral-900">
+      {/* Fond épuré - Trame de fond très subtile */}
+      <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:32px_32px] opacity-40"></div>
 
       <div className="relative z-10">
-      
-        <section className="px-4 py-24 lg:px-24">
-          <div className="max-w-5xl mx-auto text-center space-y-8 py-12">
-            
-            <div className="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full border border-gray-200 shadow-sm mb-6 transition-transform hover:scale-105 cursor-default">
-              <Globe className="h-4 w-4 text-green-950" />
-              <span className="text-gray-600 text-sm font-medium">
+        {/* HERO SECTION */}
+        <section className="px-6 py-12 lg:px-24 max-h-min">
+          <div className="max-w-5xl mx-auto text-center space-y-12 py-12">
+            <div className="inline-flex items-center gap-3 bg-transparent px-2 py-1 border-b border-neutral-200 mb-4">
+              <span className="text-neutral-400 text-[10px] uppercase tracking-[0.2em] font-bold">
                 {content.badgeText || "The new way to plan adventures"}
               </span>
             </div>
-
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-light text-gray-900 leading-[1.1] tracking-tight">
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-light leading-[1.05] tracking-tight text-neutral-950">
               {content.title}
             </h1>
-
             
-            <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-light">
+            <p className="text-lg md:text-xl text-neutral-500 max-w-xl mx-auto leading-relaxed font-light italic">
               {content.subtitle}
             </p>
 
-            
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-8 pb-12">
+            <div className="flex flex-col sm:flex-row gap-6 items-center justify-center pt-10">
               <Link href={user ? "/trips" : "/auth/signin"}>
-                <Button className="h-auto bg-green-950 hover:bg-green-950 hover:shadow-md text-white px-8 py-3 text-lg rounded-sm transition-all shadow-md flex items-center gap-2 group">
+                <Button className="h-14 bg-neutral-950 hover:bg-neutral-800 text-white px-10 rounded-none transition-all duration-500 uppercase text-xs tracking-widest">
                   {content.getStarted}
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-
               <Link href={user ? "/globe" : "/auth/signin"}>
-                <Button variant="outline" className="h-auto bg-white hover:bg-gray-50 text-gray-900 border-gray-200 px-6 py-3 text-lg rounded-sm transition-all flex items-center gap-2 shadow-sm">
+                <Button variant="outline" className="h-14 bg-transparent border-neutral-200 hover:border-neutral-950 text-neutral-950 px-10 rounded-none transition-all duration-500 uppercase text-xs tracking-widest">
                   {content.exploreGlobe}
                 </Button>
               </Link>
             </div>
 
-            
-            <div className="relative mx-auto max-w-5xl mt-12 rounded-lg border border-gray-200 bg-gray-50/50 p-2 shadow-sm lg:mt-20">
-               <div className="aspect-video overflow-hidden rounded-md bg-white flex items-center justify-center text-gray-300">
-                  <div className="text-center">
-                    <MapIcon className="h-16 w-16 mx-auto mb-4 opacity-20" />
-                    <span className="text-sm font-medium opacity-40">A venir...</span>
-                  </div>
-               </div>
+            {/* Preview Image - Aspect "Cadre d'Art" */}
+            <div className="relative mx-auto max-w-6xl mt-24 border border-neutral-100 bg-white p-4 shadow-2xl shadow-neutral-200/50">
+              <div className="aspect-[16/8] overflow-hidden bg-neutral-50 flex items-center justify-center">
+                <div className="text-center group cursor-pointer">
+                  <MapIcon className="h-12 w-12 mx-auto mb-4 text-neutral-200 group-hover:text-neutral-400 transition-colors duration-700" />
+                  <span className="text-[10px] uppercase tracking-widest font-bold text-neutral-300">View Gallery</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        
-        <section className="container mx-auto px-4 py-24 border-t border-gray-100">
+        {/* FEATURES - Épurement des icônes et des cartes */}
+        <section className="container mx-auto px-6 py-32 border-t border-neutral-100">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-20">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-gray-900 mb-6">
+            <div className="text-center mb-24">
+              <h2 className="text-4xl md:text-5xl font-serif font-light text-neutral-950 mb-8">
                 {content.featuresTitle}
-                </h2>
-                <p className="text-gray-500 max-w-2xl mx-auto">
-                    Focus on the experience, not the logistics. Build your itinerary, pin your favorite spots, and keep your memories alive.
-                </p>
+              </h2>
+              <div className="w-12 h-[1px] bg-neutral-950 mx-auto"></div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-        
-              <div className="bg-white p-8 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="bg-blue-50 w-14 h-14 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
-                  <MapPin className="h-7 w-7 text-blue-600" />
+            <div className="grid md:grid-cols-3 gap-16">
+              {[
+                { icon: MapPin, title: content.feature1.title, desc: content.feature1.description },
+                { icon: Globe, title: content.feature2.title, desc: content.feature2.description },
+                { icon: Calendar, title: content.feature3.title, desc: content.feature3.description }
+              ].map((feature, i) => (
+                <div key={i} className="space-y-6 text-center">
+                  <feature.icon className="h-6 w-6 mx-auto text-neutral-950 stroke-[1px]" />
+                  <h3 className="text-lg font-medium tracking-tight text-neutral-950 uppercase text-[13px]">
+                    {feature.title}
+                  </h3>
+                  <p className="text-neutral-500 leading-relaxed font-light text-sm">
+                    {feature.desc}
+                  </p>
                 </div>
-                <h3 className="text-xl font-medium text-gray-900 mb-3">
-                  {content.feature1.title}
-                </h3>
-                <p className="text-gray-500 leading-relaxed">
-                  {content.feature1.description}
-                </p>
-              </div>
-
-              
-              <div className="bg-white p-8 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="bg-purple-50 w-14 h-14 rounded-lg flex items-center justify-center mb-6 group-hover:bg-purple-100 transition-colors">
-                  <Globe className="h-7 w-7 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-medium text-gray-900 mb-3">
-                  {content.feature2.title}
-                </h3>
-                <p className="text-gray-500 leading-relaxed">
-                  {content.feature2.description}
-                </p>
-              </div>
-
-              
-              <div className="bg-white p-8 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group">
-                <div className="bg-orange-50 w-14 h-14 rounded-lg flex items-center justify-center mb-6 group-hover:bg-orange-100 transition-colors">
-                  <Calendar className="h-7 w-7 text-orange-600" />
-                </div>
-                <h3 className="text-xl font-medium text-gray-900 mb-3">
-                  {content.feature3.title}
-                </h3>
-                <p className="text-gray-500 leading-relaxed">
-                  {content.feature3.description}
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
-        
-        <section className="container mx-auto px-4 py-24">
-          <div className="max-w-5xl mx-auto bg-green-950 rounded-2xl p-12 lg:p-20 text-center relative overflow-hidden">
-        
-            <div className="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-500 opacity-10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
 
-            <Compass className="h-16 w-16 text-gray-200 mx-auto mb-8 animate-pulse" />
+        {/* CTA SECTION - Inversion du design pour un impact fort */}
+        <section className="container mx-auto px-6 py-32">
+          <div className="max-w-6xl mx-auto bg-neutral-950 py-24 px-12 text-center relative overflow-hidden">
+            {/* Grain texture overlay */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
             
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-white mb-6 tracking-tight">
-              {content.ctaTitle || "Ready to map your world?"}
-            </h2> 
-            <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto font-light">
-              {content.ctaSubtitle || "Join thousands of travelers creating their personal travel atlas. No booking, just pure adventure planning."}
-            </p>
-            
-            <div className="flex justify-center">
+            <div className="relative z-10 space-y-10">
+              <h2 className="text-5xl md:text-6xl font-serif font-light text-white tracking-tight">
+                {content.ctaTitle || "Ready to map your world?"}
+              </h2>
+              
+              <p className="text-neutral-400 max-w-xl mx-auto font-light leading-relaxed italic">
+                {content.ctaSubtitle || "Join thousands of travelers creating their personal travel atlas. No booking, just pure adventure planning."}
+              </p>
+
+              <div className="flex justify-center pt-6">
                 <Link href={user ? "/trips/new" : "/auth/signin"}>
-                <Button size="lg" className="bg-white hover:bg-gray-100 text-neutral-900 font-medium px-10 py-7 text-lg rounded-full transition-all duration-300 flex items-center gap-2">
+                  <Button size="lg" className="bg-white hover:bg-neutral-200 text-neutral-950 px-12 py-8 rounded-none transition-all duration-500 uppercase text-xs tracking-[0.2em] font-bold">
                     {content.createFirstTrip}
-                    <ArrowRight className="h-5 w-5" />
-                </Button>
+                    <ArrowRight className="ml-3 h-4 w-4" />
+                  </Button>
                 </Link>
+              </div>
             </div>
           </div>
         </section>

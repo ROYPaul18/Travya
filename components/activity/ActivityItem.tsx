@@ -35,7 +35,6 @@ const ActivityItem = ({
   tripId,
   locationId,
   onDeleteClick,
-  onEditClick,
   deletingId,
   isEditing,
 }: ActivityItemProps) => {

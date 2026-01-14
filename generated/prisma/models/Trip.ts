@@ -35,6 +35,7 @@ export type TripMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   visibility: $Enums.Visibility | null
+  originalTripId: string | null
 }
 
 export type TripMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type TripMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   visibility: $Enums.Visibility | null
+  originalTripId: string | null
 }
 
 export type TripCountAggregateOutputType = {
@@ -62,6 +64,7 @@ export type TripCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   visibility: number
+  originalTripId: number
   _all: number
 }
 
@@ -77,6 +80,7 @@ export type TripMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   visibility?: true
+  originalTripId?: true
 }
 
 export type TripMaxAggregateInputType = {
@@ -90,6 +94,7 @@ export type TripMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   visibility?: true
+  originalTripId?: true
 }
 
 export type TripCountAggregateInputType = {
@@ -104,6 +109,7 @@ export type TripCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   visibility?: true
+  originalTripId?: true
   _all?: true
 }
 
@@ -191,6 +197,7 @@ export type TripGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   visibility: $Enums.Visibility
+  originalTripId: string | null
   _count: TripCountAggregateOutputType | null
   _min: TripMinAggregateOutputType | null
   _max: TripMaxAggregateOutputType | null
@@ -226,6 +233,7 @@ export type TripWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   visibility?: Prisma.EnumVisibilityFilter<"Trip"> | $Enums.Visibility
+  originalTripId?: Prisma.StringNullableFilter<"Trip"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   locations?: Prisma.LocationListRelationFilter
   favoritedBy?: Prisma.FavoriteListRelationFilter
@@ -243,6 +251,7 @@ export type TripOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  originalTripId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   locations?: Prisma.LocationOrderByRelationAggregateInput
   favoritedBy?: Prisma.FavoriteOrderByRelationAggregateInput
@@ -263,6 +272,7 @@ export type TripWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   visibility?: Prisma.EnumVisibilityFilter<"Trip"> | $Enums.Visibility
+  originalTripId?: Prisma.StringNullableFilter<"Trip"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   locations?: Prisma.LocationListRelationFilter
   favoritedBy?: Prisma.FavoriteListRelationFilter
@@ -280,6 +290,7 @@ export type TripOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  originalTripId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TripCountOrderByAggregateInput
   _max?: Prisma.TripMaxOrderByAggregateInput
   _min?: Prisma.TripMinOrderByAggregateInput
@@ -300,6 +311,7 @@ export type TripScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Trip"> | Date | string
   visibility?: Prisma.EnumVisibilityWithAggregatesFilter<"Trip"> | $Enums.Visibility
+  originalTripId?: Prisma.StringNullableWithAggregatesFilter<"Trip"> | string | null
 }
 
 export type TripCreateInput = {
@@ -313,6 +325,7 @@ export type TripCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
   user: Prisma.UserCreateNestedOneWithoutTripsInput
   locations?: Prisma.LocationCreateNestedManyWithoutTripInput
   favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutTripInput
@@ -330,6 +343,7 @@ export type TripUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
   locations?: Prisma.LocationUncheckedCreateNestedManyWithoutTripInput
   favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutTripInput
 }
@@ -345,6 +359,7 @@ export type TripUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutTripsNestedInput
   locations?: Prisma.LocationUpdateManyWithoutTripNestedInput
   favoritedBy?: Prisma.FavoriteUpdateManyWithoutTripNestedInput
@@ -362,6 +377,7 @@ export type TripUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locations?: Prisma.LocationUncheckedUpdateManyWithoutTripNestedInput
   favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutTripNestedInput
 }
@@ -378,6 +394,7 @@ export type TripCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
 }
 
 export type TripUpdateManyMutationInput = {
@@ -391,6 +408,7 @@ export type TripUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TripUncheckedUpdateManyInput = {
@@ -405,6 +423,7 @@ export type TripUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TripListRelationFilter = {
@@ -437,6 +456,7 @@ export type TripCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  originalTripId?: Prisma.SortOrder
 }
 
 export type TripMaxOrderByAggregateInput = {
@@ -450,6 +470,7 @@ export type TripMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  originalTripId?: Prisma.SortOrder
 }
 
 export type TripMinOrderByAggregateInput = {
@@ -463,6 +484,7 @@ export type TripMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  originalTripId?: Prisma.SortOrder
 }
 
 export type TripScalarRelationFilter = {
@@ -564,6 +586,7 @@ export type TripCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
   locations?: Prisma.LocationCreateNestedManyWithoutTripInput
   favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutTripInput
 }
@@ -579,6 +602,7 @@ export type TripUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
   locations?: Prisma.LocationUncheckedCreateNestedManyWithoutTripInput
   favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutTripInput
 }
@@ -624,6 +648,7 @@ export type TripScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trip"> | Date | string
   visibility?: Prisma.EnumVisibilityFilter<"Trip"> | $Enums.Visibility
+  originalTripId?: Prisma.StringNullableFilter<"Trip"> | string | null
 }
 
 export type TripCreateWithoutLocationsInput = {
@@ -637,6 +662,7 @@ export type TripCreateWithoutLocationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
   user: Prisma.UserCreateNestedOneWithoutTripsInput
   favoritedBy?: Prisma.FavoriteCreateNestedManyWithoutTripInput
 }
@@ -653,6 +679,7 @@ export type TripUncheckedCreateWithoutLocationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
   favoritedBy?: Prisma.FavoriteUncheckedCreateNestedManyWithoutTripInput
 }
 
@@ -683,6 +710,7 @@ export type TripUpdateWithoutLocationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutTripsNestedInput
   favoritedBy?: Prisma.FavoriteUpdateManyWithoutTripNestedInput
 }
@@ -699,6 +727,7 @@ export type TripUncheckedUpdateWithoutLocationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutTripNestedInput
 }
 
@@ -713,6 +742,7 @@ export type TripCreateWithoutFavoritedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
   user: Prisma.UserCreateNestedOneWithoutTripsInput
   locations?: Prisma.LocationCreateNestedManyWithoutTripInput
 }
@@ -729,6 +759,7 @@ export type TripUncheckedCreateWithoutFavoritedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
   locations?: Prisma.LocationUncheckedCreateNestedManyWithoutTripInput
 }
 
@@ -759,6 +790,7 @@ export type TripUpdateWithoutFavoritedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutTripsNestedInput
   locations?: Prisma.LocationUpdateManyWithoutTripNestedInput
 }
@@ -775,6 +807,7 @@ export type TripUncheckedUpdateWithoutFavoritedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locations?: Prisma.LocationUncheckedUpdateManyWithoutTripNestedInput
 }
 
@@ -789,6 +822,7 @@ export type TripCreateManyUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   visibility?: $Enums.Visibility
+  originalTripId?: string | null
 }
 
 export type TripUpdateWithoutUserInput = {
@@ -802,6 +836,7 @@ export type TripUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locations?: Prisma.LocationUpdateManyWithoutTripNestedInput
   favoritedBy?: Prisma.FavoriteUpdateManyWithoutTripNestedInput
 }
@@ -817,6 +852,7 @@ export type TripUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   locations?: Prisma.LocationUncheckedUpdateManyWithoutTripNestedInput
   favoritedBy?: Prisma.FavoriteUncheckedUpdateManyWithoutTripNestedInput
 }
@@ -832,6 +868,7 @@ export type TripUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  originalTripId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -886,6 +923,7 @@ export type TripSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   visibility?: boolean
+  originalTripId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   locations?: boolean | Prisma.Trip$locationsArgs<ExtArgs>
   favoritedBy?: boolean | Prisma.Trip$favoritedByArgs<ExtArgs>
@@ -904,6 +942,7 @@ export type TripSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   visibility?: boolean
+  originalTripId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trip"]>
 
@@ -919,6 +958,7 @@ export type TripSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   visibility?: boolean
+  originalTripId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trip"]>
 
@@ -934,9 +974,10 @@ export type TripSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   visibility?: boolean
+  originalTripId?: boolean
 }
 
-export type TripOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "images" | "wallpaper" | "startDate" | "endDate" | "userId" | "createdAt" | "updatedAt" | "visibility", ExtArgs["result"]["trip"]>
+export type TripOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "images" | "wallpaper" | "startDate" | "endDate" | "userId" | "createdAt" | "updatedAt" | "visibility" | "originalTripId", ExtArgs["result"]["trip"]>
 export type TripInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   locations?: boolean | Prisma.Trip$locationsArgs<ExtArgs>
@@ -969,6 +1010,7 @@ export type $TripPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdAt: Date
     updatedAt: Date
     visibility: $Enums.Visibility
+    originalTripId: string | null
   }, ExtArgs["result"]["trip"]>
   composites: {}
 }
@@ -1406,6 +1448,7 @@ export interface TripFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Trip", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Trip", 'DateTime'>
   readonly visibility: Prisma.FieldRef<"Trip", 'Visibility'>
+  readonly originalTripId: Prisma.FieldRef<"Trip", 'String'>
 }
     
 

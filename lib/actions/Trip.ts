@@ -36,7 +36,6 @@ export async function createTrip(formData: FormData) {
   const startDateStr = formData.get("startDate")?.toString();
   const endDateStr = formData.get("endDate")?.toString();
 
-  // Gérer les images multiples (si envoyées en JSON)
   const imagesStr = formData.get("images")?.toString();
   const images = imagesStr ? JSON.parse(imagesStr) : [];
 
@@ -89,7 +88,6 @@ export async function editTrip(formData: FormData, tripId: string) {
   const startDateStr = formData.get("startDate")?.toString();
   const endDateStr = formData.get("endDate")?.toString();
 
-  // Gérer les images multiples
   const imagesStr = formData.get("images")?.toString();
   const images = imagesStr ? JSON.parse(imagesStr) : [];
 
@@ -113,7 +111,6 @@ export async function editTrip(formData: FormData, tripId: string) {
     throw new Error("Accès non autorisé !");
   }
 
-  // Calculer le nombre de jours avant et après modification
   const oldDaysCount = getDaysBetween(
     existingTrip.startDate,
     existingTrip.endDate,
@@ -121,9 +118,7 @@ export async function editTrip(formData: FormData, tripId: string) {
   const newDaysCount = getDaysBetween(startDate, endDate);
   const dayDates = generateDayDates(startDate, endDate);
 
-  // Utiliser une transaction pour garantir la cohérence des données
   await prisma.$transaction(async (tx) => {
-    // Mettre à jour le voyage
     await tx.trip.update({
       where: { id: tripId },
       data: {
@@ -136,10 +131,8 @@ export async function editTrip(formData: FormData, tripId: string) {
       },
     });
 
-    // Si le nombre de jours a changé, ajuster les itinéraires
     if (newDaysCount !== oldDaysCount) {
       if (newDaysCount > oldDaysCount) {
-        // Ajouter des jours manquants
         const newDays = dayDates.slice(oldDaysCount);
         await tx.location.createMany({
           data: newDays.map((date, index) => ({
@@ -152,7 +145,6 @@ export async function editTrip(formData: FormData, tripId: string) {
           })),
         });
       } else {
-        // Supprimer les jours en trop (les derniers)
         const locationsToDelete = existingTrip.locations
           .sort((a, b) => b.order - a.order)
           .slice(0, oldDaysCount - newDaysCount);
@@ -206,4 +198,70 @@ export async function updateTripVisibility(
   });
 
   revalidatePath(`/trips/${id}`);
+}
+
+export async function copyTrip(tripId: string) {
+  const user = await getUser();
+
+  if (!user) {
+    throw new Error("Non authentifié");
+  }
+
+  const originalTrip = await prisma.trip.findUnique({
+    where: { id: tripId },
+    include: {
+      locations: {
+        include: {
+          activities: true,
+        },
+      },
+    },
+  });
+
+  if (!originalTrip) {
+    throw new Error("Voyage original introuvable");
+  }
+
+  const clonedTrip = await prisma.$transaction(async (tx) => {
+    return await tx.trip.create({
+      data: {
+        title: `${originalTrip.title} (Copie)`,
+        description: originalTrip.description,
+        wallpaper: originalTrip.wallpaper,
+        images: originalTrip.images,
+        startDate: originalTrip.startDate,
+        endDate: originalTrip.endDate,
+        userId: user.id, 
+        visibility: "PRIVATE", 
+        
+        locations: {
+          create: originalTrip.locations.map((loc) => ({
+            locationTitle: loc.locationTitle,
+            lat: loc.lat,
+            lng: loc.lng,
+            order: loc.order,
+            activities: {
+              create: loc.activities.map((act) => ({
+                name: act.name,
+                address: act.address,
+                lat: act.lat,
+                lng: act.lng,
+                category: act.category,
+                description: act.description,
+                wallpaper: act.wallpaper,
+                images: act.images,
+                startTime: act.startTime,
+                endTime: act.endTime,
+                budget: act.budget,
+                order: act.order,
+              })),
+            },
+          })),
+        },
+      },
+    });
+  });
+
+  revalidatePath("/trips");
+  redirect(`/trips/${clonedTrip.id}`);
 }

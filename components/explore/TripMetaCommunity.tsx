@@ -1,13 +1,19 @@
 "use client";
 
 import { useIntlayer } from "next-intlayer";
-import { formatDate } from "@/lib/utils/formatDate";
+import { Cormorant_Garamond } from 'next/font/google';
 
 interface Props {
   description?: string | null;
   startDate: Date;
   endDate: Date;
 }
+
+const cormorant = Cormorant_Garamond({
+  weight: ['300', '400', '500'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export function TripMetaCommunity({ description, startDate, endDate }: Props) {
   const content = useIntlayer("trip-detail");
@@ -16,21 +22,18 @@ export function TripMetaCommunity({ description, startDate, endDate }: Props) {
 
   return (
     <div className="space-y-2 pb-4 sm:pb-6 border-b border-gray-200/50">
-      {description && (
-        <p className="text-neutral-800 text-lg sm:text-lg lg:text-xl leading-relaxed font-medium">
-          {description}
-        </p>
-      )}
-      <div className="flex flex-wrap gap-1 items-center text-sm sm:text-base text-[#222222] font-light">
-        <div className="flex items-center gap-1.5">
-          <span>{formatDate(startDate)} - {formatDate(endDate)}</span>
-        </div>
-        <span className="text-neutral-300">·</span>
-        <div className="flex items-center gap-1.5">
-          <span>{days} {getDaysText(days)}</span>
-        </div>
-        <span className="text-neutral-300">·</span>
-      </div>
-    </div>
+      <section className="py-[120px] max-w-[800px] mx-auto text-left">
+        {description && (
+          <p className={cormorant.className} style={{
+            fontSize: "2.2rem",
+            lineHeight: 1.4,
+            color: "#333",
+            fontWeight: 300,
+          }}>
+            {description}
+          </p>
+        )}
+      </section>
+    </div >
   );
 }

@@ -17,8 +17,8 @@ const geist = Lora({
 })
 
 export const metadata: Metadata = {
-  title: "Travya – Carnets de voyage interactifs",
-  description: "Travya est une application web pour planifier, documenter et revivre ses voyages grâce à des carnets numériques collaboratifs et une visualisation 3D du globe.",
+  title: "SILLAGE – Carnets de voyage interactifs",
+  description: "SILLAGE est une application web pour planifier, documenter et revivre ses voyages grâce à des carnets numériques collaboratifs et une visualisation 3D du globe.",
 };
 
 const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {

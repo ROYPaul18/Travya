@@ -11,11 +11,7 @@ import { useIntlayer } from "next-intlayer";
 import { Link } from "@/components/Link";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import {Popover,PopoverContent,PopoverTrigger,} from "@/components/ui/popover";
 
 export default function NewTrip() {
   const [isPending, startTransition] = useTransition();
@@ -71,14 +67,11 @@ export default function NewTrip() {
             Créez un nouveau voyage et commencez à planifier votre aventure
           </p>
         </div>
-
-        {/* Form */}
         <div className="space-y-8">
           <form
             className="space-y-8"
             action={(formData: FormData) => handleSubmit(formData)}
           >
-            {/* Title */}
             <div className="space-y-2">
               <label className="text-sm font-light text-gray-900 flex items-center gap-2">
                 {content.titleLabel}
@@ -96,8 +89,6 @@ export default function NewTrip() {
                 required
               />
             </div>
-
-            {/* Description */}
             <div className="space-y-2">
               <label className="text-sm font-light text-gray-900 flex items-center gap-2">
                 {content.descriptionLabel}
@@ -116,8 +107,6 @@ export default function NewTrip() {
                 required
               />
             </div>
-
-            {/* Dates */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-sm font-light text-gray-900 flex items-center gap-2">
@@ -194,8 +183,6 @@ export default function NewTrip() {
                 </Popover>
               </div>
             </div>
-
-            {/* Wallpaper Upload */}
             <div className="space-y-3">
               <label className="text-sm font-light text-gray-900 flex items-center gap-2">
                 Image de couverture (Wallpaper)

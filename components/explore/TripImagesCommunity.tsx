@@ -10,26 +10,23 @@ interface Props {
 
 export function TripImagesCommunity({ trip }: Props) {
   return (
-    <div className="grid grid-cols-4 gap-2 h-[250px] sm:h-[350px] md:h-[450px] py-8">
-      <div className="col-span-1 sm:col-span-2 relative rounded-lg sm:rounded-l-lg overflow-hidden">
+    <div className="w-screen h-screen relative">
+      <div className="col-span-1 sm:col-span-2 relative h-full w-full overflow-hidden">
         {trip.wallpaper ? (
-          <Image src={trip.wallpaper} alt={trip.title} className="object-cover" fill priority />
+          <Image
+            src={trip.wallpaper}
+            alt={trip.title}
+            fill
+            priority
+            className="object-cover"
+          />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">
             <ImageIcon className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-gray-300" />
           </div>
         )}
       </div>
-
-      <div className="hidden sm:grid sm:col-span-2 grid-cols-2 gap-2">
-        {Array(4).fill(0).map((_, i) => (
-          <div key={i} className={`relative overflow-hidden ${i === 1 ? "rounded-tr-lg" : i === 3 ? "rounded-br-lg" : ""}`}>
-            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-              <ImageIcon className="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 text-gray-300" />
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
+

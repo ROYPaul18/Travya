@@ -87,6 +87,8 @@ model Trip {
   locations   Location[]
   favoritedBy Favorite[]
   visibility  Visibility @default(PRIVATE)
+
+  originalTripId String?
 }
 
 model Location {
