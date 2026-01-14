@@ -23,7 +23,7 @@ export default async function Home({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-[#FDFDFD] relative overflow-hidden text-neutral-900">
       {/* Fond épuré - Trame de fond très subtile */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:32px_32px] opacity-40"></div>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[32px_32px] opacity-40"></div>
 
       <div className="relative z-10">
         {/* HERO SECTION */}
@@ -58,7 +58,7 @@ export default async function Home({ params }: PageProps) {
 
             {/* Preview Image - Aspect "Cadre d'Art" */}
             <div className="relative mx-auto max-w-6xl mt-24 border border-neutral-100 bg-white p-4 shadow-2xl shadow-neutral-200/50">
-              <div className="aspect-[16/8] overflow-hidden bg-neutral-50 flex items-center justify-center">
+              <div className="aspect-16/8 overflow-hidden bg-neutral-50 flex items-center justify-center">
                 <div className="text-center group cursor-pointer">
                   <MapIcon className="h-12 w-12 mx-auto mb-4 text-neutral-200 group-hover:text-neutral-400 transition-colors duration-700" />
                   <span className="text-[10px] uppercase tracking-widest font-bold text-neutral-300">View Gallery</span>
@@ -75,7 +75,7 @@ export default async function Home({ params }: PageProps) {
               <h2 className="text-4xl md:text-5xl font-serif font-light text-neutral-950 mb-8">
                 {content.featuresTitle}
               </h2>
-              <div className="w-12 h-[1px] bg-neutral-950 mx-auto"></div>
+              <div className="w-12 h-1px bg-neutral-950 mx-auto"></div>
             </div>
 
             <div className="grid md:grid-cols-3 gap-16">

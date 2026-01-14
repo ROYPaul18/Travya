@@ -22,7 +22,6 @@ const activitiesContent = {
       es: "Eliminando…",
     }),
 
-    // Catégories
     categories: {
       RESTAURANT: t({
         en: "Restaurant",

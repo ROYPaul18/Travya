@@ -19,11 +19,11 @@ export const Navbar = async ({ params }: PageProps) => {
   const user = await getUser();
 
   return (
-    <nav className="sticky top-0 w-full z-1000 py-5 px-[5%] flex justify-between items-center bg-white border-b border-gray-200 opacity-90">
+    <nav className="relative top-0 w-full z-1000 py-5 px-[5%] flex justify-between items-center bg-white border-b border-gray-200 opacity-90">
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center">
           <Link href="/" className="flex items-center font-logo gap-2">
-            <span className="text-base md:text-xl xl:text-[24px] 2xl:text-2xl font-logo tracking-wide font-light">
+            <span className="text-base md:text-xl xl:text-[24px] 2xl:text-4xl font-logo tracking-wide font-light">
               SILLAGE
             </span>
           </Link>
@@ -31,7 +31,7 @@ export const Navbar = async ({ params }: PageProps) => {
 
         <div className="flex items-center gap-12">
           {user && (
-            <div className="hidden md:flex items-center space-x-8 2xl:space-x-16 text-black font-medium text-sm xl:text-sm 2xl:text-xs font-nav">
+            <div className="hidden md:flex items-center space-x-8 2xl:space-x-16 text-black font-medium text-xs 2xl:text-base font-nav">
               <NavLink href="/explore">Explore</NavLink>
               <NavLink href="/trips">{nav.myTrips}</NavLink>
             </div>

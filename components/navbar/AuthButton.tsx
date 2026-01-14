@@ -46,7 +46,7 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
         <DropdownMenuTrigger asChild>
           <button className="outline-none ring-0 cursor-pointer group">
             <div className=" border border-transparent group-hover:border-neutral-200 transition-all duration-500 rounded-full">
-                <Avatar className="h-9 w-9 ">
+                <Avatar className="size-9 2xl:size-12">
                 {user.image ? (
                     <AvatarImage src={user.image} alt={user.name ?? "User"} />
                 ) : (

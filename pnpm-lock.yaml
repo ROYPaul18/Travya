@@ -136,6 +136,9 @@ devDependencies:
   '@faker-js/faker':
     specifier: ^10.1.0
     version: 10.1.0
+  '@intlayer/swc':
+    specifier: ^7.5.14
+    version: 7.5.14
   '@tailwindcss/postcss':
     specifier: ^4
     version: 4.1.18
@@ -1574,6 +1577,11 @@ packages:
       - intlayer
       - react
     dev: false
+
+  /@intlayer/swc@7.5.14:
+    resolution: {integrity: sha512-sAA8mf2/GTfj9SECrbkvHK3+/jKFjwHeB4/RRGf03CCOOS10b2Zt197Rv5sSGMypCxgH2qH29tVF6Fk/7Kq+lg==}
+    engines: {node: '>=14.18'}
+    dev: true
 
   /@intlayer/types@7.4.0:
     resolution: {integrity: sha512-fFEhy58KrBrFjM1lG/SsQIJmswGfhhKjrzRhwkgXSAvFo1NdsTjuzZDb3AddSjYZCxtWsCghf/VxOWIaQfWUeA==}

@@ -2,9 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { useIntlayer } from "next-intlayer";
-import { Calendar, Search } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { TripCardItem, Trip } from "@/components/trips/TripCardItem";
 import { Cormorant_Garamond } from 'next/font/google';
+import { Link } from "../Link";
 
 export interface TripsClientProps {
   trips: Trip[];
@@ -12,25 +13,32 @@ export interface TripsClientProps {
   user: { name?: string | null };
 }
 
-
 const cormorant = Cormorant_Garamond({
   weight: ['300', '400', '500'],
   subsets: ['latin'],
   display: 'swap',
-  style:["normal", "italic"]
+  style: ["normal", "italic"]
 });
 
+type TabType = "ALL" | "DRAFTS" | "FAVORITES";
 
 export default function TripsClient({ trips, locale, user }: TripsClientProps) {
   const content = useIntlayer('trips-client');
+  const [activeTab, setActiveTab] = useState<TabType>("ALL");
   const [query, setQuery] = useState("");
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const filteredAndSorted = useMemo(() => {
-
     let list = [...trips];
+
+    if (activeTab === "DRAFTS") {
+      list = list.filter(t => (t as any).status === "draft"); 
+    } else if (activeTab === "FAVORITES") {
+      list = list.filter(t => (t as any).isFavorite === true);
+    }
+
     if (query.trim().length > 0) {
       const q = query.toLowerCase();
       list = list.filter(t => t.title.toLowerCase().includes(q));
@@ -46,43 +54,66 @@ export default function TripsClient({ trips, locale, user }: TripsClientProps) {
       if (isPastA && isPastB) return dateB - dateA;
       return isPastA ? 1 : -1;
     });
-  }, [query, trips, today]);
+  }, [query, trips, today, activeTab]);
 
   return (
-    <div className="px-24 max-w-[1400px] mx-auto">
-      <div className="flex justify-between">
-        <div className="flex items-center justify-start pt-[80px] pb-[30px] text-[64px] font-logo font-italic tracking-normal">
-          <h1 className={`${cormorant.className} italic mb-10`}> Ma Collection </h1>
+    <div className="min-h-screen">
+       <div className="flex justify-between items-center pt-16 sm:pt-20 md:pt-[80px] pb-6 sm:pb-8 md:pb-[30px]">
+        <div className="flex">
+          <h1 className={`${cormorant.className} italic text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-light leading-tight`}>
+            Ma Collection
+          </h1>
         </div>
+        <Link href="trips/new" className="bg-black text-white px-6 py-2 rounded-xs text-sm font-medium hover:bg-gray-800 transition-colors">
+          Nouveau voyage
+        </Link>
+      </div>
+      
+      <div className="flex gap-8 border-b border-gray-100 mb-10">
+        <button 
+          onClick={() => setActiveTab("ALL")}
+          className={`pb-4 text-[11px] font-bold tracking-[0.2em] uppercase transition-all relative ${
+            activeTab === "ALL" ? "text-black" : "text-gray-400 hover:text-gray-600"
+          }`}
+        >
+          Tous mes voyages ({trips.length})
+          {activeTab === "ALL" && <div className="absolute bottom-0 left-0 w-full h-[2px] bg-black" />}
+        </button>
+        
+        <button 
+          onClick={() => setActiveTab("DRAFTS")}
+          className={`pb-4 text-[11px] font-bold tracking-[0.2em] uppercase transition-all relative ${
+            activeTab === "DRAFTS" ? "text-black" : "text-gray-400 hover:text-gray-600"
+          }`}
+        >
+          Brouillons
+          {activeTab === "DRAFTS" && <div className="absolute bottom-0 left-0 w-full h-[2px] bg-black" />}
+        </button>
+
+        <button 
+          onClick={() => setActiveTab("FAVORITES")}
+          className={`pb-4 text-[11px] font-bold tracking-[0.2em] uppercase transition-all relative ${
+            activeTab === "FAVORITES" ? "text-black" : "text-gray-400 hover:text-gray-600"
+          }`}
+        >
+          Favoris
+          {activeTab === "FAVORITES" && <div className="absolute bottom-0 left-0 w-full h-[2px] bg-black" />}
+        </button>
       </div>
 
-      <div className="relative group">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-black transition-colors" />
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Rechercher un voyage..."
-          className="w-full pl-11 pr-4 py-3 bg-white rounded-full text-sm border border-gray-200 shadow-sm focus:shadow-md transition-all outline-none focus:ring-2 focus:ring-gray-100"
-        />
-      </div>
       <div className="flex-1">
         {filteredAndSorted.length === 0 ? (
-          <div className="border border-dashed border-gray-200 rounded-3xl py-20 flex flex-col items-center">
-            <Calendar className="w-12 h-12 text-gray-200 mb-4" />
-            <p className="text-gray-400 font-light text-lg">Aucun voyage trouvé</p>
+          <div className="border border-dashed border-gray-100 rounded-3xl py-32 flex flex-col items-center">
+            <p className="text-gray-400 font-light text-sm tracking-widest uppercase text-logo">Aucun voyage trouvé</p>
           </div>
         ) : (
-
-          <div className="gap-x-8 gap-y-12 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
             {filteredAndSorted.map((trip) => (
               <TripCardItem key={trip.id} trip={trip} locale={locale} today={today} content={content} />
             ))}
           </div>
         )}
       </div>
-    </div >
+    </div>
   );
 }
-
-

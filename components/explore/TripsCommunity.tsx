@@ -41,18 +41,16 @@ export default function TripsCommunity({ trips, locale }: TripsClientProps) {
   today.setHours(0, 0, 0, 0);
 
   return (
-    <div className="min-h-screen max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8">
-      <div className="top-0 z-30 backdrop-blur-md pt-16 sm:pt-20 md:pt-[80px] pb-6 sm:pb-8 md:pb-[30px]">
-        {/* Title */}
-        <div className="flex items-center justify-start mb-6 sm:mb-8 md:mb-10">
+    <div className="min-h-screen">
+      <div className="pt-16 sm:pt-20 md:pt-[80px] pb-6 sm:pb-8 md:pb-[30px]">
+        <div className="flex mb-12">
           <h1 className={`${cormorant.className} italic text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-light leading-tight`}>
             Découvrir de nouveaux horizons
           </h1>
         </div>
 
-        {/* Search bar */}
         <div className="flex items-center w-full border-b border-gray-300 pb-2 mb-4 hover:border-gray-500 transition-colors">
-          <Search className="w-4 h-4 text-gray-400 mr-2 sm:mr-3 flex-shrink-0" />
+          <Search className="w-4 h-4 text-gray-400 mr-2 sm:mr-3 shrink-0" />
           <input
             type="text"
             value={query}

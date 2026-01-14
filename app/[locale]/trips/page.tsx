@@ -27,8 +27,8 @@ export default async function TripsPage({ params }: PageProps) {
   );
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="px-6 lg:px-8 2xl:px-60 relative z-10">
+    <div className="min-h-screen bg-white max-w-[1400px] mx-auto px-4 sm:px-6 md:px-14 lg:pl-20 lg:pr10 lg:py-[5%]">
+      <div className="relative z-10">
         <TripsClient
           trips={JSON.parse(JSON.stringify(sortedTrips))}
           locale={locale}
