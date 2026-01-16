@@ -56,7 +56,7 @@ export const MobileTabBar = ({ nav, isAuthenticated }: { nav: any; isAuthenticat
 
   return (
     <div 
-      className="md:hidden fixed bottom-0 left-0 right-0 w-full bg-white border-t border-gray-100 px-8 py-3 shadow-[0_-5px_20px_rgba(0,0,0,0.02)]"
+      className="md:hidden fixed bottom-0 left-0 right-0 w-full bg-white border-t border-gray-100 px-6 pb-5 pt-4 shadow-[0_-5px_20px_rgba(0,0,0,0.02)]"
       style={{ zIndex: 9999 }}
     >
       <div className="flex justify-between items-center max-w-md mx-auto">
