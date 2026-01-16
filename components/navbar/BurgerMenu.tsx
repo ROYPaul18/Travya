@@ -1,12 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-
 import { LocaleSwitcher } from "../ui/LocaleSwitcher";
-import { Menu, X, LogOut, User2, MapPin, Compass, Globe } from "lucide-react";
+import { Menu, X, Compass, Globe, MapPin, Heart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link } from "@/components/Link";
 import { SignOutButton } from "../ui/SignOutButton";
+import { Cormorant_Garamond } from 'next/font/google';
+
+const cormorant = Cormorant_Garamond({
+  weight: ['400'],
+  subsets: ['latin'],
+  style: ["italic"]
+});
 
 interface BurgerMenuProps {
   locale: string;
@@ -27,110 +33,102 @@ export const BurgerMenu = ({ locale, nav, user }: BurgerMenuProps) => {
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
-  const getUserInitials = () => {
-    if (user.name) {
-      return user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2);
-    }
-    return user.email?.[0]?.toUpperCase() || "U";
-  };
-
   return (
     <>
-      {/* Burger Button */}
+      {/* Burger Button - Plus discret */}
       <button
         onClick={toggleMenu}
-        className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative z-50"
+        className="p-2 text-black transition-opacity hover:opacity-60 relative z-50"
         aria-label="Toggle menu"
       >
-        <Menu size={24} />
+        {isOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
       </button>
 
-      {/* Overlay */}
+      {/* Overlay - Blanc pur ou très léger flou */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 transition-opacity"
+          className="fixed inset-0 bg-white/60 backdrop-blur-md z-40 transition-opacity"
           onClick={closeMenu}
         />
       )}
 
-      {/* Slide-in Menu */}
+      {/* Slide-in Menu - Plein écran ou largeur max pour l'élégance */}
       <div
-        className={`fixed top-0 right-0 h-full w-[85vw] max-w-sm bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 h-full w-[100vw] sm:w-[400px] bg-white z-50 transform transition-transform duration-500 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-xl font-light text-gray-900">Menu</h2>
-            <button
-              onClick={closeMenu}
-              className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
-              aria-label="Close menu"
-            >
-              <X size={24} />
-            </button>
-          </div>
-
-          {/* User Info */}
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-center gap-3 mb-4">
-              <Avatar className="h-12 w-12 ring-2 ring-green-100">
-                <AvatarImage src={user.image || undefined} alt={user.name || "User"} />
-                <AvatarFallback className="bg-green-950 text-white text-base">
-                  {getUserInitials()}
+        <div className="flex flex-col h-full px-8 pt-24 pb-12">
+          
+          {/* User Info - Style "Profil de magazine" */}
+          <div className="mb-16">
+            <div className="flex items-center gap-4 mb-6">
+              <Avatar className="h-16 w-16 rounded-none border border-neutral-100">
+                <AvatarImage src={user.image || undefined} className="object-cover" />
+                <AvatarFallback className="bg-neutral-50 text-black text-xs font-bold uppercase tracking-widest">
+                  {user.name?.[0] || user.email?.[0]}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col">
-                <span className="font-semibold text-gray-900">{user.name || "User"}</span>
-                <span className="text-sm text-gray-500">{user.email}</span>
+                <span className={`${cormorant.className} text-3xl italic text-gray-900`}>
+                  {user.name || "Voyageur"}
+                </span>
+                <Link 
+                  href="/profile" 
+                  onClick={closeMenu}
+                  className="text-[9px] font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-black transition-colors"
+                >
+                  Modifier Profil
+                </Link>
               </div>
             </div>
-            <Link href="/profile" onClick={closeMenu}>
-              <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium text-gray-700">
-                <User2 className="h-4 w-4" />
-                Voir le profil
-              </button>
-            </Link>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 overflow-y-auto p-6 space-y-2">
-            <Link href="/explore" onClick={closeMenu}>
-              <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer group">
-                <Compass className="h-5 w-5 text-gray-600 group-hover:text-green-950" />
-                <span className="text-base font-medium text-gray-900">Explorer</span>
+          {/* Navigation - Liens larges et aérés */}
+          <nav className="flex-1 space-y-8">
+            <Link href="/trips" onClick={closeMenu} className="group block">
+              <div className="flex items-center justify-between">
+                <span className={`${cormorant.className} text-4xl italic group-hover:pl-4 transition-all duration-300`}>
+                  {nav.myTrips}
+                </span>
+                
               </div>
             </Link>
 
-            <Link href="/trips" onClick={closeMenu}>
-              <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer group">
-                <MapPin className="h-5 w-5 text-gray-600 group-hover:text-green-950" />
-                <span className="text-base font-medium text-gray-900">{nav.myTrips}</span>
+            <Link href="/explore" onClick={closeMenu} className="group block">
+              <div className="flex items-center justify-between">
+                <span className={`${cormorant.className} text-4xl italic group-hover:pl-4 transition-all duration-300`}>
+                  Explorer
+                </span>
+                
               </div>
             </Link>
 
-            <Link href="/globe" onClick={closeMenu}>
-              <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer group">
-                <Globe className="h-5 w-5 text-gray-600 group-hover:text-green-950" />
-                <span className="text-base font-medium text-gray-900">{nav.globe}</span>
+            <Link href="/globe" onClick={closeMenu} className="group block">
+              <div className="flex items-center justify-between">
+                <span className={`${cormorant.className} text-4xl italic group-hover:pl-4 transition-all duration-300`}>
+                  {nav.globe}
+                </span>
+               
               </div>
             </Link>
           </nav>
 
-          {/* Footer */}
-          <div className="p-6 border-t border-gray-200 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-700">Langue</span>
-              <LocaleSwitcher />
+          {/* Footer - Informations secondaires */}
+          <div className="pt-12 border-t border-gray-100 space-y-8">
+            <div className="flex flex-col gap-2">
+              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-gray-300">Langue</span>
+              <div className="flex justify-start -ml-2">
+                <LocaleSwitcher />
+              </div>
             </div>
 
-             <SignOutButton label={"content.logout"} />
+            <div className="pt-4">
+              <SignOutButton 
+                label={"Déconnexion"} 
+                
+              />
+            </div>
           </div>
         </div>
       </div>

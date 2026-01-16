@@ -3,20 +3,30 @@
 import { useRouter } from "next/navigation";
 import { signOutAction } from "@/lib/signout";
 import { LogOut } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export function SignOutButton({ label }: { label: string }) {
+interface SignOutButtonProps {
+  label: string;
+  className?: string;
+}
+
+export function SignOutButton({ label, className }: SignOutButtonProps) {
   const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOutAction();
+    router.refresh();
+  };
 
   return (
     <button
-      onClick={async () => {
-        await signOutAction();
-        router.refresh(); 
-      }}
-      className="flex items-center gap-3 w-full px-3 py-2.5 text-left"
-    >
-      <LogOut className="h-4 w-4 stroke-[1.5px] text-neutral-500" />
-      <span className="text-xs tracking-tight text-neutral-700">
+      onClick={handleSignOut}
+      className={cn(
+        "flex items-center gap-4 w-full px-0 py-2 text-left group transition-all duration-300",
+        className
+      )}
+    > 
+      <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400 group-hover:text-red-400 transition-colors">
         {label}
       </span>
     </button>
