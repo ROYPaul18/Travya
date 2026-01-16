@@ -6,6 +6,7 @@ import { LocaleSwitcher } from "../ui/LocaleSwitcher";
 import { Menu, X, LogOut, User2, MapPin, Compass, Globe } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Link } from "@/components/Link";
+import { SignOutButton } from "../ui/SignOutButton";
 
 interface BurgerMenuProps {
   locale: string;
@@ -129,15 +130,7 @@ export const BurgerMenu = ({ locale, nav, user }: BurgerMenuProps) => {
               <LocaleSwitcher />
             </div>
 
-            <form action="/api/auth/signout" method="POST" className="w-full">
-              <button
-                type="submit"
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors text-sm font-medium"
-              >
-                <LogOut className="h-4 w-4" />
-                Déconnexion
-              </button>
-            </form>
+             <SignOutButton label={"content.logout"} />
           </div>
         </div>
       </div>
