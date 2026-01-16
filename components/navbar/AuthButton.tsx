@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "@/components/Link";
 import { getUser } from "@/lib/auth-server";
 import {
@@ -9,12 +8,10 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import { Heart, LogOut, User } from "lucide-react";
 import { useIntlayer } from "next-intlayer/server";
 import { LocaleModal } from "@/components/ui/LocaleModal";
+import { SignOutButton } from "../ui/SignOutButton";
 
 export const AuthButton = async ({ locale }: { locale: string }) => {
   const content = useIntlayer("auth-button", locale);
@@ -91,21 +88,7 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
 
           <div className="p-1">
             <DropdownMenuItem asChild className="focus:bg-neutral-50 cursor-pointer rounded-none transition-colors">
-                <form 
-                    className="w-full"
-                    action={async () => {
-                    "use server";
-                    await auth.api.signOut({
-                        headers: await headers(),
-                    });
-                    redirect("/");
-                    }}
-                >
-                <button className="flex items-center gap-3 w-full px-3 py-2.5 text-left">
-                    <LogOut className="h-4 w-4 stroke-[1.5px] text-neutral-500" />
-                    <span className="text-xs tracking-tight text-neutral-700">{content.logout}</span>
-                </button>
-                </form>
+                 <SignOutButton label={content.logout} />
             </DropdownMenuItem>
           </div>
         </DropdownMenuContent>
