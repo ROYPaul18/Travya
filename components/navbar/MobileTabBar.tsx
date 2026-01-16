@@ -81,10 +81,6 @@ export const MobileTabBar = ({ nav, isAuthenticated }: { nav: any; isAuthenticat
               <span className="text-[8px] font-bold uppercase tracking-[0.2em]">
                 {tab.label}
               </span>
-              
-              {isActive && (
-                <div className="w-1 h-1 bg-black rounded-full mt-0.5" />
-              )}
             </Link>
           );
         })}
