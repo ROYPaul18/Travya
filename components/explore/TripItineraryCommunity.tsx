@@ -3,7 +3,7 @@
 import { MapPin, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/Link";
-import SortableItinerary from "@/components/itineraty/SortableItinerary";
+import SortableItinerary from "@/components/share/itinerary/SortableItinerary";
 import { LocationWithActivities } from "@/lib/utils/types/types";
 import { useIntlayer } from "next-intlayer";
 
@@ -38,7 +38,7 @@ export function TripItineraryCommunity({ locations, tripId }: Props) {
           </Link>
         </div>
       ) : (
-        <SortableItinerary locations={locations} tripId={tripId} />
+        <SortableItinerary locations={locations} tripId={tripId} isOwner={true} />
       )}
     </div>
   );

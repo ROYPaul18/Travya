@@ -6,11 +6,13 @@ import ItineraryItem, {
 interface SortableItineraryProps {
   locations: LocationWithActivities[];
   tripId: string;
+  isOwner: boolean;
 }
 
 export default function SortableItinerary({
   locations,
   tripId,
+  isOwner
 }: SortableItineraryProps) {
   return (
     <div className="space-y-4">

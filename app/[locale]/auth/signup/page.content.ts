@@ -9,9 +9,9 @@ const signUpPageContent = {
       es: 'Crear una cuenta'
     }),
     description: t({
-      en: 'Join the adventure, discover the world differently 🌍',
-      fr: 'Rejoins l\'aventure, découvre le monde autrement 🌍',
-      es: 'Únete a la aventura, descubre el mundo de otra manera 🌍'
+      en: 'Join the adventure, discover the world differently',
+      fr: 'Rejoins l\'aventure, découvre le monde autrement',
+      es: 'Únete a la aventura, descubre el mundo de otra manera'
     }),
     footerText: t({
       en: 'Already have an account?',

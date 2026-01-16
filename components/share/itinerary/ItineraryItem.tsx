@@ -5,7 +5,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import SortableActivities from "../activity/SortableActivities";
 import { useIntlayer } from "next-intlayer";
 
-// Typage étendu pour inclure les activités
+
 export interface LocationWithActivities extends Location {
     activities?: Array<{ id: string }>;
 }
@@ -15,7 +15,6 @@ interface ItineraryItemProps {
     tripId: string;
 }
 
-// Fonction pour formater la date
 function formatDate(date: Date, locale: string = "fr-FR"): string {
     return new Intl.DateTimeFormat(locale, {
         day: "numeric",

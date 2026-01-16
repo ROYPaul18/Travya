@@ -22,12 +22,8 @@ export default async function Home({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] relative overflow-hidden text-neutral-900">
-      {/* Fond épuré - Trame de fond très subtile */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[32px_32px] opacity-40"></div>
-
       <div className="relative z-10">
-        {/* HERO SECTION */}
-        <section className="px-6 py-12 lg:px-24 max-h-min">
+        <section className="px-6 py-6 lg:px-24 max-h-min">
           <div className="max-w-5xl mx-auto text-center space-y-12 py-12">
             <div className="inline-flex items-center gap-3 bg-transparent px-2 py-1 border-b border-neutral-200 mb-4">
               <span className="text-neutral-400 text-[10px] uppercase tracking-[0.2em] font-bold">

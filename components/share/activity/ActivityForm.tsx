@@ -5,7 +5,7 @@ import { Loader2, MapPin, CheckCircle2 } from "lucide-react";
 import { useIntlayer } from "next-intlayer";
 import { ActivityFormProps } from "@/lib/utils/types/types";
 import GooglePlacesAutocomplete from "@/components/ui/GooglePlacesAutocompleted";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import { cn } from "@/lib/utils";
 
 const ActivityForm: React.FC<ActivityFormProps> = ({

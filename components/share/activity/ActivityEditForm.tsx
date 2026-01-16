@@ -6,7 +6,7 @@ import { useIntlayer } from "next-intlayer";
 import { ActivityEditFormProps } from "@/lib/utils/types/types";
 import { formatTimeForInput } from "@/lib/utils/formatDate";
 import GooglePlacesAutocomplete from "@/components/ui/GooglePlacesAutocompleted";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 
 const ActivityEditForm: React.FC<ActivityEditFormProps> = ({
   activity,

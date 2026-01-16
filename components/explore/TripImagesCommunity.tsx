@@ -29,4 +29,3 @@ export function TripImagesCommunity({ trip }: Props) {
     </div>
   );
 }
-

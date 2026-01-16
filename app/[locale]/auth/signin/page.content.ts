@@ -9,9 +9,9 @@ const signInPageContent = {
       es: 'Iniciar Sesión'
     }),
     description: t({
-      en: 'Welcome back! 👋',
-      fr: 'Bon retour parmi nous ! 👋',
-      es: '¡Bienvenido de nuevo! 👋'
+      en: 'Welcome back!',
+      fr: 'Bon retour parmi nous !',
+      es: '¡Bienvenido de nuevo!'
     }),
     footerText: t({
       en: 'No account yet?',

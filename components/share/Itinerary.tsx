@@ -12,11 +12,11 @@ interface Props {
   tripId: string;
 }
 
-export function TripItinerarySection({ locations, tripId }: Props) {
-  const content = useIntlayer("trip-detail");
+export function Itinerary({ locations, tripId }: Props) {
+  const content = useIntlayer("itinerary-community");
 
   return (
-    <div>
+    <div className="">
       <h2 className="text-2xl font-medium text-gray-900 mb-6">
         {content.itinerary}
       </h2>
@@ -25,10 +25,10 @@ export function TripItinerarySection({ locations, tripId }: Props) {
         <div className="border border-dashed border-gray-200/50 rounded-sm p-12 text-center bg-gray-50">
           <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-xl font-light text-gray-900 mb-2">
-            Aucune étape
+            {content.noStepsTitle}
           </h3>
           <p className="text-gray-600 mb-6 font-light">
-            Commencez à planifier votre voyage.
+            {content.noStepsDescription}
           </p>
           <Link href={`/trips/${tripId}/itinerary/new`}>
             <Button className="bg-neutral-900 text-white rounded-sm h-11">

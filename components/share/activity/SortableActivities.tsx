@@ -12,13 +12,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import ActivityItem from "@/components/activity/ActivityItem";
+import ActivityItem from "@/components/share/activity/ActivityItem";
 import { deleteActivity, } from "@/lib/actions/Activity";
 import { useIntlayer } from "next-intlayer";
 import { Activity, Location } from "@/lib/utils/types/types";
 import { useRouter } from "next/navigation";
 import ActivityItemSkeleton from "./ActivityItemSkeleton";
-import { Link } from "../Link";
+import { Link } from "../../Link";
 
 const SortableActivities = ({
   tripId,

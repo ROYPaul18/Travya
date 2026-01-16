@@ -1,4 +1,4 @@
-import EditActivityPage from "@/components/activity/EditActivityPage";
+import EditActivityPage from "@/components/share/activity/EditActivityPage";
 import { prisma } from "@/lib/prisma";
 import { getUser } from "@/lib/auth-server";
 import { unauthorized } from "next/navigation";

@@ -27,12 +27,13 @@ export default async function TripsPage({ params }: PageProps) {
   );
 
   return (
-    <div className="min-h-screen bg-white max-w-[1400px] mx-auto px-4 sm:px-6 md:px-14 lg:pl-20 lg:pr10 lg:py-[5%]">
+    <div className="min-h-screen bg-[#FDFDFD] max-w-[1440px] mx-auto px-6 py-6 lg:px-24 sm:px-6">
       <div className="relative z-10">
         <TripsClient
           trips={JSON.parse(JSON.stringify(sortedTrips))}
           locale={locale}
           user={user}
+          favoriteTrips={JSON.parse(JSON.stringify(sortedTrips))}
         />
       </div>
     </div>

@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useIntlayer } from "next-intlayer";
 import { Activity } from "@/lib/utils/types/types";
-import { Link } from "../Link";
+import { Link } from "../../Link";
 
 interface ActivityItemProps {
   activity: Activity;

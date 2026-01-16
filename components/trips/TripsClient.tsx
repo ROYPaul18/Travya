@@ -9,6 +9,7 @@ import { Link } from "../Link";
 
 export interface TripsClientProps {
   trips: Trip[];
+  favoriteTrips: Trip[]; 
   locale: string;
   user: { name?: string | null };
 }
@@ -22,7 +23,7 @@ const cormorant = Cormorant_Garamond({
 
 type TabType = "ALL" | "DRAFTS" | "FAVORITES";
 
-export default function TripsClient({ trips, locale, user }: TripsClientProps) {
+export default function TripsClient({ trips, favoriteTrips, locale, user }: TripsClientProps) {
   const content = useIntlayer('trips-client');
   const [activeTab, setActiveTab] = useState<TabType>("ALL");
   const [query, setQuery] = useState("");
@@ -36,7 +37,7 @@ export default function TripsClient({ trips, locale, user }: TripsClientProps) {
     if (activeTab === "DRAFTS") {
       list = list.filter(t => (t as any).status === "draft"); 
     } else if (activeTab === "FAVORITES") {
-      list = list.filter(t => (t as any).isFavorite === true);
+      list = [...favoriteTrips];
     }
 
     if (query.trim().length > 0) {
@@ -54,12 +55,12 @@ export default function TripsClient({ trips, locale, user }: TripsClientProps) {
       if (isPastA && isPastB) return dateB - dateA;
       return isPastA ? 1 : -1;
     });
-  }, [query, trips, today, activeTab]);
+  }, [query, trips, favoriteTrips, today, activeTab]);
 
   return (
     <div className="min-h-screen">
        <div className="flex justify-between items-center pt-16 sm:pt-20 md:pt-[80px] pb-6 sm:pb-8 md:pb-[30px]">
-        <div className="flex">
+        <div className="flex mt-12">
           <h1 className={`${cormorant.className} italic text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-light leading-tight`}>
             Ma Collection
           </h1>
@@ -96,7 +97,7 @@ export default function TripsClient({ trips, locale, user }: TripsClientProps) {
             activeTab === "FAVORITES" ? "text-black" : "text-gray-400 hover:text-gray-600"
           }`}
         >
-          Favoris
+          Favoris ({favoriteTrips.length})
           {activeTab === "FAVORITES" && <div className="absolute bottom-0 left-0 w-full h-[2px] bg-black" />}
         </button>
       </div>

@@ -19,7 +19,7 @@ export const Navbar = async ({ params }: PageProps) => {
   const user = await getUser();
 
   return (
-    <nav className="relative top-0 w-full z-1000 py-5 px-[5%] flex justify-between items-center bg-white border-b border-gray-200 opacity-90">
+    <nav className="absolute top-0 w-full z-1000 py-4 px-[5%] flex justify-between items-center bg-white border-b border-gray-200">
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center">
           <Link href="/" className="flex items-center font-logo gap-2">

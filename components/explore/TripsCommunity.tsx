@@ -43,7 +43,7 @@ export default function TripsCommunity({ trips, locale }: TripsClientProps) {
   return (
     <div className="min-h-screen">
       <div className="pt-16 sm:pt-20 md:pt-[80px] pb-6 sm:pb-8 md:pb-[30px]">
-        <div className="flex mb-12">
+        <div className="flex mt-12 mb-12">
           <h1 className={`${cormorant.className} italic text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-light leading-tight`}>
             Découvrir de nouveaux horizons
           </h1>

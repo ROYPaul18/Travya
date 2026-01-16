@@ -6,12 +6,19 @@ import { UploadButton } from "@/lib/uploadthings";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState, useTransition } from "react";
-import { Loader2, ArrowLeft, Calendar as CalendarIcon, X } from "lucide-react";
+import { Loader2, ArrowLeft, Calendar as CalendarIcon, X, Plus } from "lucide-react";
 import { useIntlayer } from "next-intlayer";
 import { Link } from "@/components/Link";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import {Popover,PopoverContent,PopoverTrigger,} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Cormorant_Garamond } from 'next/font/google';
+
+const cormorant = Cormorant_Garamond({
+  weight: ['300', '400', '500'],
+  subsets: ['latin'],
+  style: ["italic"]
+});
 
 export default function NewTrip() {
   const [isPending, startTransition] = useTransition();
@@ -21,19 +28,14 @@ export default function NewTrip() {
   const [endDate, setEndDate] = useState<Date>();
   const content = useIntlayer("new-trip-page");
 
+  const inputBaseStyle = "w-full bg-transparent border-b border-gray-200 text-gray-900 placeholder-gray-300 py-3 font-light focus:outline-none focus:border-black transition-colors duration-300 rounded-none";
+
   const handleSubmit = (formData: FormData) => {
-    if (wallpaper) {
-      formData.append("wallpaper", wallpaper);
-    }
-    if (images.length > 0) {
-      formData.append("images", JSON.stringify(images));
-    }
-    if (startDate) {
-      formData.append("startDate", startDate.toISOString().split("T")[0]);
-    }
-    if (endDate) {
-      formData.append("endDate", endDate.toISOString().split("T")[0]);
-    }
+    if (wallpaper) formData.append("wallpaper", wallpaper);
+    if (images.length > 0) formData.append("images", JSON.stringify(images));
+    if (startDate) formData.append("startDate", startDate.toISOString().split("T")[0]);
+    if (endDate) formData.append("endDate", endDate.toISOString().split("T")[0]);
+
     startTransition(() => {
       createTrip(formData);
     });
@@ -44,268 +46,168 @@ export default function NewTrip() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-4xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Link href="/trips">
-            <Button
-              variant="ghost"
-              className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 gap-2 pl-0 rounded-sm transition-colors font-light"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span>Retour aux voyages</span>
-            </Button>
+    <div className="min-h-screen bg-[#FDFDFD] max-w-[1440px] mx-auto px-6 py-6 lg:px-24 sm:px-6">
+      <div className="pt-16 sm:pt-20 md:pt-[80px] pb-6 sm:pb-8 md:pb-[30px]">
+        <div className="mb-16">
+          <Link href="/trips" className="group flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-black transition-colors">
+            <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
+            Retour à la collection
           </Link>
         </div>
 
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-light text-gray-900 mb-2">
+        <div className="mt-12 mb-12">
+          <h1 className={`${cormorant.className} italic text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-light leading-tight`}>
             {content.tripDetails}
           </h1>
-          <p className="text-gray-500 font-light">
-            Créez un nouveau voyage et commencez à planifier votre aventure
+          <p className="text-gray-400 font-light text-xs tracking-widest uppercase italic">
+            Nouveau récit de voyage
           </p>
         </div>
-        <div className="space-y-8">
-          <form
-            className="space-y-8"
-            action={(formData: FormData) => handleSubmit(formData)}
-          >
-            <div className="space-y-2">
-              <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                {content.titleLabel}
-              </label>
-              <input
-                type="text"
-                name="title"
-                className={cn(
-                  "w-full bg-white border border-gray-300 text-gray-900",
-                  "placeholder-gray-400 px-4 py-3 rounded-sm font-light",
-                  "focus:outline-none focus:ring-2 focus:ring-gray-200",
-                  "focus:border-gray-500 transition-all duration-200",
-                )}
-                placeholder={content.titlePlaceholder.value}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                {content.descriptionLabel}
-              </label>
-              <textarea
-                name="description"
-                rows={4}
-                className={cn(
-                  "w-full bg-white border border-gray-300 text-gray-900",
-                  "placeholder-gray-400 px-4 py-3 rounded-sm font-light",
-                  "focus:outline-none focus:ring-2 focus:ring-gray-200",
-                  "focus:border-gray-500 transition-all duration-200",
-                  "resize-none",
-                )}
-                placeholder={content.descriptionPlaceholder.value}
-                required
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                  {content.startDateLabel}
-                </label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-light",
-                        "bg-white border border-gray-300 text-gray-900",
-                        "hover:bg-gray-50 hover:text-gray-900",
-                        "px-4 py-3 rounded-sm h-auto",
-                        !startDate && "text-gray-400",
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                      {startDate
-                        ? format(startDate, "PPP")
-                        : "Sélectionner une date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={startDate}
-                      onSelect={setStartDate}
-                      initialFocus
-                      className="bg-white rounded-sm shadow-lg border border-gray-300"
-                      disabled={(date) =>
-                        date < new Date() || (endDate ? date > endDate : false)
-                      }
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                  {content.endDateLabel}
-                </label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-light",
-                        "bg-white border border-gray-300 text-gray-900",
-                        "hover:bg-gray-50 hover:text-gray-900",
-                        "px-4 py-3 rounded-sm h-auto",
-                        !endDate && "text-gray-400",
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                      {endDate
-                        ? format(endDate, "PPP")
-                        : "Sélectionner une date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={endDate}
-                      onSelect={setEndDate}
-                      initialFocus
-                      className="bg-white rounded-sm shadow-lg border border-gray-300"
-                      disabled={(date) =>
-                        date < new Date() ||
-                        (startDate ? date < startDate : false)
-                      }
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
-            <div className="space-y-3">
-              <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                Image de couverture (Wallpaper)
-              </label>
+        <form action={handleSubmit} className="space-y-24">
+          <div className="space-y-10">
 
-              {wallpaper && (
-                <div className="relative rounded-sm overflow-hidden border border-gray-300">
-                  <Image
-                    src={wallpaper}
-                    alt="Wallpaper du voyage"
-                    className="w-full h-64 object-cover"
-                    width={800}
-                    height={256}
-                  />
+            {/* Wallpaper Section */}
+            <div className="space-y-6">
+              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Couverture (Wallpaper)</label>
+              {wallpaper ? (
+                <div className="relative aspect-21/9 w-full overflow-hidden bg-gray-50 group">
+                  <Image src={wallpaper} alt="Preview" fill className="object-cover" />
                   <button
                     type="button"
                     onClick={() => setWallpaper(null)}
-                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
+                    className="absolute top-4 right-4 bg-white/90 p-2 backdrop-blur-md hover:bg-red-50 transition-colors"
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-4 w-4 text-red-500" />
                   </button>
                 </div>
-              )}
-
-              {!wallpaper && (
-                <div className="bg-white border-2 border-dashed border-gray-300 rounded-sm p-6 sm:p-8 text-center hover:border-gray-400 transition-all duration-200">
+              ) : (
+                <div className="border border-dashed border-gray-100 aspect-21/9 flex items-center justify-center bg-gray-50/30 hover:bg-gray-50 transition-colors">
                   <UploadButton
-                    endpoint={"imageUploader"}
-                    onClientUploadComplete={(res) => {
-                      if (res && res[0].ufsUrl) {
-                        setWallpaper(res[0].ufsUrl);
-                      }
-                    }}
-                    onUploadError={(error: Error) => {
-                      console.error("Upload error", error);
-                    }}
+                    endpoint="imageUploader"
+                    onClientUploadComplete={(res) => { if (res?.[0].ufsUrl) setWallpaper(res[0].ufsUrl); }}
                     appearance={{
-                      button:
-                        "bg-gray-900 text-white hover:bg-gray-800 border-0 rounded-sm font-medium py-3 px-4 h-auto",
-                      allowedContent: "text-gray-500 text-sm font-light",
+                      button: "bg-white text-black border border-gray-200 text-[10px] font-bold uppercase tracking-widest px-10 py-4 shadow-sm hover:border-black transition-all",
+                      allowedContent: "hidden"
                     }}
                   />
                 </div>
               )}
             </div>
 
-            {/* Additional Images Gallery */}
-            <div className="space-y-3">
-              <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                Galerie d'images supplémentaires
-              </label>
+            <div className="grid grid-cols-1 gap-12">
+              <div className="">
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">{content.titleLabel}</label>
+                <input
+                  type="text"
+                  name="title"
+                  className={inputBaseStyle}
+                  placeholder={content.titlePlaceholder.value}
+                  required
+                />
+              </div>
 
-              {images.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {images.map((img, index) => (
-                    <div
-                      key={index}
-                      className="relative rounded-sm overflow-hidden border border-gray-300"
-                    >
-                      <Image
-                        src={img}
-                        alt={`Image ${index + 1}`}
-                        className="w-full h-32 object-cover"
-                        width={300}
-                        height={128}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <div className="bg-white border-2 border-dashed border-gray-300 rounded-sm p-6 sm:p-8 text-center hover:border-gray-400 transition-all duration-200">
-                <UploadButton
-                  endpoint={"imageUploader"}
-                  onClientUploadComplete={(res) => {
-                    if (res && res[0].ufsUrl) {
-                      setImages([...images, res[0].ufsUrl]);
-                    }
-                  }}
-                  onUploadError={(error: Error) => {
-                    console.error("Upload error", error);
-                  }}
-                  appearance={{
-                    button:
-                      "bg-gray-900 text-white hover:bg-gray-800 border-0 rounded-sm font-medium py-3 px-4 h-auto",
-                    allowedContent: "text-gray-500 text-sm font-light",
-                  }}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">{content.descriptionLabel}</label>
+                <textarea
+                  name="description"
+                  rows={1}
+                  className={cn(inputBaseStyle, "resize-none")}
+                  placeholder={content.descriptionPlaceholder.value}
+                  required
                 />
               </div>
             </div>
 
-            {/* Divider */}
-            <div className="h-px bg-gray-200" />
+            {/* Dates côte à côte */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">{content.startDateLabel}</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button type="button" className={inputBaseStyle + " flex justify-between items-center text-left"}>
+                      <span className={!startDate ? "text-gray-300" : ""}>
+                        {startDate ? format(startDate, "dd MMMM yyyy") : "Date de départ"}
+                      </span>
+                      <CalendarIcon className="h-3 w-3 text-gray-300" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 border-none shadow-2xl" align="start">
+                    <Calendar mode="single" selected={startDate} onSelect={setStartDate} initialFocus />
+                  </PopoverContent>
+                </Popover>
+              </div>
 
-            {/* Submit Button */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4">
-              <p className="text-xs text-gray-500 font-light">
-                {content.imageHelper}
-              </p>
-              <Button
-                type="submit"
-                className="w-full sm:w-auto bg-neutral-900 hover:bg-gray-800 text-white font-medium py-3 px-8 rounded-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 h-auto"
-                disabled={isPending || !startDate || !endDate}
-              >
-                {isPending ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    {content.submitButtonCreating}
-                  </>
-                ) : (
-                  <>{content.submitButtonSave}</>
-                )}
-              </Button>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">{content.endDateLabel}</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button type="button" className={inputBaseStyle + " flex justify-between items-center text-left"}>
+                      <span className={!endDate ? "text-gray-300" : ""}>
+                        {endDate ? format(endDate, "dd MMMM yyyy") : "Date de retour"}
+                      </span>
+                      <CalendarIcon className="h-3 w-3 text-gray-300" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 border-none shadow-2xl" align="start">
+                    <Calendar mode="single" selected={endDate} onSelect={setEndDate} initialFocus />
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
-          </form>
-        </div>
+          </div>
+
+
+
+          {/* Galerie Images Supplémentaires
+          <div className="space-y-6">
+            <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Galerie d'instants</label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {images.map((img, index) => (
+                <div key={index} className="relative aspect-square bg-gray-50 overflow-hidden group">
+                  <Image src={img} alt={`Moment ${index}`} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <button 
+                    type="button"
+                    onClick={() => removeImage(index)} 
+                    className="absolute top-2 right-2 bg-white/90 p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+              <div className="aspect-square border border-dashed border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors">
+                 <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res) => { if (res?.[0].ufsUrl) setImages([...images, res[0].ufsUrl]); }}
+                  content={{ button: <Plus className="w-5 h-5 text-gray-300" /> }}
+                  appearance={{
+                    button: "bg-transparent border-0 w-full h-full",
+                    allowedContent: "hidden"
+                  }}
+                />
+              </div>
+            </div>
+          </div> */}
+
+          {/* Submit */}
+          <div className="pt-10 flex flex-col md:flex-row items-center justify-between gap-8 border-t border-gray-50">
+            <p className="text-[10px] text-gray-300 uppercase tracking-widest  italic">
+              {content.imageHelper}
+            </p>
+            <Button
+              type="submit"
+              disabled={isPending || !startDate || !endDate}
+              className="bg-black text-white px-6 py-2 rounded-xs text-sm font-medium hover:bg-gray-800 transition-colors"
+            >
+              {isPending ? (
+                <span className="flex items-center gap-3"><Loader2 className="h-4 w-4 animate-spin" /> {content.submitButtonCreating}</span>
+              ) : (
+                content.submitButtonSave
+              )}
+            </Button>
+          </div>
+
+        </form>
       </div>
     </div>
   );
