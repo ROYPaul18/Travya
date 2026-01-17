@@ -16,13 +16,9 @@ export function TripItineraryCommunity({ locations, tripId }: Props) {
   const content = useIntlayer("itinerary-community");
 
   return (
-    <div className="py-12">
-      <h2 className="text-2xl font-medium text-gray-900 mb-6">
-        {content.itinerary}
-      </h2>
-
+    <div className="">
       {locations.length === 0 ? (
-        <div className="border border-dashed border-gray-200/50 rounded-sm p-12 text-center bg-gray-50">
+        <div className="border-x border-dashed border-gray-200/50 rounded-sm text-center bg-gray-50">
           <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-xl font-light text-gray-900 mb-2">
             {content.noStepsTitle}

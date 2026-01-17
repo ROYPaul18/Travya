@@ -13,15 +13,22 @@ export default async function TripDetail({ params, }: { params: Promise<{ tripId
   }
 
 
-  const trip = await prisma.trip.findFirst({
-    where: { id: tripId, userId: user.id },
+    const trip = await prisma.trip.findFirst({
+    where: { id: tripId },
     include: {
+      user: {
+        select: { name: true, image: true },
+      },
       locations: {
         include: {
-          activities: true
-        }
-      }
-    }
+          activities: true,
+        },
+      },
+      favoritedBy: {
+        where: { userId: user.id },
+        select: { id: true },
+      },
+    },
   });
   if (!trip) {
     return <div> Trip not found !</div>;

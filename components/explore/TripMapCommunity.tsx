@@ -16,11 +16,7 @@ export function TripMapCommunity({ activities, tripId }: Props) {
 
   return (
     <div>
-      <h2 className="text-2xl font-medium text-gray-900 mb-6">
-        {content.map}
-      </h2>
-
-      <div className="h-[400px] md:h-[600px] rounded-sm overflow-hidden border border-gray-300">
+      <div className="h-[400px] md:h-[600px] overflow-hidden border border-gray-300 max-w-[1440px]">
         {activities.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 bg-gray-50">
             <p className="text-gray-600 mb-4 font-light">

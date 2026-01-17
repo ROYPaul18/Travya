@@ -29,7 +29,7 @@ export function TripCardItem({ trip, locale, today }: TripCardItemProps) {
 
   return (
     <Link href={`/trips/${trip.id}`} className="group block mb-8 rounded-xs">
-      <article className="bg-white overflow-hidden flex flex-col gap-6 transition-all duration-300">
+      <article className=" overflow-hidden flex flex-col gap-6 transition-all duration-300">
         <div className="relative aspect-4/3 w-full overflow-hidden">
           {trip.wallpaper ? (
             <Image

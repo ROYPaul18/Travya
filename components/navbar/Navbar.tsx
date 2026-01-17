@@ -18,10 +18,9 @@ export const Navbar = async ({ params }: PageProps) => {
 
   return (
     <>
-      {/* NAVBAR DU HAUT : Logo & Desktop Nav */}
-      <nav className="fixed top-0 w-full z-[100] py-6 px-[5%] flex justify-between items-center bg-white/80 backdrop-blur-md border-b border-gray-50">
+      <nav className="max-w-[1440px] z-100 px-6 py-4 lg:px-24 sm:px-6  mx-auto flex justify-between items-center backdrop-blur-md border-b border-gray-50">
         <Link href="/" className="flex items-center">
-          <span className="text-xl xl:text-[24px] font-logo tracking-[0.2em] font-light">
+          <span className="text-xl xl:text-[24px] font-logo tracking-widest font-light">
             SILLAGE
           </span>
         </Link>

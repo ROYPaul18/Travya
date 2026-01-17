@@ -5,25 +5,30 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ['local-origin.dev', '*.local-origin.dev'],
   images: {
     remotePatterns: [
-      {    
+      {
         protocol: 'https',
         hostname: 'utfs.io',
-        port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'wvbcahjgcu.ufs.sh',
-        port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'picsum.photos',
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'api.dicebear.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
       },
     ],
   },

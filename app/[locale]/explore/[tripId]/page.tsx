@@ -14,16 +14,19 @@ export default async function TripDetail({ params, }: { params: Promise<{ tripId
   const trip = await prisma.trip.findFirst({
     where: { id: tripId },
     include: {
+      user: {
+        select: { name: true, image: true },
+      },
       locations: {
         include: {
-          activities: true
-        }
+          activities: true,
+        },
       },
       favoritedBy: {
         where: { userId: user.id },
-        select: { id: true }
-      }
-    }
+        select: { id: true },
+      },
+    },
   });
 
   if (!trip) {
@@ -32,5 +35,6 @@ export default async function TripDetail({ params, }: { params: Promise<{ tripId
 
   const isAlreadyLiked = trip.favoritedBy.length > 0;
 
+  
   return <TripCommunityClient trip={trip} isAlreadyLiked={isAlreadyLiked} />;
 }

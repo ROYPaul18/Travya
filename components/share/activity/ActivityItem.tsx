@@ -46,42 +46,46 @@ const ActivityItem = ({
 
   return (
     <div
-      className={`border-b border-gray-300 py-4 transition-all ${isDeleting || isEditing ? "opacity-50 pointer-events-none" : ""
-        }`}
+      className={`relative ml-40 mb-20 transition-all ${
+        isDeleting || isEditing ? "opacity-50 pointer-events-none" : ""
+      }`}
     >
-      <div className="flex flex-col sm:flex-row gap-4">
-        {/* Image */}
-        <div className="w-full sm:w-[130px] h-[180px] sm:h-[130px] shrink-0">
-          {activity.images?.[0] ? (
-            <img
-              src={activity.images[0]}
-              alt={activity.name}
-              className="w-full h-full object-cover rounded-md border border-gray-200"
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-200 rounded-md" />
-          )}
-        </div>
+      {/* Point de timeline */}
+      <span className="absolute -left-[103px] top-[15px] w-[7px] h-[7px] rounded-full bg-accent" />
 
-        {/* Contenu */}
-        <div className="flex-1 flex flex-col gap-2">
-          {/* Header */}
-          <div className="flex justify-between items-start gap-2">
-            <h3 className="text-base sm:text-lg font-medium text-gray-900">
+      {/* Heure */}
+      {activity.startTime && activity.endTime && (
+        <span className="block mb-4 text-[10px] font-bold uppercase tracking-[2px] text-[#B59E80]">
+          {activity.startTime} — {activity.endTime} - {getTranslatedCategory(activity.category)}
+        </span>
+      )}
+
+      {/* Contenu principal */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        {/* Texte */}
+        <div className="space-y-5">
+          {/* Header + menu */}
+          <div className="flex justify-between items-start gap-4">
+            <h3 className="font-logo text-4xl font-normal">
               {activity.name}
             </h3>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="p-2 hover:bg-gray-100 rounded-md">
+                <button className="p-2 rounded-md hover:bg-gray-100">
                   <MoreHorizontal className="w-5 h-5 text-gray-600" />
                 </button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Link href={`/trips/${tripId}/${locationId}/${activity.id}/edit`} className="flex gap-2"><Pencil className="w-4 h-4 mr-2" />
-                    Modifier</Link>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={`/trips/${tripId}/${locationId}/${activity.id}/edit`}
+                    className="flex items-center gap-2"
+                  >
+                    <Pencil className="w-4 h-4" />
+                    Modifier
+                  </Link>
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
@@ -104,38 +108,41 @@ const ActivityItem = ({
             </DropdownMenu>
           </div>
 
+          {/* Description */}
+          {activity.description && (
+            <p className="text-[16px] leading-[32px] text-gray-600 font-light">
+              {activity.description}
+            </p>
+          )}
+
           {/* Tags */}
-          <div className="flex flex-wrap gap-2 text-xs">
-            <span className="px-3 py-1 rounded-full bg-gray-100 text-gray-700 font-medium">
-              {getTranslatedCategory(activity.category)}
-            </span>
-
-            {activity.startTime && activity.endTime && (
-              <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {activity.startTime} – {activity.endTime}
-              </span>
-            )}
-
+          <div className="flex flex-wrap gap-3">
             {typeof activity.budget === "number" && activity.budget > 0 && (
-              <span className="px-3 py-1 rounded-full bg-green-50 text-green-700 flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 px-4 py-2 text-[9px] font-bold uppercase tracking-wide border rounded-full">
                 <Euro className="w-3 h-3" />
                 {activity.budget} €
               </span>
             )}
 
             {activity.address && (
-              <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-700 flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 px-4 py-2 text-[9px] font-bold uppercase tracking-wide border rounded-full">
                 <MapPin className="w-3 h-3" />
                 {activity.address}
               </span>
             )}
           </div>
+        </div>
 
-          {activity.description && (
-            <p className="text-sm text-gray-600 line-clamp-2 sm:line-clamp-none">
-              {activity.description}
-            </p>
+        {/* Image */}
+        <div className="w-full">
+          {activity.images?.[0] ? (
+            <img
+              src={activity.images[0]}
+              alt={activity.name}
+              className="w-full aspect-[4/5] object-cover"
+            />
+          ) : (
+            <div className="w-full aspect-[4/5] bg-gray-200" />
           )}
         </div>
       </div>

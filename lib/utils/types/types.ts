@@ -1,4 +1,4 @@
-export type Categorie = 
+export type Categorie =
   | "RESTAURANT"
   | "CAFE"
   | "VISITE"
@@ -14,8 +14,8 @@ export type Visibility = "PRIVATE" | "COMMUNITY" | "FRIENDS";
 export interface Activity {
   id: string;
   name: string;
-  address: string| null;
-  category: Categorie; 
+  address: string | null;
+  category: Categorie;
   description: string | null;
   startTime: string | null;
   endTime: string | null;
@@ -52,7 +52,7 @@ export interface ActivityFormProps {
   addActivity: (
     formData: FormData,
     locationId: string,
-    tripId: string
+    tripId: string,
   ) => Promise<{ success: boolean }>;
 }
 
@@ -65,7 +65,7 @@ export interface ActivityEditFormProps {
   updateActivity: (
     activityId: string,
     formData: FormData,
-    tripId: string
+    tripId: string,
   ) => Promise<{ success: boolean }>;
 }
 
@@ -94,6 +94,10 @@ export interface TripWithLocation {
   updatedAt: Date;
   visibility: Visibility;
   locations: LocationWithActivities[];
+  user: {
+    name: string | null;
+    image: string | null;
+  };
 }
 
 export type ActivityWithLocation = Activity & {

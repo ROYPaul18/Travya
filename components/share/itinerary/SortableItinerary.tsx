@@ -12,13 +12,16 @@ interface SortableItineraryProps {
 export default function SortableItinerary({
   locations,
   tripId,
-  isOwner
 }: SortableItineraryProps) {
   return (
-    <div className="space-y-4">
-      {locations.map((item) => (
-        <ItineraryItem key={item.id} item={item} tripId={tripId} />
-      ))}
+    <div className="relative pl-[120px]">
+      {/* Ligne de timeline – centrée sur le badge (120px / 2 = 60px) */}
+    
+      <div className="space-y-24">
+        {locations.map((item) => (
+          <ItineraryItem key={item.id} item={item} tripId={tripId} />
+        ))}
+      </div>
     </div>
   );
 }

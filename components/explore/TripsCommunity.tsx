@@ -41,7 +41,7 @@ export default function TripsCommunity({ trips, locale }: TripsClientProps) {
   today.setHours(0, 0, 0, 0);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen max-w-[1440px] mx-auto">
       <div className="pt-16 sm:pt-20 md:pt-[80px] pb-6 sm:pb-8 md:pb-[30px]">
         <div className="flex mt-12 mb-12">
           <h1 className={`${cormorant.className} italic text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-light leading-tight`}>
@@ -71,7 +71,7 @@ export default function TripsCommunity({ trips, locale }: TripsClientProps) {
         </div>
       </div>
 
-      <main>
+      <main className="">
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 sm:py-32">
             <Search className="h-10 w-10 sm:h-12 sm:w-12 text-gray-200 mb-3 sm:mb-4" />
