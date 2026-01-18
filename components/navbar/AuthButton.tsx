@@ -64,33 +64,23 @@ export const AuthButton = async ({ locale }: { locale: string }) => {
         >
           {/* Header du Dropdown */}
           <div className="px-6 py-6 border-b border-neutral-50 bg-[#FBFBFB]">
-            <p className="text-[9px] uppercase tracking-[0.4em] text-neutral-400 font-bold mb-2">Compte Personnel</p>
+            <p className="text-[9px] uppercase tracking-[0.4em] text-neutral-400 font-bold">Compte Personnel</p>
             <p className="text-xs font-serif italic text-neutral-950 truncate text-[14px]">{user.email}</p>
           </div>
 
-          <div className="py-2">
+          <div className="px-6 space-y-2">
             <DropdownMenuItem asChild className="focus:bg-neutral-50 cursor-pointer rounded-none transition-colors px-6 py-3">
                 <Link href="/profile" className="flex items-center justify-between w-full">
                     <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-700 font-medium">{content.profile}</span>
                     <User className="h-3.5 w-3.5 stroke-[1px] text-neutral-400" />
                 </Link>
             </DropdownMenuItem>
-
-            <div className="px-6 py-1">
-                <LocaleModal currentLocale={locale} />
-            </div>
-
-            <DropdownMenuItem asChild className="focus:bg-neutral-50 cursor-pointer rounded-none transition-colors px-6 py-3">
-                <Link href="/favorite" className="flex items-center justify-between w-full">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-700 font-medium">Favoris</span>
-                    <Heart className="h-3.5 w-3.5 stroke-[1px] text-neutral-400" />
-                </Link>
-            </DropdownMenuItem>
+             <LocaleModal currentLocale={locale} />
           </div>
 
-          <DropdownMenuSeparator className="bg-neutral-50 h-[1px] mx-0" />
+          <DropdownMenuSeparator className="bg-neutral-50 h-1px mx-0" />
 
-          <div className="p-0">
+          <div className="px-6">
             <DropdownMenuItem asChild className="focus:bg-red-50 cursor-pointer rounded-none transition-all px-6 py-4 group/logout">
                  <div className="w-full">
                     <SignOutButton 

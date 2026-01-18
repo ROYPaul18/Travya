@@ -7,15 +7,19 @@ import { useRouter } from "next/navigation";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Languages, Check, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Languages, X } from "lucide-react";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { Cormorant_Garamond } from 'next/font/google';
+
+const cormorant = Cormorant_Garamond({
+  weight: ['300', '400'],
+  subsets: ['latin'],
+  style: 'italic'
+});
 
 export const LocaleModal: FC<{ currentLocale: string }> = ({ currentLocale }) => {
     const [open, setOpen] = useState(false);
@@ -30,72 +34,72 @@ export const LocaleModal: FC<{ currentLocale: string }> = ({ currentLocale }) =>
         setOpen(false);
     };
 
-    const localeLabels: Record<string, string> = {
-        fr: "Français",
-        en: "English",
-        es: "Español",
-    };
-
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <DropdownMenuItem
-                    onSelect={(e) => {
+                <button
+                    onClick={(e) => {
                         e.preventDefault();
                         setOpen(true);
                     }}
-                    className="cursor-pointer transition-all duration-200 hover:bg-gray-100 focus:bg-gray-100 rounded-sm mb-1"
+                    className="px-2 py-2 flex items-center justify-between w-full cursor-pointer group outline-none hover:bg-neutral-50 rounded-none"
                 >
-                    <div className="flex items-center gap-3 w-full">
-                        <Languages />
-                        <span className="text-gray-900 font-medium">Langues et devise</span>
-                    </div>
-                </DropdownMenuItem>
+                    <span className="text-[10px] uppercase tracking-[0.25em] text-neutral-950 group-hover:text-neutral-950 transition-colors">
+                        Langues
+                    </span>
+                    <Languages className="h-3.5 w-3.5 stroke-[1px] text-neutral-300 group-hover:text-neutral-950 transition-colors" />
+                </button>
             </DialogTrigger>
 
-            <DialogContent className=" bg-white border border-gray-200 rounded-lg">
-                <DialogClose asChild>
-                    <button className="p-2 rounded-md hover:bg-gray-100">
-                        <X className="h-5 w-5" />
-                    </button>
-                </DialogClose>
+            <DialogContent className="bg-white border-none shadow-[0_30px_100px_rgba(0,0,0,0.1)] rounded-none max-w-md py-4 overflow-hidden">
+                {/* Header du Modal */}
+                <div className="relative px-12 pt-16 pb-8 border-b border-neutral-50 text-center">
+                    <DialogClose className="absolute top-6 right-6 text-neutral-300 hover:text-neutral-950 transition-colors">
+                        <X className="h-5 w-5 stroke-[1px]" />
+                    </DialogClose>
+                    
+                    <DialogTitle className={`${cormorant.className} text-4xl text-neutral-950 mb-2 font-light`}>
+                        Sélection de la langue
+                    </DialogTitle>
+                    <p className="text-[9px] uppercase tracking-[0.4em] text-neutral-400 font-bold">
+                        Votre expérience personnalisée
+                    </p>
+                </div>
 
-                <DialogTitle className="text-xl font-semibold text-gray-900">
-                    Choisissez une langue
-                </DialogTitle>
-                <div className="grid grid-cols-3 gap-2">
+                {/* Liste des langues */}
+                <div className="divide-y divide-neutral-50">
                     {availableLocales.map((localeItem) => (
-                        <Button
+                        <button
                             key={localeItem}
                             onClick={() => handleChange(localeItem)}
-                            variant="ghost"
                             className={`
-                w-full justify-between h-auto py-3 px-4 text-left
-                transition-all duration-200 rounded-sm text-base
-                ${locale === localeItem
-                                    ? " hover:bg-gray-50 border border-black"
-                                    : "hover:bg-gray-50 border border-transparent"
-                                }
-              `}
+                                w-full flex items-center justify-between px-12 py-6 
+                                transition-all duration-500 group
+                                ${locale === localeItem ? "bg-neutral-50" : "hover:bg-neutral-100"}
+                            `}
                         >
-                            <div className="flex flex-col">
-                                <span className="font-medium text-gray-900">
+                            <div className="flex flex-col items-start">
+                                <span className={`text-sm tracking-widest uppercase ${locale === localeItem ? "font-bold text-neutral-950" : "text-neutral-600 group-hover:text-neutral-950"}`}>
                                     {getLocaleName(localeItem, locale)}
                                 </span>
-
-                                <span className="text-xs text-gray-500">
+                                <span className="text-[10px] text-neutral-400 font-light mt-1">
                                     {getLocaleName(localeItem, localeItem)}
                                 </span>
                             </div>
-                        </Button>
+                            
+                            {locale === localeItem && (
+                                <div className="size-1.5 bg-neutral-950 rounded-full" />
+                            )}
+                        </button>
                     ))}
                 </div>
 
-                <div className="pt-4 border-t border-gray-200">
-                    <p className="text-xs text-gray-500">
-                        La devise sera automatiquement adaptée selon votre langue
+                {/* Footer du Modal */}
+                {/* <div className="px-12 py-8 bg-[#FAFAFA]">
+                    <p className="text-[10px] text-neutral-400 font-light leading-relaxed italic text-center">
+                        La devise et les contenus seront automatiquement adaptés <br /> à votre sélection linguistique.
                     </p>
-                </div>
+                </div> */}
             </DialogContent>
         </Dialog>
     );
