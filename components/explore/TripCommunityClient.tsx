@@ -19,7 +19,7 @@ export default function TripCommunityClient({ trip }: Props) {
 
   return (
 
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#FDFDFD]">
       
       <TripHeader trip={{
         ...trip,

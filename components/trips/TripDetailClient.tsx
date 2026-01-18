@@ -36,7 +36,7 @@ export default function TripDetailClient({ trip }: Props) {
     }
   };
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#FDFDFD]">
       <div className="">
         <TripHeader
           trip={{
