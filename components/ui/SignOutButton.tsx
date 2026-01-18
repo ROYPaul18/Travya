@@ -15,6 +15,7 @@ export function SignOutButton({ label, className }: SignOutButtonProps) {
 
   const handleSignOut = async () => {
     await signOutAction();
+    router.push("/");
     router.refresh();
   };
 
