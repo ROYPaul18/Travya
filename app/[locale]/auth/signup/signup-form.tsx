@@ -53,7 +53,7 @@ export const SignUpForm = () => {
             },
             {
                 onSuccess: () => {
-                    toast.success("Inscription réussie 🎉")
+                    toast.success("Inscription réussie")
                     router.push(`/${locale}`)
                     router.refresh()
                 },
