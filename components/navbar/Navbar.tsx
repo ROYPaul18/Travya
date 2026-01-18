@@ -21,7 +21,7 @@ export const Navbar = async ({ params }: PageProps) => {
       <nav className="fixed w-full z-100 px-6 py-4 lg:px-24 sm:px-6  mx-auto flex justify-between items-center bg-[#FDFDFD] border-b border-gray-200/50">
         <Link href="/" className="flex items-center">
           <span className="text-xl xl:text-[24px] font-logo tracking-widest font-light">
-            SILLAGE
+            SILLAGES
           </span>
         </Link>
 

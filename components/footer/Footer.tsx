@@ -13,7 +13,7 @@ const Footer = () => {
       <div className="flex justify-center items-center gap-2">
         <Link href="/" className="flex items-center font-logo gap-2">
           <span className="text-base md:text-xl xl:text-[28px] 2xl:text-2xl font-logo tracking-wide">
-            SILLAGE
+            SILLAGES
           </span>
         </Link>
       </div>
