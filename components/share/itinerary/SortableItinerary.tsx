@@ -14,12 +14,10 @@ export default function SortableItinerary({
   tripId,
 }: SortableItineraryProps) {
   return (
-    <div className="relative pl-[120px]">
-      {/* Ligne de timeline – centrée sur le badge (120px / 2 = 60px) */}
-    
+    <div className="">
       <div className="space-y-24">
         {locations.map((item) => (
-          <ItineraryItem key={item.id} item={item} tripId={tripId} />
+          <ItineraryItem key={item.id} item={item} tripId={tripId} editable={true} />
         ))}
       </div>
     </div>

@@ -1,12 +1,11 @@
 "use client";
 
 import { TripWithLocation } from "@/lib/utils/types/types";
-// import { TripHeaderCommunity } from "./TripHeaderCommunity";
-import { TripImagesCommunity } from "./TripImagesCommunity";
-import { TripMeta} from "./TripMeta";
+import { TripMeta } from "../share/TripMeta";
 import { TripItineraryCommunity } from "./TripItineraryCommunity";
 import { TripMapCommunity } from "./TripMapCommunity";
 import TripMetaInfo from "./TripMetaInfo";
+import { TripHeader } from "@/components/share/TripHeader";
 
 interface Props {
   trip: TripWithLocation;
@@ -17,33 +16,42 @@ export default function TripCommunityClient({ trip }: Props) {
   const allActivities = trip.locations.flatMap(
     (location) => location.activities,
   );
-  return (
-    <div className="min-h-screen bg-white">
-      <TripImagesCommunity trip={trip} />
-      <div className="px-4 sm:px-6 lg:px-12 xl:px-24 2xl:px-42 pb-8 sm:pb-12">
-        <div className="relative w-full max-w-7xl mx-auto">
-          {/* <TripHeaderCommunity trip={trip} isAlreadyLiked={isAlreadyLiked} /> */}
-          <TripMeta
-            description={trip.description}
-            startDate={trip.startDate}
-            endDate={trip.endDate}
-            editable={true}
-          />
 
-          <div className="grid grid-cols-[1fr_350px] gap-20 pb-20 ">
-            <TripItineraryCommunity
-              locations={trip.locations}
-              tripId={trip.id}
-            />
-            <div className="flex flex-col gap-2">
-              <TripMetaInfo tripId={trip.id} author={{
+  return (
+
+    <div className="min-h-screen bg-white">
+      
+      <TripHeader trip={{
+        ...trip,
+        description: trip.description ?? "" 
+      }} />
+
+      <main className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-20">
+        <TripMeta
+          description={trip.description}
+          startDate={trip.startDate}
+          endDate={trip.endDate}
+          editable={false}
+        />
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-10 lg:gap-20 pb-20">
+          <TripItineraryCommunity
+            locations={trip.locations}
+            tripId={trip.id}
+          />
+          
+          <aside className="flex flex-col gap-2">
+            <TripMetaInfo 
+              tripId={trip.id} 
+              author={{
                 name: trip.user.name || "Unknown",
                 image: trip.user.image || null
-              }} />
-            </div>
-          </div>
+              }} 
+            />
+          </aside>
+        </div>
 
-
+        {/* Map Section */}
+        <section className="pb-20">
           <TripMapCommunity
             activities={allActivities
               .filter((a) => a.address)
@@ -56,8 +64,8 @@ export default function TripCommunityClient({ trip }: Props) {
               }))}
             tripId={trip.id}
           />
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }

@@ -52,7 +52,6 @@ export function useEditableField({
         setIsEditing(false);
       } catch (error) {
         console.error('Erreur lors de la sauvegarde:', error);
-        // On reste en mode édition en cas d'erreur
       } finally {
         setIsSaving(false);
       }

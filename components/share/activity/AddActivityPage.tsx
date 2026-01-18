@@ -7,7 +7,7 @@ import { UploadButton } from "@/lib/uploadthings";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState, useTransition } from "react";
-import { Loader2, ArrowLeft, Clock, X } from "lucide-react";
+import { Loader2, ArrowLeft, X } from "lucide-react";
 import { Link } from "@/components/Link";
 import { useRouter } from "next/navigation";
 import GooglePlacesAutocomplete from "@/components/ui/GooglePlacesAutocompleted";
@@ -25,333 +25,178 @@ export default function AddActivityPage({ tripId, locationId }: AddActivityPageP
     const router = useRouter();
     const [selectedCategory, setSelectedCategory] = useState<Categorie>("AUTRE");
 
-    const [coordinates, setCoordinates] = useState<{
-        lat: number | null;
-        lng: number | null;
-    }>({
+    const [coordinates, setCoordinates] = useState<{ lat: number | null; lng: number | null }>({
         lat: null,
         lng: null,
     });
 
-    const handleSubmit = (formData: FormData) => {
+    const categories = [
+        { value: "RESTAURANT", label: content.categories.restaurant.value },
+        { value: "VISITE", label: content.categories.visit.value },
+        { value: "ACTIVITE", label: content.categories.activity.value },
+        { value: "HEBERGEMENT", label: content.categories.accommodation.value },
+        { value: "TRANSPORT", label: content.categories.transport.value },
+        { value: "SHOPPING", label: content.categories.shopping.value },
+        { value: "AUTRE", label: content.categories.other.value }
+    ];
 
-        if (!locationId || locationId === "undefined") {
-            console.error("Erreur: locationId est manquant au moment du submit");
-            return;
-        }
-        if (image) {
-            formData.append("image", image);
-        }
+    const handleSubmit = (formData: FormData) => {
+        if (!locationId || locationId === "undefined") return;
+        if (image) formData.append("image", image);
         formData.set("category", selectedCategory);
         formData.set("locationId", locationId);
-
-        if (coordinates.lat !== null) {
-            formData.set("lat", coordinates.lat.toString());
-        }
-        if (coordinates.lng !== null) {
-            formData.set("lng", coordinates.lng.toString());
-        }
-
+        if (coordinates.lat) formData.set("lat", coordinates.lat.toString());
+        if (coordinates.lng) formData.set("lng", coordinates.lng.toString());
 
         startTransition(async () => {
             try {
                 await addActivity(formData, locationId, tripId);
                 router.push(`/trips/${tripId}`);
             } catch (error) {
-                console.error("Erreur lors de la création:", error);
-                alert(content.errorCreate.value);
+                console.error(error);
             }
         });
     };
 
-    const categories = [
-        { value: "RESTAURANT", label: `🍽️ ${content.categories.restaurant.value}` },
-        { value: "VISITE", label: `🏛️ ${content.categories.visit.value}` },
-        { value: "ACTIVITE", label: `🚴 ${content.categories.activity.value}` },
-        { value: "HEBERGEMENT", label: `🏠 ${content.categories.accommodation.value}` },
-        { value: "TRANSPORT", label: `🚗 ${content.categories.transport.value}` },
-        { value: "SHOPPING", label: `🛍️ ${content.categories.shopping.value}` },
-        { value: "AUTRE", label: `🎯 ${content.categories.other.value}` }
-    ];
+    // Style commun pour les labels de section
+    const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+        <h2 className="text-[10px] tracking-[0.2em] font-semibold text-[#999] uppercase mb-6 border-b border-[#EEE] pb-2">
+            {children}
+        </h2>
+    );
+
+    // Style commun pour les inputs
+    const inputClasses = "w-full bg-transparent border-b border-gray-200 text-gray-900 placeholder-gray-300 py-3 rounded-none font-light focus:outline-none focus:border-black transition-colors duration-300";
 
     return (
-        <div className="min-h-screen bg-white">
-            <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-4xl">
-                {/* Header */}
-                <div className="mb-8">
+        <div className="min-h-screen bg-white font-sans">
+            <div className="container mx-auto px-6 py-12 max-w-3xl">
+                
+                {/* Back Link */}
+                <div className="mb-12">
                     <Link href={`/trips/${tripId}`}>
-                        <Button
-                            variant="ghost"
-                            className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 gap-2 pl-0 rounded-sm transition-colors font-light"
-                        >
-                            <ArrowLeft className="h-4 w-4" />
-                            <span>{content.backToTrip.value}</span>
-                        </Button>
+                        <button className="flex items-center gap-2 text-[10px] tracking-widest uppercase text-gray-400 hover:text-black transition-colors">
+                            <ArrowLeft className="h-3 w-3" />
+                            {content.backToTrip.value}
+                        </button>
                     </Link>
                 </div>
 
-                <div className="mb-8">
-                    <h1 className="text-3xl sm:text-4xl font-light text-gray-900 mb-2">
+                <header className="mb-16">
+                    <h1 className="text-4xl font-extralight tracking-tight text-gray-900 mb-4 font-logo italic">
                         {content.addActivityTitle.value}
                     </h1>
-                    <p className="text-gray-500 font-light">
+                    <p className="text-[#999] font-light tracking-wide text-sm uppercase">
                         {content.addActivitySubtitle.value}
                     </p>
-                </div>
+                </header>
 
-                {/* Form */}
-                <div className="space-y-8">
-                    <form
-                        className="space-y-8"
-                        action={(formData: FormData) => handleSubmit(formData)}
-                    >
-                        <input
-                            type="hidden"
-                            name="category"
-                            value={selectedCategory}
-                        />
-                        <input
-                            type="hidden"
-                            name="locationId"
-                            value={locationId}
-                        />    
-                        <div className="space-y-6">
-                            <h2 className="text-lg font-light text-gray-900 border-b border-gray-200 pb-2">
-                                {content.generalInfo.value}
-                            </h2>
-                            <div className="space-y-2">
-                                <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                                    {content.category.value}
-                                </label>
-                                <div className="flex flex-wrap gap-2">
-                                    {categories.map((cat) => (
-                                        <button
-                                            key={cat.value}
-                                            type="button"
-                                            onClick={() => setSelectedCategory(cat.value as Categorie)}
-                                            className={cn(
-                                                "px-4 py-2 rounded-sm border text-sm",
-                                                selectedCategory === cat.value
-                                                    ? "bg-green-950 text-white"
-                                                    : "bg-white text-gray-700 border-green-900 hover:border-gray-400"
-                                            )}
-                                        >
-                                            {cat.label}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                                    {content.activityName.value}
-                                </label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    className={cn(
-                                        "w-full bg-white border border-gray-300 text-gray-900",
-                                        "placeholder-gray-400 px-4 py-3 rounded-sm font-light",
-                                        "focus:outline-none focus:ring-2 focus:ring-gray-200",
-                                        "focus:border-gray-500 transition-all duration-200",
-                                    )}
-                                    placeholder={content.namePlaceholder.value}
-                                    required
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                                    {content.price.value}
-                                </label>
-                                <input
-                                    type="number"
-                                    name="budget"
-                                    min="0"
-                                    className={cn(
-                                        "w-full bg-white border border-gray-300 text-gray-900",
-                                        "placeholder-gray-400 px-4 py-3 rounded-sm font-light",
-                                        "focus:outline-none focus:ring-2 focus:ring-gray-200",
-                                        "focus:border-gray-500 transition-all duration-200",
-                                    )}
-                                    placeholder="0.00"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-6">
-                            <h2 className="text-lg font-light text-gray-900 border-b border-gray-200 pb-2">
-                                {content.location.value}
-                            </h2>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                                    {content.address.value}
-                                </label>
-                                <GooglePlacesAutocomplete
-                                    name="address"
-                                    onPlaceSelected={(place) => {
-                                        if (place.geometry?.location) {
-                                            const lat = place.geometry.location.lat();
-                                            const lng = place.geometry.location.lng();
-                                            setCoordinates({ lat, lng });
-                                            console.log("📍 Nouvelles coordonnées:", { lat, lng });
-                                        } else {
-                                            setCoordinates({ lat: null, lng: null });
-                                        }
-                                    }}
-                                    placeholder={content.addressPlaceholder.value}
-                                    showIcon
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-6">
-                            <h2 className="text-lg font-light text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2">
-                                <Clock className="h-4 w-4" />
-                                {content.schedule.value}
-                            </h2>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                                        {content.startTime.value}
-                                    </label>
-                                    <input
-                                        type="time"
-                                        name="startTime"
-                                        className={cn(
-                                            "w-full bg-white border border-gray-300 text-gray-900",
-                                            "placeholder-gray-400 px-4 py-3 rounded-sm font-light",
-                                            "focus:outline-none focus:ring-2 focus:ring-gray-200",
-                                            "focus:border-gray-500 transition-all duration-200",
-                                        )}
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                                        {content.endTime.value}
-                                    </label>
-                                    <input
-                                        type="time"
-                                        name="endTime"
-                                        className={cn(
-                                            "w-full bg-white border border-gray-300 text-gray-900",
-                                            "placeholder-gray-400 px-4 py-3 rounded-sm font-light",
-                                            "focus:outline-none focus:ring-2 focus:ring-gray-200",
-                                            "focus:border-gray-500 transition-all duration-200",
-                                        )}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="space-y-6">
-                            <h2 className="text-lg font-light text-gray-900 border-b border-gray-200 pb-2">
-                                {content.image.value}
-                            </h2>
-
-                            <div className="space-y-3">
-                                <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                                    {content.activityPhoto.value}
-                                </label>
-
-                                {image && (
-                                    <div className="relative rounded-sm overflow-hidden border border-gray-300">
-                                        <Image
-                                            src={image}
-                                            alt="Image de l'activité"
-                                            className="w-full h-64 object-cover"
-                                            width={800}
-                                            height={256}
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => setImage(null)}
-                                            className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
-                                        >
-                                            <X className="h-4 w-4" />
-                                        </button>
-                                    </div>
-                                )}
-
-                                {!image && (
-                                    <div className="bg-white border-2 border-dashed border-gray-300 rounded-sm p-6 sm:p-8 text-center hover:border-gray-400 transition-all duration-200">
-                                        <UploadButton
-                                            endpoint={"imageUploader"}
-                                            onClientUploadComplete={(res) => {
-                                                if (res && res[0].url) {
-                                                    setImage(res[0].url);
-                                                }
-                                            }}
-                                            onUploadError={(error: Error) => {
-                                                console.error("Upload error", error);
-                                            }}
-                                            appearance={{
-                                                button:
-                                                    "bg-gray-900 text-white hover:bg-gray-800 border-0 rounded-sm font-medium py-3 px-4 h-auto",
-                                                allowedContent: "text-gray-500 text-sm font-light",
-                                            }}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="space-y-6">
-                            <h2 className="text-lg font-light text-gray-900 border-b border-gray-200 pb-2">
-                                {content.description.value}
-                            </h2>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-light text-gray-900 flex items-center gap-2">
-                                    {content.activityDetails.value}
-                                </label>
-                                <textarea
-                                    name="description"
-                                    rows={6}
-                                    className={cn(
-                                        "w-full bg-white border border-gray-300 text-gray-900",
-                                        "placeholder-gray-400 px-4 py-3 rounded-sm font-light",
-                                        "focus:outline-none focus:ring-2 focus:ring-gray-200",
-                                        "focus:border-gray-500 transition-all duration-200",
-                                        "resize-none",
-                                    )}
-                                    placeholder={content.descriptionPlaceholder.value}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="h-px bg-gray-200" />
-                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-4">
-                            <Link href={`/trips/${tripId}`} className="w-full sm:w-auto">
-                                <Button
+                <form action={handleSubmit} className="space-y-16">
+                    
+                    {/* Catégories - Style Boutons Minimalistes */}
+                    <div className="space-y-6">
+                        <SectionLabel>{content.category.value}</SectionLabel>
+                        <div className="flex flex-wrap gap-3">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat.value}
                                     type="button"
-                                    variant="outline"
-                                    className="w-full sm:w-auto border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3 px-8 rounded-sm h-auto"
-                                    disabled={isPending}
+                                    onClick={() => setSelectedCategory(cat.value as Categorie)}
+                                    className={cn(
+                                        "px-5 py-2 text-[10px] tracking-widest uppercase border transition-all duration-300",
+                                        selectedCategory === cat.value
+                                            ? "bg-black text-white border-black"
+                                            : "bg-transparent text-gray-400 border-gray-200 hover:border-gray-400"
+                                    )}
                                 >
-                                    {content.cancel.value}
-                                </Button>
-                            </Link>
-                            <Button
-                                type="submit"
-                                className="w-full sm:w-auto bg-green-950 hover:bg-green-900 text-white font-medium py-3 px-8 rounded-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 h-auto"
-                                disabled={isPending}
-                            >
-                                {isPending ? (
-                                    <>
-                                        <Loader2 className="h-5 w-5 animate-spin" />
-                                        {content.creating.value}
-                                    </>
-                                ) : (
-                                    <>{content.createActivity.value}</>
-                                )}
-                            </Button>
+                                    {cat.label}
+                                </button>
+                            ))}
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    {/* Infos Générales */}
+                    <div className="space-y-10">
+                        <SectionLabel>{content.generalInfo.value}</SectionLabel>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div className="space-y-2">
+                                <label className="text-[9px] uppercase tracking-widest text-gray-400">{content.activityName.value}</label>
+                                <input type="text" name="name" className={inputClasses} placeholder="..." required />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[9px] uppercase tracking-widest text-gray-400">{content.price.value} (€)</label>
+                                <input type="number" name="budget" className={inputClasses} placeholder="0.00" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Localisation */}
+                    <div className="space-y-8">
+                        <SectionLabel>{content.location.value}</SectionLabel>
+                        <div className="space-y-2">
+                            <label className="text-[9px] uppercase tracking-widest text-gray-400">{content.address.value}</label>
+                            <GooglePlacesAutocomplete
+                                name="address"
+                                onPlaceSelected={(place) => {
+                                    const loc = place.geometry?.location;
+                                    setCoordinates({ lat: loc?.lat() || null, lng: loc?.lng() || null });
+                                }}
+                                // Note: Ton composant GooglePlacesAutocomplete devra idéalement accepter des classes pour l'input
+                            />
+                        </div>
+                    </div>
+
+                    {/* Image Upload - Style Épuré */}
+                    <div className="space-y-8">
+                        <SectionLabel>{content.image.value}</SectionLabel>
+                        {image ? (
+                            <div className="relative group grayscale hover:grayscale-0 transition-all duration-500">
+                                <Image src={image} alt="Preview" className="w-full h-80 object-cover border border-gray-100" width={1200} height={400} />
+                                <button onClick={() => setImage(null)} className="absolute top-4 right-4 bg-black p-2 text-white">
+                                    <X className="h-4 w-4" />
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="border border-dashed border-gray-200 py-20 flex flex-col items-center justify-center bg-gray-50/30 group hover:bg-white transition-colors">
+                                <UploadButton
+                                    endpoint="imageUploader"
+                                    onClientUploadComplete={(res) => void (res?.[0]?.url && setImage(res[0].url))}
+                                    appearance={{
+                                        button: "bg-black text-white rounded-none text-[10px] uppercase tracking-[0.3em] px-8 py-4 h-auto",
+                                        allowedContent: "text-[10px] text-gray-400 uppercase tracking-widest mt-4"
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Description */}
+                    <div className="space-y-8">
+                        <SectionLabel>{content.description.value}</SectionLabel>
+                        <textarea
+                            name="description"
+                            rows={4}
+                            className={cn(inputClasses, "resize-none border border-gray-100 p-4 focus:border-black")}
+                            placeholder={content.descriptionPlaceholder.value}
+                        />
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex flex-col sm:flex-row gap-4 pt-10">
+                        <Button
+                            type="submit"
+                            disabled={isPending}
+                            className="flex-1 bg-black hover:bg-[#B59E80] text-white rounded-none py-8 text-[11px] tracking-[0.4em] uppercase transition-all duration-500"
+                        >
+                            {isPending ? <Loader2 className="animate-spin" /> : content.createActivity.value}
+                        </Button>
+                        <Link href={`/trips/${tripId}`} className="flex-1">
+                            <Button variant="outline" className="w-full rounded-none py-8 text-[11px] tracking-[0.4em] uppercase border-gray-200 hover:bg-gray-50">
+                                {content.cancel.value}
+                            </Button>
+                        </Link>
+                    </div>
+                </form>
             </div>
         </div>
     );

@@ -1,24 +1,12 @@
 "use client";
 
-import React from "react";
 import {
   Euro,
-  Loader2,
-  Trash2,
-  Pencil,
-  MoreHorizontal,
-  Clock,
   MapPin,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useIntlayer } from "next-intlayer";
 import { Activity } from "@/lib/utils/types/types";
-import { Link } from "../../Link";
+
 
 interface ActivityItemProps {
   activity: Activity;
@@ -69,43 +57,6 @@ const ActivityItem = ({
             <h3 className="font-logo text-4xl font-normal">
               {activity.name}
             </h3>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="p-2 rounded-md hover:bg-gray-100">
-                  <MoreHorizontal className="w-5 h-5 text-gray-600" />
-                </button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
-                  <Link
-                    href={`/trips/${tripId}/${locationId}/${activity.id}/edit`}
-                    className="flex items-center gap-2"
-                  >
-                    <Pencil className="w-4 h-4" />
-                    Modifier
-                  </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  onClick={() => onDeleteClick(activity)}
-                  className="text-red-600"
-                >
-                  {isDeleting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Suppression…
-                    </>
-                  ) : (
-                    <>
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Supprimer
-                    </>
-                  )}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
 
           {/* Description */}
@@ -139,10 +90,10 @@ const ActivityItem = ({
             <img
               src={activity.images[0]}
               alt={activity.name}
-              className="w-full aspect-[4/5] object-cover"
+              className="w-full aspect-4/5 object-cover"
             />
           ) : (
-            <div className="w-full aspect-[4/5] bg-gray-200" />
+            <div className="w-full aspect-4/5 bg-gray-200" />
           )}
         </div>
       </div>

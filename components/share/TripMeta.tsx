@@ -43,14 +43,15 @@ export function TripMeta({
     color: "#333",
     fontWeight: 300,
   };
+
   const autoResize = (el: HTMLTextAreaElement) => {
     el.style.height = 'auto';
     el.style.height = `${el.scrollHeight}px`;
   };
 
   return (
-    <div className="space-y-2 pb-4 sm:pb-6">
-      <section className="py-[120px] max-w-[800px] mx-auto text-center">
+    <div className="space-y-2 pb-4 sm:pb-6 max-w-[800px] mx-auto">
+      <section className="py-[120px] mx-auto text-center">
         {isEditing && editable ? (
           <div className="relative">
             <textarea
@@ -61,11 +62,14 @@ export function TripMeta({
                 }
               }}
               value={value}
-              onChange={(e) => setValue(e.target.value)}
+              onChange={(e) => {
+                setValue(e.target.value);
+                autoResize(e.target);
+              }}
               onBlur={handleBlur}
               onKeyDown={handleKeyDown}
               disabled={isSaving}
-              className={cormorant.className}
+              className={`${cormorant.className} w-full wrap-break-word overflow-wrap-break-word`}
               style={{
                 ...textStyle,
                 width: '100%',
@@ -79,19 +83,15 @@ export function TripMeta({
               }}
               placeholder="Ajoutez une description..."
             />
-            {isSaving && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
-              </div>
-            )}
           </div>
         ) : (
           <div
             onClick={startEditing}
-            className={`${cormorant.className} ${editable
-              ? 'cursor-text hover:bg-gray-50 rounded-lg px-4 py-2 transition-colors'
-              : ''
-              }`}
+            className={`${cormorant.className} ${
+              editable
+                ? 'cursor-text hover:bg-gray-50 rounded-lg px-4 py-2 transition-colors'
+                : ''
+            }`}
             style={textStyle}
           >
             {value || (editable ? "Cliquez pour ajouter une description..." : "")}

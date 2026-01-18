@@ -71,7 +71,7 @@ export default function NewTrip() {
             <div className="space-y-6">
               <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Couverture (Wallpaper)</label>
               {wallpaper ? (
-                <div className="relative aspect-21/9 w-full overflow-hidden bg-gray-50 group">
+                <div className="relative aspect-21/9 w-full overflow-hidden bg-gray-400 group">
                   <Image src={wallpaper} alt="Preview" fill className="object-cover" />
                   <button
                     type="button"

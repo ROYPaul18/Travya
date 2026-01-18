@@ -18,6 +18,7 @@ export default async function TripDetail({ params, }: { params: Promise<{ tripId
         select: { name: true, image: true },
       },
       locations: {
+        orderBy: { order: "asc" },
         include: {
           activities: true,
         },
@@ -35,6 +36,6 @@ export default async function TripDetail({ params, }: { params: Promise<{ tripId
 
   const isAlreadyLiked = trip.favoritedBy.length > 0;
 
-  
+
   return <TripCommunityClient trip={trip} isAlreadyLiked={isAlreadyLiked} />;
 }

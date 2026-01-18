@@ -17,10 +17,6 @@ export function TripItinerarySection({ locations, tripId }: Props) {
 
   return (
     <div>
-      <h2 className="text-2xl font-medium text-gray-900 mb-6">
-        {content.itinerary}
-      </h2>
-
       {locations.length === 0 ? (
         <div className="border border-dashed border-gray-200/50 rounded-sm p-12 text-center bg-gray-50">
           <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />

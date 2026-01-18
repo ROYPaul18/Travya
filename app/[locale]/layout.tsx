@@ -8,6 +8,7 @@ import { NextLayoutIntlayer } from "next-intlayer";
 import { IntlayerClientProvider } from "next-intlayer";
 import { IntlayerServerProvider } from "next-intlayer/server";
 import Script from "next/script";
+import { Toaster } from "sonner";
 
 
 const geist = Lora({
@@ -43,6 +44,23 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
             <Script
               src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
               strategy="beforeInteractive"
+            />
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                className: "font-logo border-none shadow-xl", // Ta police de base
+                style: {
+                  borderRadius: '0px', // Un look plus éditorial/galerie
+                  background: '#fffdfa', // Un blanc cassé/papier pour la DA
+                  color: '#1a1a1a',
+                },
+                classNames: {
+                  title: "font-logo italic text-lg",
+                  description: "text-muted-foreground font-light",
+                  actionButton: "bg-black text-white rounded-none",
+                  cancelButton: "bg-gray-100 rounded-none",
+                },
+              }}
             />
             <Navbar params={params} />
 
