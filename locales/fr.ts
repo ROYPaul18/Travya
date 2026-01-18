@@ -1,6 +1,6 @@
 export default {
   navbar: {
-    brand: "Travya",
+    brand: "Sillages",
     links: {
       myTrips: "Mes voyages",
       globe: "Globe",
@@ -12,8 +12,8 @@ export default {
     },
   },
   footer: {
-    brand: "Travya",
-    cc: "© 2025 Travya. Commencez votre voyage dès aujourd'hui.",
+    brand: "Sillages",
+    cc: "© 2025 Sillages. Commencez votre voyage dès aujourd'hui.",
   },
   home: {
     hero: {

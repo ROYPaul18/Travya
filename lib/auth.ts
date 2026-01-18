@@ -26,4 +26,5 @@ export const auth = betterAuth({
       clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
     },
   },
+  trustProxy: true,
 });

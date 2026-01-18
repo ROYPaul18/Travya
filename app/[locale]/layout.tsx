@@ -34,7 +34,7 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
             <script
               defer
               data-website-id="dfid_TIzTjs4vrqlS6RP70Hmqq"
-              data-domain="travya.vercel.app"
+              data-domain="https://sillages.vercel.app"
               src="https://datafa.st/js/script.js">
             </script>
           </head>
