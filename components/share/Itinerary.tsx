@@ -1,6 +1,7 @@
 "use client";
 
 import { MapPin, Plus } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/Link";
 import SortableItinerary from "@/components/share/itinerary/SortableItinerary";
@@ -14,6 +15,13 @@ interface Props {
 
 export function Itinerary({ locations, tripId }: Props) {
   const content = useIntlayer("itinerary-community");
+  const pathname = usePathname();
+  
+  // Debug
+  console.log('🔍 Pathname:', pathname);
+  
+  const isExplorePage = pathname?.includes("/explore");
+  console.log('🔍 Is Explore Page:', isExplorePage);
 
   return (
     <div className="">
@@ -30,15 +38,17 @@ export function Itinerary({ locations, tripId }: Props) {
           <p className="text-gray-600 mb-6 font-light">
             {content.noStepsDescription}
           </p>
-          <Link href={`/trips/${tripId}/itinerary/new`}>
-            <Button className="bg-neutral-900 text-white rounded-sm h-11">
-              <Plus className="mr-2 h-4 w-4" />
-              {content.addLocationButton}
-            </Button>
-          </Link>
+          {!isExplorePage && (
+            <Link href={`/trips/${tripId}/itinerary/new`}>
+              <Button className="bg-neutral-900 text-white rounded-sm h-11">
+                <Plus className="mr-2 h-4 w-4" />
+                {content.addLocationButton}
+              </Button>
+            </Link>
+          )}
         </div>
       ) : (
-        <SortableItinerary locations={locations} tripId={tripId} isOwner={true}/>
+        <SortableItinerary locations={locations} tripId={tripId} isOwner={true} />
       )}
     </div>
   );

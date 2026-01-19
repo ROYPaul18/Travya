@@ -54,7 +54,7 @@ export const BurgerMenu = ({ locale, nav, user }: BurgerMenuProps) => {
 
       {/* Slide-in Menu - Plein écran ou largeur max pour l'élégance */}
       <div
-        className={`fixed top-0 right-0 h-full w-[100vw] sm:w-[400px] bg-white z-50 transform transition-transform duration-500 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-screen sm:w-[400px] bg-white z-50 transform transition-transform duration-500 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
