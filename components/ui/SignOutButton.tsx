@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { signOutAction } from "@/lib/signout";
-import { LogOut } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 interface SignOutButtonProps {
